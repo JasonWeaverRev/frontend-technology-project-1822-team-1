@@ -15,11 +15,13 @@ To install, use the following command
 ```
 
 ### Testing
-Ensure test dependencies are installed  
-```npm i cypress```   
-Start testing application  
-```npx cypress open```
+1. Ensure test dependencies are installed  
 
+```npm i cypress```   
+
+2. Start testing application  
+
+```npx cypress open```
 
 
 ### Contributors
