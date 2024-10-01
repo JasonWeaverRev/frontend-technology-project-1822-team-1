@@ -25,7 +25,7 @@ To install, use the following command
 
 
 ### Contributors
-> - Aaron Cordeau - Team Lead
-> - Ricky Ly - Scrum Master
-> - Gerdine Behrmann - Scribe   
-> - Jason Weaver - Git Master
+- Aaron Cordeau - Team Lead
+- Ricky Ly - Scrum Master
+- Gerdine Behrmann - Scribe   
+- Jason Weaver - Git Master
