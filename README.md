@@ -3,10 +3,8 @@
 This repository serves as the frontend implementation of the Dungeon Delver application, integrating the [backend provided here](https://github.com/JasonWeaverRev/backend-technology-project-1822-team-1/tree/main). The link to the web application can be viewed [here](http://localhost:3000)
 
 **Quick-start**  
-To install, use the following command
+To install, use the following command  
 ```git clone https://github.com/JasonWeaverRev/frontend-technology-project-1822-team-1.git```
-
-####
 
 ### Technologies
 ```
@@ -16,11 +14,10 @@ To install, use the following command
 - (more to be added)
 ```
 
-**Testing**
-> Ensure test dependencies are installed
-```npm i cypress```
-
-> Start testing application
+### Testing
+Ensure test dependencies are installed  
+```npm i cypress```   
+Start testing application  
 ```npx cypress open```
 
 
