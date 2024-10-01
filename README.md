@@ -11,7 +11,7 @@ Quick-start clone command: git clone https://github.com/JasonWeaverRev/frontend-
 - (more to be added)
 
 ### Contributors
-- Aaron Cordeau
-- Ricky Ly
-- Gerdine Behrmann
-- Jason Weaver
+- Aaron Cordeau  
+- Ricky Ly  
+- Gerdine Behrmann    
+- Jason Weaver  
