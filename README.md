@@ -4,15 +4,26 @@ This repository serves as the frontend implementation of the Dungeon Delver appl
 
 **Quick-start**  
 To install, use the following command
-> git clone https://github.com/JasonWeaverRev/frontend-technology-project-1822-team-1.git
+```git clone https://github.com/JasonWeaverRev/frontend-technology-project-1822-team-1.git```
 
 ####
 
 ### Technologies
-> - Node.js v20.17.0
-> - npm v10.8.2
-> - Cypress
-> - (more to be added)
+```
+- Node.js v20.17.0
+- npm v10.8.2
+- Cypress
+- (more to be added)
+```
+
+**Testing**
+> Ensure test dependencies are installed
+```npm i cypress```
+
+> Start testing application
+```npx cypress open```
+
+
 
 ### Contributors
 > - Aaron Cordeau - Team Lead
