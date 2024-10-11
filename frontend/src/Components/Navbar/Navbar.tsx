@@ -4,7 +4,7 @@ import "./Navbar.css";
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-sm bg-body-tertiary">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Dungeon Delver
@@ -21,7 +21,8 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ms-auto">
+
             <li className="nav-item">
               <Link
                 className="nav-link"
