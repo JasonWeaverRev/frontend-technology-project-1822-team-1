@@ -38,7 +38,7 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
   return (
     <div className="monster-card d-flex flex-column p-1 m-2 mb-4">
       <div className="monster-header d-flex  gap-3">
-        <div className="monster-header image-name d-flex  flex-wrap ">
+        <div className="monster-header image-name d-flex flex-wrap ">
           {image && (
             <img src={image} alt={`${name}`} className="monster-image " />
           )}
@@ -48,16 +48,20 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
         </div>
         <div className="monster-header monster-stats d-flex justify-content-between flex-fill p-2 ">
           <p>
-            <strong>Challenge Rating:</strong> {cr}
+            <strong>Challenge Rating:</strong> <br></br>
+            {cr}
           </p>
           <p>
-            <strong>Size:</strong> {size}
+            <strong>Size:</strong> <br></br>
+            {size}
           </p>
           <p>
-            <strong>HP:</strong> {hp}
+            <strong>HP:</strong> <br></br>
+            {hp}
           </p>
           <p>
-            <strong>AC:</strong> {ac}
+            <strong>AC:</strong> <br></br>
+            {ac}
           </p>
 
           <div className="addBtnContainer">

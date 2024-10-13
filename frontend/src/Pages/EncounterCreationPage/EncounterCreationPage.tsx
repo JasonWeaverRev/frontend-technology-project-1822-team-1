@@ -69,7 +69,7 @@ const EncounterCreationPage: React.FC = () => {
 
   return (
     <div className="encounter-creation-page d-flex p-5">
-      <div className="encounter-info d-flex flex-column ">
+      <div className="encounter-info d-flex flex-column black-border">
         <div className="encounter-form-info d-flex flex-column gap-4 ">
           <h2>Create an Encounter</h2>
           <input
