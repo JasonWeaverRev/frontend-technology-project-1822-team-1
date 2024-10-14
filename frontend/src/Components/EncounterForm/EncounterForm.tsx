@@ -5,6 +5,8 @@ interface EncounterFormProps {
   setSetting: any;
   setEnvironment: any;
   setChallengeRating: any;
+  setChallengeRatingValue: any;
+  challengeRatingValue: any;
   getMonstersByChallengeRating: any;
 }
 
@@ -12,11 +14,13 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
   setTitle,
   setSetting,
   setEnvironment,
+  setChallengeRatingValue,
+  challengeRatingValue,
   setChallengeRating,
   getMonstersByChallengeRating,
 }) => {
   return (
-    <div className="encounter-info d-flex flex-column ">
+    <div className="encounter-info d-flex flex-column">
       <div className="encounter-form-info d-flex flex-column gap-4 ">
         <h2>Create an Encounter</h2>
         <input

@@ -1,5 +1,5 @@
 // src/pages/EncounterCreationPage.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MonsterCard from "../../Components/MonsterCard/MonsterCard";
 import "./EncounterCreationPage.css";
@@ -9,54 +9,43 @@ import EncounterForm from "../../Components/EncounterForm/EncounterForm";
 const EncounterCreationPage: React.FC = () => {
   const [monsters, setMonsters] = useState<any[]>([]);
   const [roster, setRoster] = useState<any[]>([]);
+  const [challengeRatingValue, setChallengeRatingValue] = useState<number>();
   const [challengeRating, setChallengeRating] = useState<number>();
   const [title, setTitle] = useState<string>();
   const [environment, setEnvironment] = useState<string>();
   const [setting, setSetting] = useState<string>();
 
-  const getMonstersByChallengeRating = async () => {
-    const response = await axios.get(
-      `https://www.dnd5eapi.co/api/monsters?challenge_rating=${challengeRating}`
-    );
-
-    const monsters = response.data.results;
-
-    const shuffledMonsters = monsters.sort(() => 0.5 - Math.random());
-    const selectedMonsters = shuffledMonsters.slice(0, 5);
-
-    const randomMonsterData = [];
-
-    for (const monster of selectedMonsters) {
-      const monsterDetails = await axios.get(
-        `https://www.dnd5eapi.co${monster.url}`
-      );
-      const newMonster = {
-        name: monsterDetails.data.name,
-        size: monsterDetails.data.size,
-        challengeRating: monsterDetails.data.challenge_rating,
-        armorClass: monsterDetails.data.armor_class[0].value,
-        hp: monsterDetails.data.hit_points,
-        strength: monsterDetails.data.strength,
-        dexterity: monsterDetails.data.dexterity,
-        constitution: monsterDetails.data.constitution,
-        intelligence: monsterDetails.data.intelligence,
-        wisdom: monsterDetails.data.wisdom,
-        charisma: monsterDetails.data.charisma,
-        image: `https://www.dnd5eapi.co${monsterDetails.data.image}`,
-        monsterPage: monsterDetails.data.name.includes(",")
-          ? `https://www.dndbeyond.com/monsters/${monsterDetails.data.name
-              .split(",")[0]
-              .trim()}`
-          : `https://www.dndbeyond.com/monsters/${monsterDetails.data.name.replaceAll(
-              " ",
-              "-"
-            )}`,
-      };
-      randomMonsterData.push(newMonster);
+  axios.interceptors.request.use(
+    (config: any): any => {
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
+  );
 
-    setMonsters(randomMonsterData.map((monster: any) => monster));
-    console.log(roster[0]);
+  axios.interceptors.response.use(
+    (response: any): any => {
+      return response;
+    },
+    (error) => {
+      console.error(error);
+      return Promise.reject(error);
+    }
+  );
+
+  const getMonstersByChallengeRating = async () => {
+    await axios
+      .get(
+        `http://localhost:4000/api/encounters/monsters?challenge_rating=${challengeRating}`
+      )
+      .then((response) => {
+        setMonsters(response.data.monsters.map((monster: any) => monster));
+        console.log(monsters);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addToRoster = (monster: any) => {
@@ -69,12 +58,14 @@ const EncounterCreationPage: React.FC = () => {
   };
 
   return (
-    <div className="encounter-creation-page d-flex p-5">
+    <div className="encounter-creation-page d-flex flex-lg-row p-5">
       <EncounterForm
         setTitle={setTitle}
         setEnvironment={setEnvironment}
         setSetting={setSetting}
         setChallengeRating={setChallengeRating}
+        setChallengeRatingValue={setChallengeRatingValue}
+        challengeRatingValue={challengeRatingValue}
         getMonstersByChallengeRating={getMonstersByChallengeRating}
       ></EncounterForm>
 
@@ -99,7 +90,7 @@ const EncounterCreationPage: React.FC = () => {
           />
         ))}
       </div>
-      <div className="encounter-roster d-flex flex-column text-start align-text-top ">
+      <div className="encounter-roster d-flex flex-column text-start align-text-top col-lg-2">
         <h2 className="text-center">Roster</h2>
         {roster.map((monster, index) => (
           <RosterCard

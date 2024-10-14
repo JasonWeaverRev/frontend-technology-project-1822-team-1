@@ -9,7 +9,7 @@ interface RosterCardProps {
 
 const RosterCard: React.FC<RosterCardProps> = ({ name, page, onRemove }) => {
   return (
-    <div className="roster-card d-flex justify-content-between align-baseline">
+    <div className="roster-card d-flex justify-content-between align-baseline m-1 mx-2">
       <a href={page} target="_blank" rel="noopener noreferrer">
         {name}
       </a>

@@ -37,7 +37,7 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
 }) => {
   return (
     <div className="monster-card d-flex flex-column p-1 m-2 mb-4">
-      <div className="monster-header d-flex  gap-3">
+      <div className="d-flex justify-content-between">
         <div className="monster-header image-name d-flex flex-wrap ">
           {image && (
             <img src={image} alt={`${name}`} className="monster-image " />
@@ -46,29 +46,26 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
             {name}
           </a>
         </div>
-        <div className="monster-header monster-stats d-flex justify-content-between flex-fill p-2 ">
+        <div className="addBtnContainer">
+          <button className="monster-add-button" onClick={onAdd}>
+            +add
+          </button>
+        </div>
+      </div>
+      <div className="monster-header d-flex gap-3">
+        <div className="monster-header monster-stats d-flex justify-content-evenly flex-fill ">
           <p>
-            <strong>Challenge Rating:</strong> <br></br>
-            {cr}
+            <strong>Challenge Rating:</strong> {cr}
           </p>
           <p>
-            <strong>Size:</strong> <br></br>
-            {size}
+            <strong>Size:</strong> {size}
           </p>
           <p>
-            <strong>HP:</strong> <br></br>
-            {hp}
+            <strong>HP:</strong> {hp}
           </p>
           <p>
-            <strong>AC:</strong> <br></br>
-            {ac}
+            <strong>AC:</strong> {ac}
           </p>
-
-          <div className="addBtnContainer">
-            <button className="monster-add-button" onClick={onAdd}>
-              Add
-            </button>
-          </div>
         </div>
       </div>
 

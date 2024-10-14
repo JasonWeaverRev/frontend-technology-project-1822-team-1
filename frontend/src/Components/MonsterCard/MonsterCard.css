@@ -17,6 +17,7 @@
 }
 .monster-header a:hover {
   color: #736d6d;
+  text-decoration: none;
 }
 
 .monster-header a:active {
