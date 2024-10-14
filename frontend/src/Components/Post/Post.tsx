@@ -33,7 +33,7 @@ function Post({ title, username, post_id, content }: PostItem) {
       }
     }
   };
-
+  // material UI
   return (
     <>
       <div className="post-bg row">
@@ -62,8 +62,8 @@ function Post({ title, username, post_id, content }: PostItem) {
             />
           </button>
         </div>
-        <div className="col-11 d-flex flex-column text-start text-post-format justify-content-start">
-          <h3>
+        <div className="col-11 d-flex flex-column text-start text-post-format justify-content-between">
+          <h4>
             <Link
               to={`/posts/${post_id}`}
               state={{ title: title, username: username, content: content }}
@@ -71,9 +71,13 @@ function Post({ title, username, post_id, content }: PostItem) {
             >
               {title}
             </Link>
-          </h3>
-          <h5>{content}</h5>
-          <p className="mt-auto mb-0">{username}</p>
+          </h4>
+          <p className="flex-grow-1 d-flex aling-items-center mb-0">
+            {content.length > 25
+              ? content.substring(0, 25) + " . . ."
+              : content}
+          </p>
+          <p className="mb-0">{username}</p>
         </div>
       </div>
     </>

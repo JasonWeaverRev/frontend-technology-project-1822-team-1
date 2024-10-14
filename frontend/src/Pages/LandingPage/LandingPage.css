@@ -1,6 +1,7 @@
 .landing-page {
     background-color: #343a40;
     min-height: 100vh;
+    padding-top: 3px;
   }
     
 .load-button-format {
