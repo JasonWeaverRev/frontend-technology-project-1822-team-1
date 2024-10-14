@@ -1,0 +1,121 @@
+#profile-bio-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+#profile-bio-section > div > img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    margin-left: 8rem;
+}
+
+#user_bio > h1, 
+#user_bio > p {
+    margin-right: 20rem;
+    margin-left: 6rem;
+    max-width: 100%;
+}
+
+#about_me {
+    word-wrap: break-word;
+}
+
+/*
+#about_me,
+#username {
+    border: 1px black solid;
+}
+*/
+
+#profile-body-section {
+    flex-direction: row;
+    overflow: hidden;
+}
+
+@media (max-width: 1500px) {
+    #user_bio > h1,
+    #user_bio > p {
+        margin-right: 14rem;
+        margin-left: 4rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    #profile-bio-section > div > img {
+        width: 120px;
+        height: 120px;
+        margin-left: 4rem;
+    }
+
+    #user_bio > h1,
+    #user_bio > p {
+        margin-right: 10rem;
+        margin-left: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #profile-bio-section {
+        flex-direction: column;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    #profile-bio-section > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    #profile-bio-section > div > img {
+        width: 100px;
+        height: 100px;
+        margin: 0;
+    }
+
+    #image-container {
+        align-items: center;
+        padding-bottom: 1rem;
+    }
+
+    #username {
+        text-align: center;
+    }
+
+    #user_bio > h1,
+    #user_bio > p {
+        margin-right: 2rem;
+        margin-left: 2rem;
+    }
+
+    #profile-body-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #forum-post-container {
+        margin-top: 1rem;
+    }
+
+}
+
+@media (max-width: 576px) {
+    #profile-bio-section {
+        padding: 1rem;
+    }
+
+    #profile-bio-section > div > img {
+        width: 80px;
+        height: 80px;
+    }
+
+    #user_bio > h1,
+    #user_bio > p {
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+}
