@@ -35,6 +35,7 @@ function App() {
         ></Route>
         <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
         <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
+        <Route path="/posts/:title" element={<PostPage></PostPage>}></Route>
       </Routes>
     </div>
   );

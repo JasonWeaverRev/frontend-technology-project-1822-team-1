@@ -10,17 +10,17 @@ function Navbar() {
           Dungeon Delver
         </Link>
         <button
-          className="navbar-toggler"
+          className="navbar-toggler collapsed"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-toggle="collapse"
+          data-target="navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto ">
             <li className="nav-item">
               <Link
