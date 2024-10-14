@@ -1,0 +1,15 @@
+.roster-card a {
+  color: black;
+}
+.roster-card a:hover {
+  color: #736d6d;
+  text-decoration: none;
+}
+
+.roster-card a:active {
+  text-decoration: none;
+}
+
+.roster-card:hover {
+  background-color: #d8dce3;
+}
