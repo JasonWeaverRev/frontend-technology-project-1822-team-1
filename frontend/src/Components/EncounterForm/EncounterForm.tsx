@@ -1,23 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import LinkButton from "../LinkButton/LinkButton";
 
 interface EncounterFormProps {
   setTitle: any;
   setSetting: any;
   setEnvironment: any;
   setChallengeRating: any;
-  setChallengeRatingValue: any;
-  challengeRatingValue: any;
   getMonstersByChallengeRating: any;
+  generateEncounter: any;
 }
 
 const EncounterForm: React.FC<EncounterFormProps> = ({
   setTitle,
   setSetting,
   setEnvironment,
-  setChallengeRatingValue,
-  challengeRatingValue,
   setChallengeRating,
   getMonstersByChallengeRating,
+  generateEncounter,
 }) => {
   return (
     <div className="encounter-info d-flex flex-column">
@@ -93,7 +93,9 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
         >
           Generate Mobs
         </button>
-        <button>Publish Encounter</button>
+        <LinkButton to={"/encounter"} click={generateEncounter}>
+          Publish Encounter
+        </LinkButton>
       </div>
     </div>
   );
