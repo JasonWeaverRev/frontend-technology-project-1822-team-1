@@ -1,6 +1,5 @@
 import React from "react";
 import "./LoginPage.css";
-import RegisterPage from "../RegisterPage/RegisterPage";
 import { Link } from 'react-router-dom';
 
 

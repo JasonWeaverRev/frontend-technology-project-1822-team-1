@@ -15,12 +15,17 @@
     border-radius: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
     padding: 10px;
+    margin-right:30px;
+    margin-left:30px;
   }
   
   h1 { 
     margin-right: 20px;
     margin-bottom: 50px;
     color: #5e4aa1; /* Custom purple color */
+    margin-right: 50px;
+    margin-left: 50px;
+
 
   }
   
