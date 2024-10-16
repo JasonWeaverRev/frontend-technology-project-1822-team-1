@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./LoginPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "./auth/authContext"; // Import the useAuth hook to access context
 
 function LoginPage() {
   const [identifier, setIdentifier] = useState<string>("");
@@ -30,13 +31,17 @@ function LoginPage() {
         {
           identifier,
           password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
         }
       );
+
+      const { token, user } = response.data;
+
+      // Save token to localStorage (or use context)
+      localStorage.setItem("token", token);
+
+      // You can also store user info if needed
+      localStorage.setItem("user", JSON.stringify(user));
+
       // Handle successful response
       setSuccessMessage("Login successful!");
       setIdentifier("");
