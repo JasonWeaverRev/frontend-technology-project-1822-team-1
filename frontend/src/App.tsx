@@ -11,31 +11,41 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import PostCreationPage from "./Pages/PostCreationPage/PostCreationPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
+import { EncounterProvider } from "./Context/EncounterContext";
 
 function App() {
   return (
     <div className="App">
       <Navbar></Navbar>
-      <Routes>
-        <Route path="/" element={<LandingPage></LandingPage>}></Route>
-        <Route path="/forum-post" element={<PostPage></PostPage>}></Route>
-        <Route path="/campaign" element={<CampaignPage></CampaignPage>}></Route>
-        <Route
-          path="/encounter-creation"
-          element={<EncounterCreationPage></EncounterCreationPage>}
-        ></Route>
-        <Route
-          path="/encounter"
-          element={<EncounterPage></EncounterPage>}
-        ></Route>
-        <Route path="/login" element={<LoginPage></LoginPage>}></Route>
-        <Route
-          path="/post-creation"
-          element={<PostCreationPage></PostCreationPage>}
-        ></Route>
-        <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
-        <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
-      </Routes>
+      <EncounterProvider>
+        <Routes>
+          <Route path="/" element={<LandingPage></LandingPage>}></Route>
+          <Route path="/forum-post" element={<PostPage></PostPage>}></Route>
+          <Route
+            path="/campaign"
+            element={<CampaignPage></CampaignPage>}
+          ></Route>
+          <Route
+            path="/encounter-creation"
+            element={<EncounterCreationPage></EncounterCreationPage>}
+          ></Route>
+          <Route
+            path="/encounter"
+            element={<EncounterPage></EncounterPage>}
+          ></Route>
+          <Route path="/login" element={<LoginPage></LoginPage>}></Route>
+          <Route
+            path="/post-creation"
+            element={<PostCreationPage></PostCreationPage>}
+          ></Route>
+          <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
+          <Route
+            path="/register"
+            element={<RegisterPage></RegisterPage>}
+          ></Route>
+          <Route path="/posts/:postId" element={<PostPage></PostPage>}></Route>
+        </Routes>
+      </EncounterProvider>
     </div>
   );
 }

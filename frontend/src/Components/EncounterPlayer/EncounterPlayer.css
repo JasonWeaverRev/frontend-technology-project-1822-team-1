@@ -1,0 +1,11 @@
+.player-icon {
+  width: 300px;
+  height: 300px;
+  border-radius: 100%;
+}
+
+#player-hp {
+  width: 12em;
+  accent-color: rgb(83, 223, 83);
+  opacity: 0.7;
+}
