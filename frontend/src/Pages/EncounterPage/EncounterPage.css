@@ -10,6 +10,59 @@
     flex-direction: column;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .monster-info {
+    width: 100%;
+  }
+  .event-info {
+    width: 100%;
+  }
+}
+
 .page {
   max-height: 99vh;
+}
+
+.event-info {
+  max-height: calc(5 * 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: white transparent;
+  padding-right: 2px;
+  color: #222422;
+}
+
+.event-info::-webkit-scrollbar {
+  width: 8px;
+}
+
+.event-info::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.event-info::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 10px;
+}
+
+.monster-info {
+  max-height: calc(5 * 6rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: darkgray transparent;
+  padding-right: 2px;
+}
+
+.monster-info::-webkit-scrollbar {
+  width: 8px;
+}
+
+.monster-info::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.monster-info::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 10px;
 }
