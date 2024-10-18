@@ -74,7 +74,7 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-      <div>
+      <div className="landing-page-text-format">
         {posts.map((post: any, ind: number) => (
           <Post
             key={ind}
