@@ -60,7 +60,6 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
   return (
     <>
       <div className="comment-bg row"> {/* COMMENT CONTAINER */}
-        
         <div className="col-1 d-flex flex-column justify-content-center"> {/* LIKE/DISLIKE BUTTONS */}
           <button
             type="button"
@@ -119,7 +118,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
           )}
         </div>
 
-          {/* REPLY FORM */}
+           {/* REPLY FORM */}
           {showReplyForm && (
               
               <div className="d-flex flex-row align-items-start">

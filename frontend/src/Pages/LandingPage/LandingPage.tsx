@@ -5,7 +5,7 @@ import "./LandingPage.css";
 
 
 function LandingPage() {
-  const [posts, setPosts] = useState([] as any | undefined);
+  const [posts, setPosts] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
 
@@ -54,7 +54,7 @@ function LandingPage() {
   };
 
   /**
-   * LOAD MORE
+   * Loads in pages on start up and page changes
    */
   useEffect(() => {
     getPosts();
@@ -62,16 +62,20 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-      <div>
-        {posts.map((post: any, ind: number) => (
-          <Post
-            key={ind}
-            title={post.title}
-            username={post.written_by}
-            post_id={post.post_id}
-            content={post.body}
-          />
-        ))}
+       <div>
+        {Array.isArray(posts) && posts.length > 0 ? (
+          posts.map((post: any, ind: number) => (
+            <Post
+              key={ind}
+              title={post.title}
+              username={post.written_by}
+              post_id={post.post_id}
+              content={post.body}
+            />
+          ))
+        ) : (
+          <p>No posts available</p>
+        )}
       </div>
       <button
         type="button"

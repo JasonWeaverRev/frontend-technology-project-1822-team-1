@@ -36,9 +36,6 @@ function PostPage() {
 
 
 
- 
- 
-
    // #region request/response interceptors
     // Request Interceptor
   axios.interceptors.request.use(
@@ -72,7 +69,7 @@ function PostPage() {
   /**
    * COMMENT FETCHES
    */
-  // Get list of all comments
+  // Get list of all comments to the main post
   const getComments = async () => {
     await axios
       .get(`http://localhost:4000/api/forums/comments/post?id=${postId}&page=${page}`)
@@ -89,15 +86,8 @@ function PostPage() {
       });
   };
 
-  /**
-   * INITIAL POST LOAD
-   */
-    useEffect(() => {
-      getComments();
-    }, []);
-  
     /**
-     * LOAD MORE
+     * Comment loading
      */
     useEffect(() => {
       getComments();
@@ -112,7 +102,7 @@ function PostPage() {
    * 
    * @param type 'like' or 'dislike', depending on type of like option selected
    */
-  const handleButtonClick = (type: "like" | "dislike") => {
+  const handleLikeButtonClick = (type: "like" | "dislike") => {
     if (type === "like") {
       setIsLiked((state) => !state);
       if (isDisliked) {
@@ -125,6 +115,25 @@ function PostPage() {
       }
     }
   };
+
+  /**
+   * Handles comment reply events
+   */
+  const handleShowReplyClick = async (parentId: string | undefined) => {
+     axios
+      .get(`http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`)
+      .then((response) => {
+        const replies = response.data[0];
+
+        setComments((tempComments: any) => {
+          tempComments.map((comment: any) =>
+            comment.commentId === parentId ? {...comment, replies} : comment)
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
  
   /**
@@ -205,7 +214,7 @@ function PostPage() {
             <button
                 type="button"
                 className="btn btn-outline-secondary btn-sm button-format border-0"
-                onClick={() => handleButtonClick("like")}
+                onClick={() => handleLikeButtonClick("like")}
               >
                 <img
                   src={isLiked ? likeSelectedIcon : likeUnselectedIcon}
@@ -217,7 +226,7 @@ function PostPage() {
               <button
                 type="button"
                 className="btn btn-outline-secondary btn-sm button-format border-0"
-                onClick={() => handleButtonClick("dislike")}
+                onClick={() => handleLikeButtonClick("dislike")}
               >
                 <img
                   src={isDisliked ? dislikeSelectedIcon : dislikeUnselectedIcon}
@@ -252,7 +261,7 @@ function PostPage() {
                 alert={alert}
                 handleSubmitClick={handleSubmitClick}
               />
-            ))}
+          ))}
         </div>
         <div> {/* LOAD MORE */}
           <button
