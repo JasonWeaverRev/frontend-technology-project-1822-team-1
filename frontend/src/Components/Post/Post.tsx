@@ -62,7 +62,7 @@ function Post({ title, username, post_id, content }: PostItem) {
             />
           </button>
         </div>
-        <div className="col-11 d-flex flex-column text-start text-post-format justify-content-between">
+        <div className="col-11 d-flex flex-column text-start text-post-format justify-content-between landing-page-text-format">
           <h4>
             <Link
               to={`/posts/${post_id}`}

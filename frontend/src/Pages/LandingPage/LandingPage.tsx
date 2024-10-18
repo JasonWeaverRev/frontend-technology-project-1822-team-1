@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
-// import "../../index.css";
 
 // // Simulate getting posts from a backend
 const getPosts = async () => {
