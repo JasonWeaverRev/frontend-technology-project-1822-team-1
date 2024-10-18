@@ -3,7 +3,6 @@ import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
 
-
 function LandingPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [page, setPage] = useState(1);
@@ -41,8 +40,12 @@ function LandingPage() {
     await axios
       .get(`http://localhost:4000/api/forums/landing?page=${page}`)
       .then((response) => {
-        // Axios will automatically turn the response into a JS object
-        setPosts(response.data[0]);
+        console.log(response.data); // Log the response data for debugging
+        if (Array.isArray(response.data)) {
+          setPosts(response.data[0]); // Make sure this is an array
+        } else {
+          console.error("Response is not an array:", response.data);
+        }
 
         if (response.data[1] <= 4 + (page - 1) * 4) {
           setIsClickable(false);
@@ -62,7 +65,7 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-       <div>
+      <div>
         {Array.isArray(posts) && posts.length > 0 ? (
           posts.map((post: any, ind: number) => (
             <Post
@@ -80,7 +83,7 @@ function LandingPage() {
       <button
         type="button"
         className="btn btn-outline-secondary load-button-format"
-        onClick={() => handleLoadMore()}
+        onClick={handleLoadMore}
         disabled={!isClickable}
       >
         {isClickable ? "Load More" : "End of Page"}
