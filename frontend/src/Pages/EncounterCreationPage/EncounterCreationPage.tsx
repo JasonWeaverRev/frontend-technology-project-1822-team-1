@@ -99,7 +99,7 @@ const EncounterCreationPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="encounter-creation-page-full">
       {errorMessage.titleError && (
         <div className="alert alert-danger">{errorMessage.titleError}</div>
       )}

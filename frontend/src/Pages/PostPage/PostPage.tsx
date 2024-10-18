@@ -44,7 +44,7 @@ function PostPage() {
   axios.interceptors.request.use(
     (config: any): any => {
       
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vcnRhbmllbDU1IiwiZW1haWwiOiJ0ZXN0MkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyOTI1Mjk5MCwiZXhwIjoxNzI5MjU2NTkwfQ.CKVLsQi0bueJCieIpMfoRqgt-iXaHlnh7BBNWRCSlWk"; 
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vcnRhbmllbDU1IiwiZW1haWwiOiJ0ZXN0MkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyOTI1Nzk5MiwiZXhwIjoxNzI5MjYxNTkyfQ.gcrbdh_-kcSke-Wd2damXhYb-XfvJh_K_a0n3KdYmQM"; 
       
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
@@ -131,7 +131,7 @@ function PostPage() {
    * Handles comment events for the main post
    */
   const handleSubmitClick = async (commentText: string, parentId?: string | undefined) => {
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vcnRhbmllbDU1IiwiZW1haWwiOiJ0ZXN0MkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyOTI1Mjk5MCwiZXhwIjoxNzI5MjU2NTkwfQ.CKVLsQi0bueJCieIpMfoRqgt-iXaHlnh7BBNWRCSlWk";
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vcnRhbmllbDU1IiwiZW1haWwiOiJ0ZXN0MkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyOTI1Nzk5MiwiZXhwIjoxNzI5MjYxNTkyfQ.gcrbdh_-kcSke-Wd2damXhYb-XfvJh_K_a0n3KdYmQM";
 
     // Validate incoming text
     if (!token) {

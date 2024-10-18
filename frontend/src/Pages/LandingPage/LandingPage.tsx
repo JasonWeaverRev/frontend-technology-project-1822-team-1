@@ -2,9 +2,16 @@ import React, { useState, useEffect } from "react";
 import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
+<<<<<<< HEAD
 
 function LandingPage() {
   const [posts, setPosts] = useState<any[]>([]); // Initialize as an array
+=======
+
+
+function LandingPage() {
+  const [posts, setPosts] = useState([] as any | undefined);
+>>>>>>> Merge-Branches
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
 
@@ -55,13 +62,6 @@ function LandingPage() {
         console.log(error);
       });
   };
-
-  /**
-   * INITIAL LANDING
-   */
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   /**
    * LOAD MORE

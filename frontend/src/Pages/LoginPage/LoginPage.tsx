@@ -63,50 +63,53 @@ function LoginPage() {
   return (
     <div className="auth-container-fluid d-flex justify-content-center text-center align-items-center vh-100">
       <div className="row w-100">
-        <h1 className="mb-3">Welcome to</h1>
-        {/* Dungeon Delver Image */}
-        <img
-          src={"/dungeon-delver-logo.png"}
-          className="img-fluid"
-          alt="Dungeon Delver Logo"
-          // style={{ maxWidth: "100%", height: "auto" }}
-        />
-        <div className="col-lg-6 col-md-6 col-sm-12">
-          <div className="auth-form card p-4">
-            <form onSubmit={handleSubmit}>
-              <h2>Log in to your account</h2>
-              {/* Error message */}
-              {errorMessage && (
-                <div className="alert alert-danger">{errorMessage}</div>
-              )}
-              <input
-                type="text"
-                placeholder="Username"
-                className="form-control mb-3"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="form-control mb-3"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                className="btn btn-primary btn-block"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Logging In..." : "Log In"}
-              </button>
-              <p>
-                Don't have an account? <Link to="/register">Register here</Link>
-              </p>
-              <button className="btn btn-secondary btn-block">
-                Continue as Guest
-              </button>
-            </form>
+        <div className="col-lg-6 col-md-6 col-sm-12 text-center mb-4 mb-lg-0">
+          <h1 className="mb-3">Welcome to</h1>
+          {/* Dungeon Delver Image */}
+          <img
+            src={"/dungeon-delver-logo.png"}
+            className="img-fluid"
+            alt="Dungeon Delver Logo"
+            // style={{ maxWidth: "100%", height: "auto" }}
+          />
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <div className="auth-form card p-4">
+              <form onSubmit={handleSubmit}>
+                <h2>Log in to your account</h2>
+                {/* Error message */}
+                {errorMessage && (
+                  <div className="alert alert-danger">{errorMessage}</div>
+                )}
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="form-control mb-3"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="form-control mb-3"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  className="btn btn-primary btn-block"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Logging In..." : "Log In"}
+                </button>
+                <p>
+                  Don't have an account?{" "}
+                  <Link to="/register">Register here</Link>
+                </p>
+                <button className="btn btn-secondary btn-block">
+                  Continue as Guest
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

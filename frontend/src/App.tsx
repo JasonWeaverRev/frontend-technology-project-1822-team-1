@@ -11,12 +11,11 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import PostCreationPage from "./Pages/PostCreationPage/PostCreationPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
-import { AuthProvider } from "./Pages/LoginPage/auth/authContext"; // Adjust the path if necessary
-import { EncounterProvider } from "./Context/EncounterContext";
+import GlobalContext from "./Context/GlobalContext";
 
 function App() {
   return (
-    <AuthProvider>
+    <GlobalContext>
       <div className="App">
         <Navbar />
         <Routes>
@@ -32,9 +31,10 @@ function App() {
           <Route path="/post-creation" element={<PostCreationPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/posts/:postId" element={<PostPage />} />
         </Routes>
       </div>
-    </AuthProvider>
+    </GlobalContext>
   );
 }
 
