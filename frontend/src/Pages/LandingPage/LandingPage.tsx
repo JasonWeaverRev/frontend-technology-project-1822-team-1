@@ -3,13 +3,9 @@ import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
 
-// // Simulate getting posts from a backend
-const getPosts = async () => {
-  return { title: "Post 1", content: "This is the first post's content." };
-};
 
 function LandingPage() {
-  const [posts, setPosts] = useState([] as any);
+  const [posts, setPosts] = useState([] as any | undefined);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
 
@@ -56,13 +52,6 @@ function LandingPage() {
         console.log(error);
       });
   };
-
-  /**
-   * INITIAL LANDING
-   */
-  useEffect(() => {
-    getPosts();
-  }, []);
 
   /**
    * LOAD MORE
