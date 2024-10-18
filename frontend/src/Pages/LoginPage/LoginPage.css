@@ -40,7 +40,7 @@
     margin-bottom: 20px;
   }
   
-  input {
+  .form-control mb-3 {
     border-radius: 5px; /* Slightly rounded input fields */
     width: 45%;
     margin-bottom: 10px;
