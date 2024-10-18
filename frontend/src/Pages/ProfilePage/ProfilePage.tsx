@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import "./ProfilePage.css";
-import { profileEnd } from "console";
 
 interface Profile {
   email: string;
@@ -58,7 +57,7 @@ function ProfilePage() {
   // #endregion
 
   const user_posts = ['Post 1', 'Post 2', 'Post 3', 'Post 4', 'Post 5'];
-  const TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lNyIsImVtYWlsIjoiZXhhcGxlM0BlbWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzI5MjcwMjQ5LCJleHAiOjE3MjkyNzM4NDl9.lvyFMlafPDM-Bu3jqqXLCtw9ynFvxSlbVc8E-r0Pef8`;
+  const TOKEN = localStorage.getItem("token");
 
   // #region Get User Profile info w/ auth token & Edit About Me
   const [profile, setProfile] = useState<Profile>();
@@ -67,10 +66,7 @@ function ProfilePage() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/accounts/profile`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`
-        }
+      const response = await axios.get(`http://localhost:4000/api/accounts/profile/$`, {
       });
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);

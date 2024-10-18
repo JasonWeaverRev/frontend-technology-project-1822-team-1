@@ -97,6 +97,7 @@
 }
 
 #profile-body-section {
+    padding-top: 3rem;
     width: 100%;
     display: flex;
     justify-content: space-around;
