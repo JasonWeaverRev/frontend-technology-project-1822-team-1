@@ -23,7 +23,7 @@ const CommentForm: React.FC<CommentFormProps> = ({commentNumber, alert, handleSu
   
   return (
     <div>
-       <div className="comment-form d-flex flex-column"> {/* COMMENT NUMBER DISPLAY */}
+       <div className="comment-form d-flex flex-column landing-page-text-format"> {/* COMMENT NUMBER DISPLAY */}
         <p className="">
           {commentNumber} comments
         </p>
@@ -41,7 +41,7 @@ const CommentForm: React.FC<CommentFormProps> = ({commentNumber, alert, handleSu
         <div className="d-flex flex-row align-items-start mt-1"> {/* COMMENT TEXT FORM */}
           <textarea
             placeholder="Write your comment here"
-            className="form-control w-50 h-50"
+            className="form-control"
             value={commentText}
             onChange={handleTextChange}>
           </textarea>
