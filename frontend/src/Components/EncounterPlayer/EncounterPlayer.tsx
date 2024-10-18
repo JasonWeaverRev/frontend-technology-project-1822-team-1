@@ -34,7 +34,10 @@ const EncounterPlayer: React.FC<EncounterPlayerProps> = ({
           src={"dungeon-delver-logo.png"}
           alt="Player Icon"
         ></img>
-        <textarea placeholder="Player Notes"></textarea>
+        <textarea
+          placeholder="Player Notes"
+          className="player-notes"
+        ></textarea>
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ function LoginPage() {
       setSuccessMessage("Login successful!");
       setIdentifier("");
       setPassword("");
-      navigate("/LandingPage");
+      navigate("/");
     } catch (err) {
       setIsSubmitting(false);
       if (axios.isAxiosError(err) && err.response) {
