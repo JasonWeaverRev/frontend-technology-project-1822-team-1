@@ -43,7 +43,7 @@ function App() {
             path="/register"
             element={<RegisterPage></RegisterPage>}
           ></Route>
-          <Route path="/posts/:title" element={<PostPage></PostPage>}></Route>
+          <Route path="/posts/:postId" element={<PostPage></PostPage>}></Route>
         </Routes>
       </EncounterProvider>
     </div>

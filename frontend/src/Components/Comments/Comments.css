@@ -1,0 +1,28 @@
+.comment-bg {
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    /* background-color: #f9f4da; */
+    background-image: radial-gradient(ellipse at center,
+            #f8f3d8 1%,
+            #f7efd1 59%,
+            #e8d5a2 86%,
+            #e8d5a2 99%);
+    padding: 0px;
+    margin: 2px;
+}
+
+.button-comment-like-format {
+    width: 30px;
+    height: 27px;
+    padding: 0;
+    margin: 0;
+}
+
+.comment-header {
+    font-size: 12px;
+}
+
+
+.comment-footer {
+    font-size: 12px;
+}

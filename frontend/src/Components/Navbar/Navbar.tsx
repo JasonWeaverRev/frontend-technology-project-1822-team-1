@@ -26,6 +26,15 @@ function Navbar() {
               <Link
                 className="nav-link"
                 aria-current="page"
+                to="/post-creation"
+              >
+                Create New Post
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                aria-current="page"
                 to="/encounter-creation"
               >
                 Create New Encounter
