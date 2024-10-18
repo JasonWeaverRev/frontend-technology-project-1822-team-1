@@ -23,7 +23,7 @@ const CommentForm: React.FC<CommentFormProps> = ({commentNumber, alert, handleSu
   
   return (
     <div>
-       <div className="comment-form d-flex flex-column"> {/* COMMENT NUMBER DISPLAY */}
+       <div className="comment-form d-flex flex-column landing-page-text-format"> {/* COMMENT NUMBER DISPLAY */}
         <p className="">
           {commentNumber} comments
         </p>

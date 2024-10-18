@@ -28,7 +28,7 @@ function PostPage() {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
-  const [comments, setComments] = useState([] as any);
+  const [comments, setComments] = useState<any[]>([]);
   const [commentNumber, setCommentNumber] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState<boolean>(true);
@@ -41,7 +41,7 @@ function PostPage() {
   axios.interceptors.request.use(
     (config: any): any => {
       
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vcnRhbmllbDU1IiwiZW1haWwiOiJ0ZXN0MkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyOTI1Nzk5MiwiZXhwIjoxNzI5MjYxNTkyfQ.gcrbdh_-kcSke-Wd2damXhYb-XfvJh_K_a0n3KdYmQM"; 
+      const token = localStorage.getItem("token");; 
       
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
@@ -119,20 +119,22 @@ function PostPage() {
   /**
    * Handles comment reply events
    */
-  const handleShowReplyClick = async (parentId: string | undefined) => {
-     axios
-      .get(`http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`)
-      .then((response) => {
-        const replies = response.data[0];
+  const fetchReplies = async (parentId: string | undefined) : Promise<any[]>=> {
+    
+    try {
+      const response = await axios.get(`http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`)
 
-        setComments((tempComments: any) => {
-          tempComments.map((comment: any) =>
-            comment.commentId === parentId ? {...comment, replies} : comment)
-        })
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      console.log('Full response:', response);
+      const replies = response.data[0];
+      console.log('Replies:', replies);
+      
+      
+      return Array.isArray(replies) ? replies : [];
+
+    } catch(err) {
+        console.log(err);
+        return [];
+      }
   }
 
  
@@ -140,7 +142,7 @@ function PostPage() {
    * Handles comment events for the main post
    */
   const handleSubmitClick = async (commentText: string, parentId?: string | undefined) => {
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vcnRhbmllbDU1IiwiZW1haWwiOiJ0ZXN0MkBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTcyOTI1Nzk5MiwiZXhwIjoxNzI5MjYxNTkyfQ.gcrbdh_-kcSke-Wd2damXhYb-XfvJh_K_a0n3KdYmQM";
+    let token = localStorage.getItem("token");;
 
     // Validate incoming text
     if (!token) {
@@ -260,6 +262,7 @@ function PostPage() {
                 commentId={comment.post_id}
                 alert={alert}
                 handleSubmitClick={handleSubmitClick}
+                fetchReplies={fetchReplies}
               />
           ))}
         </div>
