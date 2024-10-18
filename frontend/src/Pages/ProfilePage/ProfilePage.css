@@ -1,6 +1,6 @@
 #profile-bio-section {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
     background-color: #1e1f1e;
 }
 
@@ -27,15 +27,15 @@
     text-align: start;
 }
 
-#profile-body-section {
-    flex-direction: row;
-    overflow: hidden;
-}
-
 #campaigns,
 #encounters,
 #forum-post-container .card-container {
     width: 80%;
+}
+
+#campaigns,
+#encounters {
+    margin-left: auto;
 }
 
 .content-card {
@@ -95,6 +95,38 @@
     background-color: darkgray;
     border-radius: 10px;
 }
+
+#profile-body-section {
+    padding-top: 3rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#edit-button,
+#save-button {
+    margin-top: auto;
+    background-color: #b16666;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#edit-button:hover,
+#save-button:hover {
+    background-color: #d37575;
+    transform: translateY(-2px);
+}
+
+#edit-button:active,
+#save-button:active {
+    background-color: #862c2c; /* Even darker green when pressed */
+    transform: translateY(1px); /* Button press effect */
+}
+
 
 @media (max-width: 1500px) {
     #user_bio > h1, 
