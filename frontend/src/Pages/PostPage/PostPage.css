@@ -1,8 +1,50 @@
 .post-page {
     min-height: 100vh;
     background-color: #343a40;
-  }
+}
 
-.text-format {
-    color: #e4e4e4;
+.post-page-padding {
+    padding: 15px
+}
+
+.post-body-bg {
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    /* background-color: #f9f4da; */
+    background-image: radial-gradient(ellipse at center,
+            #f8f3d8 1%,
+            #f7efd1 59%,
+            #e8d5a2 86%,
+            #e8d5a2 99%);
+    padding: 14px;
+    margin: 0px;
+}
+
+.comment-form {
+    background-image: radial-gradient(ellipse at center,
+            #f8f3d8 1%,
+            #f7efd1 59%,
+            #e8d5a2 86%,
+            #e8d5a2 99%);
+    margin: 3px;
+}
+
+.post-page-button-cont {
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-post-page-format {
+    color: #231e1e;
+}
+
+.load-comment-button-format {
+    width: 150px;
+    height: 51px;
+    padding: 0;
+    margin: 0;
+    color: #e4e4e4
 }
