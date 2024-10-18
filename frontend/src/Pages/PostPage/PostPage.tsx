@@ -26,7 +26,7 @@ function PostPage() {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
-  const [comments, setComments] = useState([] as any);
+  const [comments, setComments] = useState<any[]>([]);
   const [commentNumber, setCommentNumber] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState<boolean>(true);
@@ -66,7 +66,7 @@ function PostPage() {
   /**
    * COMMENT FETCHES
    */
-  // Get list of all comments
+  // Get list of all comments to the main post
   const getComments = async () => {
     await axios
       .get(
@@ -86,11 +86,11 @@ function PostPage() {
   };
 
   /**
-   * INITIAL POST LOAD
+   * Comment loading
    */
   useEffect(() => {
     getComments();
-  }, []);
+  }, [page]);
 
   /**
    * LOAD MORE
@@ -107,7 +107,7 @@ function PostPage() {
    *
    * @param type 'like' or 'dislike', depending on type of like option selected
    */
-  const handleButtonClick = (type: "like" | "dislike") => {
+  const handleLikeButtonClick = (type: "like" | "dislike") => {
     if (type === "like") {
       setIsLiked((state) => !state);
       if (isDisliked) {
@@ -122,6 +122,26 @@ function PostPage() {
   };
 
   /**
+   * Handles comment reply events
+   */
+  const fetchReplies = async (parentId: string | undefined): Promise<any[]> => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`
+      );
+
+      console.log("Full response:", response);
+      const replies = response.data[0];
+      console.log("Replies:", replies);
+
+      return Array.isArray(replies) ? replies : [];
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
+  };
+
+  /**
    * Handles comment events for the main post
    */
   const handleSubmitClick = async (
@@ -129,7 +149,6 @@ function PostPage() {
     parentId?: string | undefined
   ) => {
     let token = localStorage.getItem("token");
-    console.log(token);
 
     // Validate incoming text
     if (!token) {
@@ -214,7 +233,7 @@ function PostPage() {
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm button-format border-0"
-              onClick={() => handleButtonClick("like")}
+              onClick={() => handleLikeButtonClick("like")}
             >
               <img
                 src={isLiked ? likeSelectedIcon : likeUnselectedIcon}
@@ -226,7 +245,7 @@ function PostPage() {
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm button-format border-0"
-              onClick={() => handleButtonClick("dislike")}
+              onClick={() => handleLikeButtonClick("dislike")}
             >
               <img
                 src={isDisliked ? dislikeSelectedIcon : dislikeUnselectedIcon}
@@ -264,6 +283,7 @@ function PostPage() {
               commentId={comment.post_id}
               alert={alert}
               handleSubmitClick={handleSubmitClick}
+              fetchReplies={fetchReplies}
             />
           ))}
         </div>
