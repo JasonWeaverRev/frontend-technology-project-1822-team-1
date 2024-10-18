@@ -2,15 +2,9 @@ import React, { useState, useEffect } from "react";
 import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
-// import "../../index.css";
-
-// // Simulate getting posts from a backend
-const getPosts = async () => {
-  return { title: "Post 1", content: "This is the first post's content." };
-};
 
 function LandingPage() {
-  const [posts, setPosts] = useState([] as any);
+  const [posts, setPosts] = useState<any[]>([]); // Initialize as an array
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
 
@@ -46,8 +40,12 @@ function LandingPage() {
     await axios
       .get(`http://localhost:4000/api/forums/landing?page=${page}`)
       .then((response) => {
-        // Axios will automatically turn the response into a JS object
-        setPosts(response.data[0]);
+        console.log(response.data); // Log the response data for debugging
+        if (Array.isArray(response.data)) {
+          setPosts(response.data[0]); // Make sure this is an array
+        } else {
+          console.error("Response is not an array:", response.data);
+        }
 
         if (response.data[1] <= 4 + (page - 1) * 4) {
           setIsClickable(false);
@@ -75,20 +73,24 @@ function LandingPage() {
   return (
     <div className="landing-page">
       <div>
-        {posts.map((post: any, ind: number) => (
-          <Post
-            key={ind}
-            title={post.title}
-            username={post.written_by}
-            post_id={post.post_id}
-            content={post.body}
-          />
-        ))}
+        {Array.isArray(posts) && posts.length > 0 ? (
+          posts.map((post: any, ind: number) => (
+            <Post
+              key={ind}
+              title={post.title}
+              username={post.written_by}
+              post_id={post.post_id}
+              content={post.body}
+            />
+          ))
+        ) : (
+          <p>No posts available</p>
+        )}
       </div>
       <button
         type="button"
         className="btn btn-outline-secondary load-button-format"
-        onClick={() => handleLoadMore()}
+        onClick={handleLoadMore}
         disabled={!isClickable}
       >
         {isClickable ? "Load More" : "End of Page"}

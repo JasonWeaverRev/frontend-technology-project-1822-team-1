@@ -1,67 +1,66 @@
-/* RegisterPage.css */
-
-.auth-container-fluid {
+/* Renamed container class to avoid conflicts */
+.register-container-fluid {
   display: flex;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   background-color: black;
   overflow-x: hidden;
-
 }
 
-.auth-form-fluid {
- 
-  background-color: white; 
-  border-radius: 20px; 
+/* Renamed form class */
+.register-auth-form {
+  background-color: white;
+  border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  margin-right: 0 !important; /* Adjust margin to avoid overflowing */
-  padding: 20px !important; /* Add more padding to make it look balanced */
+  padding: 20px !important;
+  margin-right: 0 !important;
 }
 
-
-.mb-3 {
-  color: #5e4aa1; /* Custom purple color */
-  text-align: center;
- 
-  
-  
-}
-
-.registerText {
-  color: #5e4aa1; /* Custom purple color */
-  margin-top: 5%; 
+/* Custom class for form-group spacing */
+.register-form-group {
+  border-radius: 5px;
   margin-bottom: 5%;
-  
-}
-
-.btn btn-primary btn-block{
-  padding: 5px; 
-  margin-bottom: 5%;
-  
-}
-
-.form-group {
-  border-radius: 5px; 
-  margin-bottom: 5%; 
   margin-top: 5%;
-}  
-
-.error-message {
-  color: red; /* Error messages are often shown in red */
-  font-size: 14px; /* Smaller text size to differentiate from other elements */
-  margin-bottom: 5%; /* Space between the error message and the input */
-  display: none; /* Hidden by default */
 }
 
+/* Custom class for button */
+.register-btn {
+  padding: 5px;
+  margin-bottom: 5%;
+}
+
+/* Renamed for text color and alignment */
+.register-mb-3 {
+  color: #5e4aa1;
+  text-align: center;
+}
+
+/* Renamed class for registration text */
+.register-title-text {
+  color: #5e4aa1;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+/* Error message styling */
+.register-error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 5%;
+  display: none;
+}
+
+/* Image responsiveness for smaller screens */
 @media (max-width: 768px) {
-.img-fluid {
-  max-width: 60%; /* Shrink image on smaller screens */
-  height: auto;
+  .register-img-fluid {
+    max-width: 60%;
+    height: auto;
+  }
 }
-}
+
+/* Form padding for smaller screens */
 @media (max-width: 576px) {
-.auth-form-fluid {
-  padding: 15px !important; /* Further reduce padding */
-}
+  .register-auth-form {
+    padding: 15px !important;
+  }
 }
