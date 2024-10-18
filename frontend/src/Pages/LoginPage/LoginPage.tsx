@@ -34,18 +34,22 @@ function LoginPage() {
         }
       );
 
-      const { token, user } = response.data;
+      const { token } = response.data;
 
       // Save token to localStorage (or use context)
       localStorage.setItem("token", token);
 
       // You can also store user info if needed
-      localStorage.setItem("user", JSON.stringify(user));
+      //localStorage.setItem("user", JSON.stringify(user));
 
       // Handle successful response
       setSuccessMessage("Login successful!");
       setIdentifier("");
       setPassword("");
+
+      // Get user data for local storage
+      await storeLoggedInUser();
+      
       navigate("/LandingPage");
     } catch (err) {
       setIsSubmitting(false);
@@ -58,6 +62,23 @@ function LoginPage() {
       }
     }
   };
+
+  const storeLoggedInUser = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/accounts/profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      
+      localStorage.setItem("username", response.data.userProfile.username);
+      localStorage.setItem("role", response.data.userProfile.role);
+      
+    } catch (error) {
+      console.error("Error fetching user profile: ", error);
+    }
+  }
+
   // Separate Login Form Component
 
   return (

@@ -11,7 +11,7 @@ function EncounterPage() {
   const { encounter } = useEncounter();
 
   return (
-    <div className="encounter-page- d-flex black-border flex-column m-5 p-1 ">
+    <div className="encounter-page- d-flex  flex-column m-5 p-1 ">
       <div className="encounter-title d-flex justify-content-between">
         <h2>{encounter.title}</h2>
       </div>
@@ -21,7 +21,7 @@ function EncounterPage() {
           hp={playerHp}
           updateHp={setPlayerHp}
         ></EncounterPlayer>
-        <div className="monster-info d-flex gap-4 black-border col-7 px-3 flex-wrap">
+        <div className="monster-info d-flex gap-4  col-7 px-3 flex-wrap">
           {encounter.roster.map((monster: any, index: any) => (
             <EncounterMonster
               key={index}
@@ -34,6 +34,27 @@ function EncounterPage() {
         </div>
         <div className="event-info d-flex flex-column col-2 text-start p-2 gap-2">
           <div>{encounter.setting}</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
+          <div>Some text</div>
         </div>
       </div>
     </div>

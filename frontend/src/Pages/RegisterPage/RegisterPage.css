@@ -8,6 +8,7 @@
   overflow-x: hidden;
 }
 
+<<<<<<< HEAD
 /* Renamed form class */
 .register-auth-form {
   background-color: white;
@@ -22,6 +23,59 @@
   border-radius: 5px;
   margin-bottom: 5%;
   margin-top: 5%;
+=======
+.auth-form-fluid {
+
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-right: 0 !important;
+  /* Adjust margin to avoid overflowing */
+  padding: 20px !important;
+  /* Add more padding to make it look balanced */
+}
+
+
+.mb-3 {
+  color: #5e4aa1;
+  /* Custom purple color */
+  text-align: center;
+
+
+
+}
+
+.registerText {
+  color: #5e4aa1;
+  /* Custom purple color */
+  margin-top: 5%;
+  margin-bottom: 5%;
+
+}
+
+.btn btn-primary btn-block {
+  padding: 5px;
+  margin-bottom: 5%;
+
+}
+
+.form-group {
+  border-radius: 5px;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+
+.error-message {
+  color: red;
+  /* Error messages are often shown in red */
+  font-size: 14px;
+  /* Smaller text size to differentiate from other elements */
+  margin-bottom: 5%;
+  /* Space between the error message and the input */
+  display: none;
+  /* Hidden by default */
+>>>>>>> Merge-Branches
 }
 
 /* Custom class for button */
@@ -53,15 +107,30 @@
 
 /* Image responsiveness for smaller screens */
 @media (max-width: 768px) {
+<<<<<<< HEAD
   .register-img-fluid {
     max-width: 60%;
+=======
+  .img-fluid {
+    max-width: 60%;
+    /* Shrink image on smaller screens */
+>>>>>>> Merge-Branches
     height: auto;
   }
 }
 
+<<<<<<< HEAD
 /* Form padding for smaller screens */
 @media (max-width: 576px) {
   .register-auth-form {
     padding: 15px !important;
   }
 }
+=======
+@media (max-width: 576px) {
+  .auth-form-fluid {
+    padding: 15px !important;
+    /* Further reduce padding */
+  }
+}
+>>>>>>> Merge-Branches

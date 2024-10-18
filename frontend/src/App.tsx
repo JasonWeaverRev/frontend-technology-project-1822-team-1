@@ -29,7 +29,7 @@ function App() {
           <Route path="/encounter" element={<EncounterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/post-creation" element={<PostCreationPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/posts/:postId" element={<PostPage />} />
         </Routes>

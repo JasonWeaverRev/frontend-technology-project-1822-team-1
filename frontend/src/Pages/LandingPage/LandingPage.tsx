@@ -4,7 +4,7 @@ import axios from "axios";
 import "./LandingPage.css";
 
 function LandingPage() {
-  const [posts, setPosts] = useState<any[]>([]); // Initialize as an array
+  const [posts, setPosts] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
 
@@ -57,7 +57,7 @@ function LandingPage() {
   };
 
   /**
-   * LOAD MORE
+   * Loads in pages on start up and page changes
    */
   useEffect(() => {
     getPosts();
