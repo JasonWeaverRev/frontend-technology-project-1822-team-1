@@ -20,7 +20,7 @@
   }
   
 
-  h1 {
+  .mb-3 {
     color: #5e4aa1; /* Custom purple color */
     text-align: center;
    
@@ -28,7 +28,7 @@
     
 }
 
-  h2 {
+  .registerText {
     color: #5e4aa1; /* Custom purple color */
     margin-top: 5%; 
     margin-bottom: 5%;

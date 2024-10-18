@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./RegisterPage.css";
 import axios from "axios";
+import { useAuth } from "../../Pages/LoginPage/auth/authContext";
 
 function RegisterPage() {
   const [email, setEmail] = useState<string>("");
