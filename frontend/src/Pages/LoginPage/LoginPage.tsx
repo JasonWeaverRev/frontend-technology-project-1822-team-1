@@ -46,6 +46,7 @@ function LoginPage() {
       setSuccessMessage("Login successful!");
       setIdentifier("");
       setPassword("");
+      await storeLoggedInUser();
       navigate("/");
     } catch (err) {
       setIsSubmitting(false);
@@ -69,6 +70,8 @@ function LoginPage() {
           },
         }
       );
+
+      console.log(response);
 
       localStorage.setItem("username", response.data.userProfile.username);
       localStorage.setItem("role", response.data.userProfile.role);
