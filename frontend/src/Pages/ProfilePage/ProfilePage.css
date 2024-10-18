@@ -80,7 +80,7 @@
     scrollbar-width: thin; 
     scrollbar-color: darkgray transparent;
     width: 100%;
-    padding-right: 0;
+    padding-right: 2px;
 }
 
 .card-container::-webkit-scrollbar {
