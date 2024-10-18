@@ -2,15 +2,10 @@ import React, { useState, useEffect } from "react";
 import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
-// import "../../index.css";
 
-// // Simulate getting posts from a backend
-const getPosts = async () => {
-  return { title: "Post 1", content: "This is the first post's content." };
-};
 
 function LandingPage() {
-  const [posts, setPosts] = useState([] as any);
+  const [posts, setPosts] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
 
@@ -59,14 +54,7 @@ function LandingPage() {
   };
 
   /**
-   * INITIAL LANDING
-   */
-  useEffect(() => {
-    getPosts();
-  }, []);
-
-  /**
-   * LOAD MORE
+   * Loads in pages on start up and page changes
    */
   useEffect(() => {
     getPosts();
@@ -74,16 +62,20 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-      <div className="landing-page-text-format">
-        {posts.map((post: any, ind: number) => (
-          <Post
-            key={ind}
-            title={post.title}
-            username={post.written_by}
-            post_id={post.post_id}
-            content={post.body}
-          />
-        ))}
+       <div>
+        {Array.isArray(posts) && posts.length > 0 ? (
+          posts.map((post: any, ind: number) => (
+            <Post
+              key={ind}
+              title={post.title}
+              username={post.written_by}
+              post_id={post.post_id}
+              content={post.body}
+            />
+          ))
+        ) : (
+          <p>No posts available</p>
+        )}
       </div>
       <button
         type="button"

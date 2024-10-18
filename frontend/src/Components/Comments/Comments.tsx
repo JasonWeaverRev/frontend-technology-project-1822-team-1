@@ -60,7 +60,6 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
   return (
     <>
       <div className="comment-bg row"> {/* COMMENT CONTAINER */}
-        
         <div className="col-1 d-flex flex-column justify-content-center"> {/* LIKE/DISLIKE BUTTONS */}
           <button
             type="button"
@@ -86,7 +85,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
           </button>
         </div>
         
-         <div className="col-11"> {/* COMMENT INFORMATION */}
+         <div className="col-11 landing-page-text-format"> {/* COMMENT INFORMATION */}
           <div className="d-flex justify-content-start comment-header">
             <p className="ms-0">{username}</p>
             <p className="ms-4 fw-bold">{likes}</p> 
@@ -119,7 +118,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
           )}
         </div>
 
-          {/* REPLY FORM */}
+           {/* REPLY FORM */}
           {showReplyForm && (
               
               <div className="d-flex flex-row align-items-start">

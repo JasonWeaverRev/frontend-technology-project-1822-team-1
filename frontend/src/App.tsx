@@ -11,33 +11,30 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import PostCreationPage from "./Pages/PostCreationPage/PostCreationPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
+import GlobalContext from "./Context/GlobalContext";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar></Navbar>
-      <Routes>
-        <Route path="/" element={<LandingPage></LandingPage>}></Route>
-        <Route path="/forum-post" element={<PostPage></PostPage>}></Route>
-        <Route path="/campaign" element={<CampaignPage></CampaignPage>}></Route>
-        <Route
-          path="/encounter-creation"
-          element={<EncounterCreationPage></EncounterCreationPage>}
-        ></Route>
-        <Route
-          path="/encounter"
-          element={<EncounterPage></EncounterPage>}
-        ></Route>
-        <Route path="/login" element={<LoginPage></LoginPage>}></Route>
-        <Route
-          path="/post-creation"
-          element={<PostCreationPage></PostCreationPage>}
-        ></Route>
-        <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
-        <Route path="/register" element={<RegisterPage></RegisterPage>}></Route>
-        <Route path="/posts/:postId" element={<PostPage></PostPage>}></Route>
-      </Routes>
-    </div>
+    <GlobalContext>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/forum-post" element={<PostPage />} />
+          <Route path="/campaign" element={<CampaignPage />} />
+          <Route
+            path="/encounter-creation"
+            element={<EncounterCreationPage />}
+          />
+          <Route path="/encounter" element={<EncounterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/post-creation" element={<PostCreationPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/posts/:postId" element={<PostPage />} />
+        </Routes>
+      </div>
+    </GlobalContext>
   );
 }
 
