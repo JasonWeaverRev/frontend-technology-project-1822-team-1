@@ -46,11 +46,7 @@ function LoginPage() {
       setSuccessMessage("Login successful!");
       setIdentifier("");
       setPassword("");
-
-      // Get user data for local storage
-      await storeLoggedInUser();
-      
-      navigate("/LandingPage");
+      navigate("/");
     } catch (err) {
       setIsSubmitting(false);
       if (axios.isAxiosError(err) && err.response) {

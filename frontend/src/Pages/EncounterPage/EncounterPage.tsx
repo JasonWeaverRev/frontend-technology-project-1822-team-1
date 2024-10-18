@@ -33,28 +33,8 @@ function EncounterPage() {
           ))}
         </div>
         <div className="event-info d-flex flex-column col-2 text-start p-2 gap-2">
-          <div>{encounter.setting}</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
-          <div>Some text</div>
+          <div>{encounter.setting.split(":")[0]}:</div>
+          <div>{encounter.setting.split(":")[1]}</div>
         </div>
       </div>
     </div>
