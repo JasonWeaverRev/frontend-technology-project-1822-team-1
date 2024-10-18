@@ -32,6 +32,7 @@ function App() {
           <Route path="/post-creation" element={<PostCreationPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/posts/:postId" element={<RegisterPage />} />
         </Routes>
       </div>
     </AuthProvider>
