@@ -1,0 +1,90 @@
+.black-border {
+  border-style: solid;
+  border-width: 3px;
+  padding: 2px;
+}
+
+/* body {
+  background-color: #222422;
+} */
+
+/* .encounter-creation-page h2 {
+  color: white;
+} */
+
+.setting {
+  resize: none;
+  height: 100px;
+  scrollbar-width: thin;
+}
+
+.cr {
+  width: 50px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.encounter-page-buttons button {
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.encounter-page-buttons button:hover {
+  background-color: #d32f2f;
+}
+
+.encounter-page-buttons button:active {
+  background-color: #ad3c3c;
+}
+
+.monster-remove-button {
+  color: #f44336;
+  background-color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 25px;
+}
+
+/* .monster-remove-button:hover {
+  background-color: #d32f2f;
+} */
+
+.monster-remove-button:active {
+  background-color: #ad3c3c;
+}
+
+.encounter-roster {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.938);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.encounter-roster h2 {
+  color: gray;
+}
+
+/* .encounter-roster {
+  flex: 15em;
+} */
+
+/* body {
+  background-color: #f9f4da;
+} */
+
+@media screen and (max-width: 768px) {
+  .encounter-creation-page {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .encounter-roster {
+    width: 100%;
+  }
+}

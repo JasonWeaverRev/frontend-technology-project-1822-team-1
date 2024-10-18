@@ -12,6 +12,7 @@ import PostCreationPage from "./Pages/PostCreationPage/PostCreationPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import { AuthProvider } from "./Pages/LoginPage/auth/authContext"; // Adjust the path if necessary
+import { EncounterProvider } from "./Context/EncounterContext";
 
 function App() {
   return (

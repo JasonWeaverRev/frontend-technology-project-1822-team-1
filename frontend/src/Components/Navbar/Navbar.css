@@ -3,7 +3,12 @@
     45deg,
     #1e5799 0%,
     #fc1414 0%,
-    #e5e5e5 55%,
-    #e5e5e5 85%
+    #343a40 55%,
+    #343a40 85%
   );
+}
+
+.navbar-brand,
+.nav-link {
+  color: white;
 }
