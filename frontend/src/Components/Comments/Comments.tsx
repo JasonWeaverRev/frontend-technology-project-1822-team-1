@@ -13,15 +13,18 @@ interface CommentItem {
   commentId: string;
   alert: {type: string; message: string} | null;
   handleSubmitClick: (commentText: string, parentId?: string) => void;
+  fetchReplies: (commentText: string, parentId?: string) => void;
 }
 
-function Comments({ body, username, time, commentId, alert, handleSubmitClick}: CommentItem) {
+function Comments({ body, username, time, commentId, alert, handleSubmitClick, fetchReplies}: CommentItem) {
   const [commentText, setCommentText] = useState<string>('');
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
-  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
+  const [showReplies, setShowReplies] = useState<boolean>(false);
+  const [replies, setReplies] = useState<any[]>([]);
 
 
   
@@ -39,12 +42,23 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
     }
   };
 
+  /**
+   * Tracks whether the reply form is tracked or not
+   */
   const handleReplyClick = () => {
     setShowReplyForm(visibility => !visibility); // Toggle reply form visibility
   };
 
-  const handleShowReplies = () => {
+  /**
+   * Shows the reply comments
+   */
+  const handleShowReplyClick = async () => {
     console.log("Show reply handler triggered");
+    setShowReplies(!showReplies);
+
+    const replies = await fetchReplies(commentId);
+    console.log('Fetched replies:', replies);
+    // setReplies(replies);
   };
 
   /**
@@ -60,7 +74,6 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
   return (
     <>
       <div className="comment-bg row"> {/* COMMENT CONTAINER */}
-        
         <div className="col-1 d-flex flex-column justify-content-center"> {/* LIKE/DISLIKE BUTTONS */}
           <button
             type="button"
@@ -86,7 +99,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
           </button>
         </div>
         
-         <div className="col-11 landing-page-text-format"> {/* COMMENT INFORMATION */}
+         <div className="col-11 landing-page-text-format"> {/* COMMENT INFORMATION BODY */}
           <div className="d-flex justify-content-start comment-header">
             <p className="ms-0">{username}</p>
             <p className="ms-4 fw-bold">{likes}</p> 
@@ -104,7 +117,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
             </p>
             <p className="ms-4"
               style={{ cursor: 'pointer', display: 'inline'}}
-              onClick={handleShowReplies}>
+              onClick={handleShowReplyClick}>
                 show replies
             </p>
           </div>
@@ -119,7 +132,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
           )}
         </div>
 
-          {/* REPLY FORM */}
+           {/* REPLY FORM */}
           {showReplyForm && (
               
               <div className="d-flex flex-row align-items-start">
@@ -137,6 +150,26 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick}: 
                 </button>
               </div>
           )}
+
+           {/* REPLIES */}
+           {showReplies && (
+
+            <div>
+              {replies.map((reply: any, ind: number) =>
+                <Comments
+                  key={ind}
+                  username={reply.written_by}
+                  body={reply.body}
+                  time={reply.creation_time}
+                  commentId={reply.post_id}
+                  alert={alert}
+                  handleSubmitClick={handleSubmitClick}
+                  fetchReplies={fetchReplies}
+                />
+              )}
+            </div>
+
+           )}
         </div>
       </div>
     </>
