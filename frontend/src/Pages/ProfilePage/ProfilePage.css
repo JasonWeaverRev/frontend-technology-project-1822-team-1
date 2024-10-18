@@ -1,6 +1,7 @@
 #profile-bio-section {
     padding-top: 2rem;
     padding-bottom: 2rem;
+    background-color: #1e1f1e;
 }
 
 #profile-bio-section > div > img {
@@ -12,7 +13,7 @@
 }
 
 #user_bio > h1, 
-#user_bio > p {
+.about-me-container {
     margin-right: 20rem;
     margin-left: 6rem;
     max-width: 100%;
@@ -22,21 +23,82 @@
     word-wrap: break-word;
 }
 
-/*
-#about_me,
-#username {
-    border: 1px black solid;
+#profile-body-section h1{
+    text-align: start;
 }
-*/
 
 #profile-body-section {
     flex-direction: row;
     overflow: hidden;
 }
 
+#campaigns,
+#encounters,
+#forum-post-container .card-container {
+    width: 80%;
+}
+
+.content-card {
+    display: block;
+    background-color: rgb(77, 77, 77);
+    width: 100%;
+    height: 7rem;
+    padding: .5rem .8rem;
+    margin: 1rem 0;
+    border-radius: 15px;
+    text-align: left;
+}
+
+.content-card h3 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: white;
+    text-decoration: none;
+}
+
+#encounters .content-card p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+#encounters .content-card p:nth-of-type(2) {
+    text-align: right;
+}
+
+#campaigns .content-card {
+    display: flex;
+    align-items: center;
+    height: 4rem;
+}
+
+.card-container {
+    max-height: calc(5 * 5rem);
+    overflow-y: auto;
+    scrollbar-width: thin; 
+    scrollbar-color: darkgray transparent;
+    width: 100%;
+    padding-right: 0;
+}
+
+.card-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.card-container::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.card-container::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+    border-radius: 10px;
+}
+
 @media (max-width: 1500px) {
-    #user_bio > h1,
-    #user_bio > p {
+    #user_bio > h1, 
+    .about-me-container {
         margin-right: 14rem;
         margin-left: 4rem;
     }
@@ -49,8 +111,8 @@
         margin-left: 4rem;
     }
 
-    #user_bio > h1,
-    #user_bio > p {
+    #user_bio > h1, 
+    .about-me-container {
         margin-right: 10rem;
         margin-left: 4rem;
     }
@@ -61,6 +123,7 @@
         flex-direction: column;
         padding-top: 1rem;
         padding-bottom: 1rem;
+
     }
 
     #profile-bio-section > div {
@@ -86,10 +149,14 @@
         text-align: center;
     }
 
-    #user_bio > h1,
-    #user_bio > p {
+    #user_bio > h1, 
+    .about-me-container {
         margin-right: 2rem;
         margin-left: 2rem;
+    }
+
+    .about-me-container {
+        margin: 0 auto;
     }
 
     #profile-body-section {
@@ -101,6 +168,25 @@
         margin-top: 1rem;
     }
 
+    #profile-body-section h1{
+        text-align: center;
+    }
+
+    .card-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #campaigns,
+    #encounters,
+    #forum-post-container .card-container {
+        margin: 0 auto;
+    }
+
+    #forum-post-container {
+        padding-top: 1.5rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -113,8 +199,8 @@
         height: 80px;
     }
 
-    #user_bio > h1,
-    #user_bio > p {
+    #user_bio > h1, 
+    .about-me-container {
         margin-right: 1rem;
         margin-left: 1rem;
     }
