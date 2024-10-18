@@ -5,6 +5,7 @@ import MonsterCard from "../../Components/MonsterCard/MonsterCard";
 import "./EncounterCreationPage.css";
 import RosterCard from "../../Components/RosterCard/RosterCard";
 import EncounterForm from "../../Components/EncounterForm/EncounterForm";
+import { useEncounter } from "../../Context/EncounterContext";
 
 const EncounterCreationPage: React.FC = () => {
   const [monsters, setMonsters] = useState<any[]>([]);
@@ -13,7 +14,7 @@ const EncounterCreationPage: React.FC = () => {
   const [title, setTitle] = useState<string>();
   const [environment, setEnvironment] = useState<string>();
   const [setting, setSetting] = useState<string>();
-  const [encounter, setEncounter] = useState<any>();
+  const { encounter, setEncounter } = useEncounter();
   const [errorMessage, setErrorMessage] = useState<any>({
     titleError: "",
     rosterError: "",
@@ -60,8 +61,9 @@ const EncounterCreationPage: React.FC = () => {
     setRoster(updatedRoster);
   };
 
-  const generateEncounter = async () => {
+  const generateEncounter = async (e: any) => {
     if (!title || title.trim() === "") {
+      e.preventDefault();
       setErrorMessage((ele: any) => ({
         ...ele,
         titleError: "Please add a title",
@@ -74,6 +76,7 @@ const EncounterCreationPage: React.FC = () => {
     }
 
     if (!roster || roster.length === 0) {
+      e.preventDefault();
       setErrorMessage((ele: any) => ({
         ...ele,
         rosterError: "Please add monsters to the roster",

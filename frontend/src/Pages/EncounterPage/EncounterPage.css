@@ -1,0 +1,15 @@
+.event-info {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(207, 201, 201, 0.87);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+  .encounter {
+    flex-direction: column;
+  }
+}
+.page {
+  max-height: 99vh;
+}
