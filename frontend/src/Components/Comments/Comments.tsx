@@ -53,11 +53,9 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
    * Shows the reply comments
    */
   const handleShowReplyClick = async () => {
-    console.log("Show reply handler triggered");
     setShowReplies(!showReplies);
 
     const replies = await fetchReplies(commentId);
-    console.log('Fetched replies:', replies);
     setReplies(replies);
   };
 
