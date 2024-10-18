@@ -49,8 +49,8 @@ function LoginPage() {
 
       // Get user data for local storage
       await storeLoggedInUser();
-      
-      navigate("/LandingPage");
+
+      navigate("/");
     } catch (err) {
       setIsSubmitting(false);
       if (axios.isAxiosError(err) && err.response) {
@@ -65,19 +65,21 @@ function LoginPage() {
 
   const storeLoggedInUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/accounts/profile`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+      const response = await axios.get(
+        `http://localhost:4000/api/accounts/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      });
-      
+      );
+
       localStorage.setItem("username", response.data.userProfile.username);
       localStorage.setItem("role", response.data.userProfile.role);
-      
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
-  }
+  };
 
   // Separate Login Form Component
 

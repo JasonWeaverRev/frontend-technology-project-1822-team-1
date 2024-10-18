@@ -38,33 +38,29 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
   // Load token from localStorage on initial load
   useEffect(() => {
-    /*
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
       // Optionally, load user data as well
     }
-    */
   }, []);
 
   // Login function to store the token and user data
   const login = (token: string, userData: any) => {
     setToken(token);
     setUser(userData);
-    /*
+
     localStorage.setItem("token", token);
     // Optionally, store user data in localStorage if needed
-    */
   };
 
   // Logout function to clear the token and user data
   const logout = () => {
     setToken(null);
     setUser(null);
-    /*
+
     localStorage.removeItem("token");
     // Optionally, remove user data from localStorage if stored
-    */
   };
 
   // Return the context provider with the value to share state across the app
