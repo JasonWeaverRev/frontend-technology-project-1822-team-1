@@ -58,7 +58,7 @@ function ProfilePage() {
   // #endregion
 
   const user_posts = ['Post 1', 'Post 2', 'Post 3', 'Post 4', 'Post 5'];
-  const TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lNyIsImVtYWlsIjoiZXhhcGxlM0BlbWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzI5MjU1NjExLCJleHAiOjE3MjkyNTkyMTF9.rEzZ07Nb4sfjFweT6KARvnmZHdb7rE-1oQ5R6SjrVTo`;
+  const TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lNyIsImVtYWlsIjoiZXhhcGxlM0BlbWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzI5MjcwMjQ5LCJleHAiOjE3MjkyNzM4NDl9.lvyFMlafPDM-Bu3jqqXLCtw9ynFvxSlbVc8E-r0Pef8`;
 
   // #region Get User Profile info w/ auth token & Edit About Me
   const [profile, setProfile] = useState<Profile>();
@@ -163,20 +163,18 @@ function ProfilePage() {
               className="form-control mb-2"
               rows={4}
             />
-            <button onClick={updateAboutMe} className="btn btn-primary">Save</button>
+            <button onClick={updateAboutMe} id="save-button">Save</button>
           </div>
         ) : (
           <div className="about-me-container">
             <p id="about_me">{profile?.about_me}</p> {/* About Me */}
-            <button onClick={() => setIsEditing(true)} className="btn btn-secondary">Edit About Me</button>
+            <button onClick={() => setIsEditing(true)} id="edit-button">Edit About Me</button>
           </div>
         )}
       </div>
     </div>
 
-    <div id="profile-body-section" className="d-flex mt-5">
-      <div className="col-1 col-md-2"></div> {/* Empty Space */}
-
+    <div id="profile-body-section">
       <div id="campaign-encounter-container" className="col-10 col-md-5">
         <div id="campaigns">
           <h1>Your Campaigns</h1>
@@ -232,8 +230,6 @@ function ProfilePage() {
           ))}
         </div>
       </div>
-
-      <div className="col-1 col-md-2"></div> {/* Empty Space */}
     </div>
   </>
   )
