@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./Pages/LoginPage/auth/authContext"; // Import your AuthProvider
+import { AuthProvider } from "./Context/authContext"; // Import your AuthProvider
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

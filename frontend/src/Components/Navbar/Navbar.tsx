@@ -3,27 +3,29 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
-  const navigate = useNavigate(); // Hook for redirection
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
-  // Function to update login status
+  // Function to update login status by checking localStorage
   const updateLoginStatus = () => {
-    setIsLoggedIn(!!localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // !! converts token to a boolean (true/false)
   };
 
-  // Listen for storage changes (cross-tab)
+  // UseEffect to check localStorage on initial render
   useEffect(() => {
-    window.addEventListener("storage", updateLoginStatus);
+    updateLoginStatus(); // Ensure we start with correct login status on page load
+    window.addEventListener("storage", updateLoginStatus); // Listen for storage changes (for cross-tab)
     return () => {
-      window.removeEventListener("storage", updateLoginStatus);
+      window.removeEventListener("storage", updateLoginStatus); // Cleanup listener on unmount
     };
   }, []);
 
   // Handle logout
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token from localStorage
-    updateLoginStatus(); // Update state to reflect logged out status
-    navigate("/login"); // Redirect to login page
+    localStorage.removeItem("token");
+    updateLoginStatus(); // Update state after removing token
+    navigate("/login");
   };
 
   return (
