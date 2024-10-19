@@ -45,18 +45,18 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/post-creation">
-                Create New Post
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/encounter-creation">
-                Create New Encounter
-              </Link>
-            </li>
             {isLoggedIn ? (
               <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/post-creation">
+                    Create New Post
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/encounter-creation">
+                    Create New Encounter
+                  </Link>
+                </li>
                 <li className="nav-item"></li>
                 <li className="nav-item dropdown">
                   <a
