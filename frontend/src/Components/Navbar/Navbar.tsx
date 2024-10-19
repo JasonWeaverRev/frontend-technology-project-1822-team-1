@@ -57,11 +57,7 @@ function Navbar() {
             </li>
             {isLoggedIn ? (
               <>
-                <li className="nav-item">
-                  <button className="nav-link btn" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </li>
+                <li className="nav-item"></li>
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
