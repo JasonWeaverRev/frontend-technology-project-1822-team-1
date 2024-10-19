@@ -6,25 +6,23 @@ function Navbar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
-  // Function to update login status by checking localStorage
   const updateLoginStatus = () => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // !! converts token to a boolean (true/false)
   };
 
-  // UseEffect to check localStorage on initial render
   useEffect(() => {
-    updateLoginStatus(); // Ensure we start with correct login status on page load
-    window.addEventListener("storage", updateLoginStatus); // Listen for storage changes (for cross-tab)
+    updateLoginStatus();
+    window.addEventListener("storage", updateLoginStatus);
     return () => {
-      window.removeEventListener("storage", updateLoginStatus); // Cleanup listener on unmount
+      window.removeEventListener("storage", updateLoginStatus);
     };
   }, []);
 
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("token");
-    updateLoginStatus(); // Update state after removing token
+    updateLoginStatus(); // Update the state after removing token (solve refresh issue)
     navigate("/login");
   };
 

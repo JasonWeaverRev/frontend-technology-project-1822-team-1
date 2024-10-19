@@ -49,7 +49,7 @@ function LoginPage() {
     <div className="auth-container-fluid-unique">
       <div className="row-unique">
         <div className="logo-container-unique">
-          <h1 className="title-unique">Welcome to</h1>
+          <h1 className="register-mb-3">Welcome to</h1>
           <img
             src="/dungeon-delver-logo.png"
             className="logo-unique"
@@ -59,26 +59,26 @@ function LoginPage() {
         <div className="auth-form-container-unique">
           <div className="auth-form-unique card">
             <form onSubmit={handleSubmit}>
-              <h2>Log in to your account</h2>
+              <h2 className="register-title-text">Log in to your account</h2>
               {errorMessage && (
                 <div className="alert alert-danger-unique">{errorMessage}</div>
               )}
               <input
                 type="text"
                 placeholder="Username"
-                className="form-control-unique mb-3"
+                className="form-control-login mb-3"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="Password"
-                className="form-control-unique mb-3"
+                className="form-control-login mb-3"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
-                className="btn-primary-unique btn-block-unique"
+                className="register-btn btn btn-primary btn-block-register"
                 type="submit"
                 disabled={isSubmitting}
               >
