@@ -15,21 +15,6 @@
   gap: 30px;
 }
 
-.auth-form-container-unique {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.auth-form-unique {
-  max-width: 500px;
-  min-height: 300px;
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 0 30px;
-}
 
 .logo-container-unique {
   display: flex;
@@ -40,10 +25,30 @@
 
 
 .logo-unique {
-  max-width: 300px;
+  max-width: 600px;
   height: auto;
   margin-bottom: 20px;
+  
 }
+
+
+/* Image responsiveness for smaller screens */
+@media (max-width: 1068px) {
+  .logo-unique {
+    max-width: 70%;
+    height: auto;
+  }
+}
+
+/* Image responsiveness for smallest screens */
+@media (max-width: 578px) {
+  .logo-unique {
+    max-width: 50%;
+    height: auto;
+  }
+}
+
+
 
 .form-control-login {
     --tw-border-opacity: 1;
@@ -83,6 +88,6 @@
   }
 
   .logo-unique {
-    max-width: 200px;
+    max-width: 400px;
   }
 }

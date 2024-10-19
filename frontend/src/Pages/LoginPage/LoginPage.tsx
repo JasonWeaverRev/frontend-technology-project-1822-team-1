@@ -56,8 +56,8 @@ function LoginPage() {
             alt="Dungeon Delver Logo"
           />
         </div>
-        <div className="auth-form-container-unique">
-          <div className="auth-form-unique card">
+        <div className="col-lg-6 col-md-6 col-sm-12">
+          <div className="register-auth-form ">
             <form onSubmit={handleSubmit}>
               <h2 className="register-title-text">Log in to your account</h2>
               {errorMessage && (

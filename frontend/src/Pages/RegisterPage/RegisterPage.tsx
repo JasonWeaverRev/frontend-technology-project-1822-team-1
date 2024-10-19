@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./RegisterPage.css"; // Your specific styles
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const [email, setEmail] = useState<string>("");
@@ -42,7 +43,7 @@ function RegisterPage() {
   return (
     <div className="auth-container-fluid-unique">
       <div className="row-unique">
-        <div className="logo-containter-register">
+        <div className="logo-container-unique">
           <h1 className="register-mb-3">Welcome to</h1>
           <img
             src={"/dungeon-delver-logo.png"}
@@ -51,7 +52,7 @@ function RegisterPage() {
           />
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
-          <div className="register-auth-form card">
+          <div className="register-auth-form">
             <h2 className="register-title-text">Register for an account</h2>
             {errorMessage && (
               <div className="register-error-message">{errorMessage}</div>
@@ -90,6 +91,9 @@ function RegisterPage() {
               >
                 {isSubmitting ? "Registering..." : "Register"}
               </button>
+              <p>
+                Already have an account? <Link to="/login">Login here</Link>
+              </p>
             </form>
           </div>
         </div>
