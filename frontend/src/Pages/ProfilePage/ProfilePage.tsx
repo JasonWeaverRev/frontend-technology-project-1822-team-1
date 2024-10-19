@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import "./ProfilePage.css";
-import { profileEnd } from "console";
 
 interface Profile {
   email: string;
@@ -58,7 +57,7 @@ function ProfilePage() {
   // #endregion
 
   const user_posts = ['Post 1', 'Post 2', 'Post 3', 'Post 4', 'Post 5'];
-  const TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lNyIsImVtYWlsIjoiZXhhcGxlM0BlbWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzI5MjU1NjExLCJleHAiOjE3MjkyNTkyMTF9.rEzZ07Nb4sfjFweT6KARvnmZHdb7rE-1oQ5R6SjrVTo`;
+  const TOKEN = localStorage.getItem("token");
 
   // #region Get User Profile info w/ auth token & Edit About Me
   const [profile, setProfile] = useState<Profile>();
@@ -67,10 +66,7 @@ function ProfilePage() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/accounts/profile`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`
-        }
+      const response = await axios.get(`http://localhost:4000/api/accounts/profile/$`, {
       });
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
@@ -163,23 +159,21 @@ function ProfilePage() {
               className="form-control mb-2"
               rows={4}
             />
-            <button onClick={updateAboutMe} className="btn btn-primary">Save</button>
+            <button onClick={updateAboutMe} id="save-button">Save</button>
           </div>
         ) : (
           <div className="about-me-container">
             <p id="about_me">{profile?.about_me}</p> {/* About Me */}
-            <button onClick={() => setIsEditing(true)} className="btn btn-secondary">Edit About Me</button>
+            <button onClick={() => setIsEditing(true)} id="edit-button">Edit About Me</button>
           </div>
         )}
       </div>
     </div>
 
-    <div id="profile-body-section" className="d-flex mt-5">
-      <div className="col-1 col-md-2"></div> {/* Empty Space */}
-
+    <div id="profile-body-section">
       <div id="campaign-encounter-container" className="col-10 col-md-5">
         <div id="campaigns">
-          <h1>Your Campaigns</h1>
+          <h1>Campaigns</h1>
 
           <div className="card-container">
             {campaigns.map((campaign, index) => (
@@ -196,7 +190,7 @@ function ProfilePage() {
         </div>
 
         <div id="encounters" className="mt-4">
-          <h1>Your Encounters</h1>
+          <h1>Encounters</h1>
 
           <div className="card-container">
             {encounters.map((entry) => {
@@ -220,20 +214,18 @@ function ProfilePage() {
       </div>
 
       <div id="forum-post-container" className="col-10 col-md-5">
-        <h1>Your Forum Posts</h1>
+        <h1>Forum Posts</h1>
         <div className="card-container">
           {user_posts.map((entry, index) => (
             <div 
               key={index} 
               className="content-card" >
 
-              {entry}
+              <h1>{entry}</h1>
             </div>
           ))}
         </div>
       </div>
-
-      <div className="col-1 col-md-2"></div> {/* Empty Space */}
     </div>
   </>
   )

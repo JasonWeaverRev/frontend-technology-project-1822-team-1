@@ -1,6 +1,6 @@
-/* RegisterPage.css */
 
-.auth-container-fluid {
+/* Renamed container class to avoid conflicts */
+.register-container-fluid {
   display: flex;
   align-items: center;
   height: 100vh;
@@ -54,6 +54,34 @@
   /* Hidden by default */
 }
 
+/* Custom class for button */
+.register-btn {
+  padding: 5px;
+  margin-bottom: 5%;
+}
+
+/* Renamed for text color and alignment */
+.register-mb-3 {
+  color: #5e4aa1;
+  text-align: center;
+}
+
+/* Renamed class for registration text */
+.register-title-text {
+  color: #5e4aa1;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+/* Error message styling */
+.register-error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 5%;
+  display: none;
+}
+
+/* Image responsiveness for smaller screens */
 @media (max-width: 768px) {
   .img-fluid {
     max-width: 60%;
