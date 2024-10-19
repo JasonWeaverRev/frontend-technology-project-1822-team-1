@@ -35,8 +35,8 @@ function Navbar() {
         <button
           className="navbar-toggler collapsed"
           type="button"
-          data-toggle="collapse"
-          data-target="navbarSupportedContent"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
@@ -62,10 +62,32 @@ function Navbar() {
                     Logout
                   </button>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Profile
-                  </Link>
+                  </a>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/profile">
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
                 </li>
               </>
             ) : (
