@@ -1,5 +1,5 @@
-/* LoginPage.css */
-.auth-container {
+/* LoginPageUnique.css */
+.auth-container-fluid-unique {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,51 +29,90 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  /* Center the form vertically */
-  background-color: #e0dff2;
-  /* Background color for the entire page */
+  background-color: black;
 }
 
-.auth-form {
-  max-width: 500px;
-  /* Set a max width for the form */
-  min-height: 300px;
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  /* Adding a shadow for depth */
-  padding: 10px;
-  margin-right: 30px;
-  margin-left: 30px;
+.row-unique {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row; /* Side-by-side layout */
+  gap: 30px;
 }
 
-.mb-3 {
-  margin-right: 20px;
-  margin-bottom: 50px;
-  color: #5e4aa1;
-  /* Custom purple color */
-  margin-right: 50px;
-  margin-left: 50px;
+
+.logo-container-unique {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.LoginText {
-  color: #5e4aa1;
-  /* Custom purple color */
-  margin-top: 30px;
-}
 
-.btn btn-secondary btn-block {
-  padding: 5px;
-  /* Make the buttons larger and more clickable */
+.logo-unique {
+  max-width: 600px;
+  height: auto;
   margin-bottom: 20px;
+  
 }
 
-.form-control mb-3 {
-  border-radius: 5px;
-  /* Slightly rounded input fields */
-  width: 45%;
-  margin-bottom: 10px;
-  margin-top: 30px;
-  margin-left: 1px;
-  margin-right: 1px;
+
+/* Image responsiveness for smaller screens */
+@media (max-width: 1068px) {
+  .logo-unique {
+    max-width: 70%;
+    height: auto;
+  }
+}
+
+/* Image responsiveness for smallest screens */
+@media (max-width: 578px) {
+  .logo-unique {
+    max-width: 50%;
+    height: auto;
+  }
+}
+
+
+
+.form-control-login {
+    --tw-border-opacity: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-color: rgb(229 231 235 / var(--tw-border-opacity));
+    border-radius: 0.375rem;
+    border-width: 1px;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    width: 100%;  /* Full width inside the parent */
+  
+}
+
+.login-btn {
+  align-items: center;
+  align-self: center;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .row-unique {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .logo-unique {
+    max-width: 400px;
+  }
 }

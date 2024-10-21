@@ -31,7 +31,7 @@ function PostPage() {
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState<boolean>(true);
   const [alert, setAlert] = useState<any>(undefined);
-  
+
   // #region request/response interceptors
   // Request Interceptor
   axios.interceptors.request.use(
@@ -91,13 +91,6 @@ function PostPage() {
   }, [page]);
 
   /**
-   * LOAD MORE
-   */
-  useEffect(() => {
-    getComments();
-  }, [page]);
-
-  /**
    * HANDLERS
    */
   /**
@@ -148,11 +141,10 @@ function PostPage() {
 
     // Validate incoming text
     if (!token) {
-
       const postPageAlert = {
         message: "You must be logged in to submit a comment",
         type: "danger",
-      }
+      };
       setAlert(postPageAlert);
       return postPageAlert;
     }
@@ -173,15 +165,14 @@ function PostPage() {
         const postPageAlert = {
           message: "Comment succesfully submitted!",
           type: "success",
-        }
+        };
         setAlert(postPageAlert);
         return postPageAlert;
       } else {
-        
         const postPageAlert = {
           message: "Failed to submit the comment",
           type: "danger",
-        }
+        };
         setAlert(postPageAlert);
         return postPageAlert;
       }
@@ -192,7 +183,7 @@ function PostPage() {
         message:
           "An error occurred while submitting your comment. Please try again.",
         type: "danger",
-      }
+      };
       setAlert(postPageAlert);
       return postPageAlert;
     }
@@ -210,11 +201,11 @@ function PostPage() {
       setTimeout(clearAlert, 5000);
     }
   }, [alert]);
-  
+
   const clearAlert = () => {
     setAlert(undefined);
   };
-  
+
   return (
     <div className="post-page">
       <div className="post-page-padding">
@@ -247,11 +238,14 @@ function PostPage() {
             </button>
           </div>
           <div className="post-body-bg col-11 d-flex flex-column align-items-center">
-            {" "}
             {/* Post Text */}
             <h3 className="text-post-page-format">{title}</h3>
             <p className="text-post-page-format">{username}</p>
-            <p className="text-post-page-format">{content}</p>
+            {/* Render the content as HTML */}
+            <div
+              className="text-post-page-format"
+              dangerouslySetInnerHTML={{ __html: content }}
+            ></div>
           </div>
         </div>
 

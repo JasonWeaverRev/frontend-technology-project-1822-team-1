@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Post.css";
-
+import { Link } from "react-router-dom";
 import likeUnselectedIcon from "./PostImages/upvote-unselected-arrows.png";
 import likeSelectedIcon from "./PostImages/upvote-selected-arrows.png";
 import dislikeUnselectedIcon from "./PostImages/downvote-unselected-arrows.png";
 import dislikeSelectedIcon from "./PostImages/downvote-selected-arrows.png";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
 interface PostItem {
   post_id: string;
@@ -33,7 +31,7 @@ function Post({ title, username, post_id, content }: PostItem) {
       }
     }
   };
-  // material UI
+
   return (
     <>
       <div className="post-bg row">
@@ -66,17 +64,23 @@ function Post({ title, username, post_id, content }: PostItem) {
           <h4>
             <Link
               to={`/posts/${post_id}`}
-              state={{ title: title, username: username, content: content }}
+              state={{ title, username, content }}
               className="text-decoration-none text-dark"
             >
               {title}
             </Link>
           </h4>
-          <p className="flex-grow-1 d-flex aling-items-center mb-0">
-            {content.length > 25
-              ? content.substring(0, 25) + " . . ."
-              : content}
-          </p>
+          <div className="flex-grow-1 d-flex align-items-center mb-0">
+            {content.length > 25 ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: content.substring(0, 25) + " . . .",
+                }}
+              />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: content }} />
+            )}
+          </div>
           <p className="mb-0">{username}</p>
         </div>
       </div>
