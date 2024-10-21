@@ -173,7 +173,7 @@ function ProfilePage() {
     <div id="profile-body-section">
       <div id="campaign-encounter-container" className="col-10 col-md-5">
         <div id="campaigns">
-          <h1>Your Campaigns</h1>
+          <h1>Campaigns</h1>
 
           <div className="card-container">
             {campaigns.map((campaign, index) => (
@@ -190,7 +190,7 @@ function ProfilePage() {
         </div>
 
         <div id="encounters" className="mt-4">
-          <h1>Your Encounters</h1>
+          <h1>Encounters</h1>
 
           <div className="card-container">
             {encounters.map((entry) => {
@@ -214,14 +214,14 @@ function ProfilePage() {
       </div>
 
       <div id="forum-post-container" className="col-10 col-md-5">
-        <h1>Your Forum Posts</h1>
+        <h1>Forum Posts</h1>
         <div className="card-container">
           {user_posts.map((entry, index) => (
             <div 
               key={index} 
               className="content-card" >
 
-              {entry}
+              <h1>{entry}</h1>
             </div>
           ))}
         </div>

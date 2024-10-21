@@ -123,9 +123,7 @@ function PostPage() {
         `http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`
       );
 
-      console.log("Full response:", response);
       const replies = response.data[0];
-      console.log("Replies:", replies);
 
       return Array.isArray(replies) ? replies : [];
     } catch (err) {

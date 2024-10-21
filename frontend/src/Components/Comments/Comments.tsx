@@ -24,7 +24,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
   const [likes, setLikes] = useState<number>(0);
   const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
   const [showReplies, setShowReplies] = useState<boolean>(false);
-  const [replies, setReplies] = useState<any[]>([]);
+  const [replies, setReplies] = useState<any>([]);
 
 
   
@@ -53,12 +53,10 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
    * Shows the reply comments
    */
   const handleShowReplyClick = async () => {
-    console.log("Show reply handler triggered");
     setShowReplies(!showReplies);
 
     const replies = await fetchReplies(commentId);
-    console.log('Fetched replies:', replies);
-    // setReplies(replies);
+    setReplies(replies);
   };
 
   /**
