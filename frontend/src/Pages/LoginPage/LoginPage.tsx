@@ -57,37 +57,42 @@ function LoginPage() {
           />
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12">
-          <div className="register-auth-form ">
-            <form onSubmit={handleSubmit}>
-              <h2 className="register-title-text">Log in to your account</h2>
-              {errorMessage && (
-                <div className="alert alert-danger-unique">{errorMessage}</div>
-              )}
-              <input
-                type="text"
-                placeholder="Username"
-                className="form-control-login mb-3"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="form-control-login mb-3"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button
-                className="register-btn btn btn-primary btn-block-register"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Logging In..." : "Log In"}
-              </button>
-              <p>
-                Don't have an account? <Link to="/register">Register here</Link>
-              </p>
-            </form>
+          <div className="authForm-container">
+            <div className="register-auth-form ">
+              <form onSubmit={handleSubmit}>
+                <h2 className="register-title-text">Log in to your account</h2>
+                {errorMessage && (
+                  <div className="alert alert-danger-unique">
+                    {errorMessage}
+                  </div>
+                )}
+                <input
+                  type="text"
+                  placeholder="Username"
+                  className="form-control-login mb-3"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="form-control-login mb-3"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  className="register-btn btn btn-primary btn-block-register"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Logging In..." : "Log In"}
+                </button>
+                <p>
+                  Don't have an account?{" "}
+                  <Link to="/register">Register here</Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
