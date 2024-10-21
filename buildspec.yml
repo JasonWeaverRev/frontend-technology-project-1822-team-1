@@ -13,6 +13,6 @@ phases:
     commands:
       - npm run build
 artifacts:
-  base-directory: build/
+  base-directory: frontend/build/
   files: 
     - '**/*'
