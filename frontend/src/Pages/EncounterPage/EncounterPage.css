@@ -48,6 +48,7 @@
 
 .monster-info {
   max-height: calc(5 * 5rem);
+  min-height: calc(5 * 5rem);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: darkgray transparent;
@@ -91,4 +92,8 @@
 .monster-notes {
   resize: none;
   height: 8rem;
+}
+
+.success-alert {
+  height: 3em;
 }

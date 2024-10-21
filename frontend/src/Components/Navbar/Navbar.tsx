@@ -7,7 +7,7 @@ function Navbar() {
   const { token, logout } = useAuth(); // Access token to determine if user is logged in and logout function
 
   return (
-    <nav className="navbar navbar-expand-sm bg-body-tertiary">
+    <nav className="navbar navbar-expand-sm bg-body-tertiary nav-border">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Dungeon Delver

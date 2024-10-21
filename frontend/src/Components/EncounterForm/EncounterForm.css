@@ -1,0 +1,9 @@
+.title-error {
+  border: 2px solid red;
+  /* background-color: rgb(238, 131, 131); */
+  background-color: #f8d7da;
+}
+
+.title-error::placeholder {
+  color: black;
+}
