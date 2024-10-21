@@ -7,6 +7,7 @@ phases:
       - npm install -g create-react-app
   pre_build:
     commands:
+      - cd ./frontend
       - npm install
   build:
     commands:
