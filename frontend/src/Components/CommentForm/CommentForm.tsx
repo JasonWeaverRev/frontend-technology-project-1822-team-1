@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface CommentFormProps {
   commentNumber: number; 
-  alert: {type: string; message: string} | null;
   handleSubmitClick: (commentText: string) => void;
 }
 
 
-const CommentForm: React.FC<CommentFormProps> = ({commentNumber, alert, handleSubmitClick}) => {
+const CommentForm: React.FC<CommentFormProps> = ({commentNumber, handleSubmitClick}) => {
   
   const [commentText, setCommentText] = useState('');
+  const [alert, setAlert] = useState<any>(
+    undefined
+  );
   
  /**
    * Tracks text within the comment form
@@ -19,6 +21,35 @@ const CommentForm: React.FC<CommentFormProps> = ({commentNumber, alert, handleSu
  const handleTextChange = (event: any) => {
   setCommentText(event.target.value)
 }
+
+
+/**
+ * Uses the handleSubmitClick function from the parent PostPage to submit
+ * a comment reply
+ */
+const handleReplySubmitForComment = async () => {
+  if (!commentText.trim()) {
+    setAlert({
+      message: "Comments should not be empty",
+      type: "danger",
+    });
+    return;
+  }
+
+  const submitAlert = await handleSubmitClick(commentText);
+  setAlert(submitAlert);
+  
+}
+
+useEffect(() => {
+  if (alert) {
+    setTimeout(clearAlert, 5000);
+  }
+}, [alert]);
+
+const clearAlert = () => {
+  setAlert(undefined);
+};
   
   
   return (
@@ -47,7 +78,7 @@ const CommentForm: React.FC<CommentFormProps> = ({commentNumber, alert, handleSu
           </textarea>
           <button 
             className="btn btn-secondary align-self-end"
-            onClick={() => handleSubmitClick(commentText)}>
+            onClick={() => handleReplySubmitForComment()}>
             Submit
           </button>
         </div>
