@@ -33,7 +33,7 @@ function Navbar() {
           Dungeon Delver
         </Link>
         <button
-          className="navbar-toggler collapsed"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -57,7 +57,6 @@ function Navbar() {
                     Create New Encounter
                   </Link>
                 </li>
-                <li className="nav-item"></li>
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -66,20 +65,33 @@ function Navbar() {
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    data-bs-offset="0,10" // Adjust position
                   >
                     Profile
                   </a>
                   <ul
-                    className="dropdown-menu"
+                    className="dropdown-menu dropdown-menu-end" // Align to the right
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
                       <Link className="dropdown-item" to="/profile">
+                        <img
+                          src="/profile-icon.png"
+                          alt="Profile"
+                          className="profile-icon"
+                          style={{ width: "20px", marginRight: "10px" }} // Ensure proper spacing
+                        />
                         Profile
                       </Link>
                     </li>
                     <li>
                       <button className="dropdown-item" onClick={handleLogout}>
+                        <img
+                          src="/logout-icon.png"
+                          alt="Logout"
+                          className="logout-icon"
+                          style={{ width: "20px", marginRight: "10px" }} // Ensure proper spacing
+                        />
                         Logout
                       </button>
                     </li>

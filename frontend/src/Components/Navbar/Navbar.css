@@ -12,3 +12,19 @@
 .nav-link {
   color: white;
 }
+
+.logout-icon {
+  max-width: 27px;
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.profile-icon {
+  max-width: 27px;
+  padding-right: 4px;
+}
+
+.dropdown-menu {
+  right: 0;
+  left: auto;
+}
