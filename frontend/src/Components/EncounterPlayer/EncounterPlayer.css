@@ -10,6 +10,10 @@
   opacity: 0.7;
 }
 
+.player-info {
+  max-height: calc(5 * 7rem);
+}
+
 .player-notes {
   resize: none;
   height: 8rem;

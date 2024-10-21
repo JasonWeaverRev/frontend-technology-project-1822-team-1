@@ -6,6 +6,7 @@ import "./EncounterCreationPage.css";
 import RosterCard from "../../Components/RosterCard/RosterCard";
 import EncounterForm from "../../Components/EncounterForm/EncounterForm";
 import { useEncounter } from "../../Context/EncounterContext";
+import { useNavigate } from "react-router-dom";
 
 const EncounterCreationPage: React.FC = () => {
   const [monsters, setMonsters] = useState<any[]>([]);
@@ -19,6 +20,7 @@ const EncounterCreationPage: React.FC = () => {
     titleError: "",
     rosterError: "",
   });
+  const navivate = useNavigate();
 
   axios.interceptors.request.use(
     (config: any): any => {
@@ -61,52 +63,48 @@ const EncounterCreationPage: React.FC = () => {
     setRoster(updatedRoster);
   };
 
+  const updateErrorMessages = async (prop: any, msg: string) => {
+    setErrorMessage((ele: any) => ({
+      ...ele,
+      [prop]: msg,
+    }));
+  };
+
   const generateEncounter = async (e: any) => {
+    let hasErrors = false;
+    e.preventDefault();
+
     if (!title || title.trim() === "") {
-      e.preventDefault();
-      setErrorMessage((ele: any) => ({
-        ...ele,
-        titleError: "Please add a title",
-      }));
+      await updateErrorMessages("titleError", "Please add a title");
+      hasErrors = true;
     } else {
-      setErrorMessage((ele: any) => ({
-        ...ele,
-        titleError: "",
-      }));
+      await updateErrorMessages("titleError", "");
     }
 
     if (!roster || roster.length === 0) {
-      e.preventDefault();
-      setErrorMessage((ele: any) => ({
-        ...ele,
-        rosterError: "Please add monsters to the roster",
-      }));
+      await updateErrorMessages(
+        "rosterError",
+        "Please add monsters to the roster"
+      );
+      hasErrors = true;
     } else {
-      setErrorMessage((ele: any) => ({
-        ...ele,
-        rosterError: "",
-      }));
+      await updateErrorMessages("rosterError", "");
     }
 
-    if (errorMessage.titleError === "" && errorMessage.rosterError === "") {
+    // Only proceed if there are no errors
+    if (!hasErrors) {
       const thisEncounter = {
         title: title,
-        setting: `${environment}: ${setting}`,
+        setting: environment && setting ? `${environment}: ${setting}` : "",
         roster: roster,
       };
       setEncounter(thisEncounter);
+      navivate("/encounter");
     }
   };
 
   return (
     <div className="encounter-creation-page-full">
-      {errorMessage.titleError && (
-        <div className="alert alert-danger">{errorMessage.titleError}</div>
-      )}
-      {errorMessage.rosterError && (
-        <div className="alert alert-danger">{errorMessage.rosterError}</div>
-      )}
-
       <div className="encounter-creation-page d-flex flex-lg-row p-5">
         <EncounterForm
           setTitle={setTitle}
@@ -115,6 +113,7 @@ const EncounterCreationPage: React.FC = () => {
           setChallengeRating={setChallengeRating}
           getMonstersByChallengeRating={getMonstersByChallengeRating}
           generateEncounter={generateEncounter}
+          error={errorMessage.titleError}
         ></EncounterForm>
 
         <div className="monster-list flex-grow-1 m-1">
@@ -138,8 +137,17 @@ const EncounterCreationPage: React.FC = () => {
             />
           ))}
         </div>
-        <div className="encounter-roster d-flex flex-column text-start align-text-top col-lg-2">
+        <div
+          className={`encounter-roster d-flex flex-column text-start align-text-top col-lg-2 ${
+            errorMessage.rosterError ? "roster-alert" : ""
+          }`}
+        >
           <h2 className="text-center">Roster</h2>
+          {errorMessage.rosterError && (
+            <div className="alert alert-danger m-2">
+              {errorMessage.rosterError}
+            </div>
+          )}
           {roster.map((monster, index) => (
             <RosterCard
               key={index}

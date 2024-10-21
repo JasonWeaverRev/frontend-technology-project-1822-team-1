@@ -1,4 +1,9 @@
-
+.auth-container-fluid {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  overflow-x: hidden;
+}
 
 .register-auth-form {
   background-color: white;
@@ -25,7 +30,7 @@
   border-width: 1px;
   display: block;
   padding: 0.5rem 0.75rem;
-  width: 100%;  /* Full width inside the parent */
+  width: 100%; /* Full width inside the parent */
 }
 
 /* Renamed for text color and alignment */

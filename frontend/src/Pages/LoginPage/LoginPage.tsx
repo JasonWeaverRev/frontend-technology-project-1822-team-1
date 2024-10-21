@@ -34,6 +34,7 @@ function LoginPage() {
       window.dispatchEvent(new Event("storage"));
 
       setIsSubmitting(false);
+      await storeLoggedInUser();
       navigate("/");
     } catch (error) {
       setIsSubmitting(false);
@@ -44,6 +45,28 @@ function LoginPage() {
       }
     }
   };
+
+  const storeLoggedInUser = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/accounts/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log(response);
+
+      localStorage.setItem("username", response.data.userProfile.username);
+      localStorage.setItem("role", response.data.userProfile.role);
+    } catch (error) {
+      console.error("Error fetching user profile: ", error);
+    }
+  };
+
+  // Separate Login Form Component
 
   return (
     <div className="auth-container-fluid-unique">

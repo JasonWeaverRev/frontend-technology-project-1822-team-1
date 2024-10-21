@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LinkButton from "../LinkButton/LinkButton";
+import "./EncounterForm.css";
 
 interface EncounterFormProps {
   setTitle: any;
@@ -9,6 +10,7 @@ interface EncounterFormProps {
   setChallengeRating: any;
   getMonstersByChallengeRating: any;
   generateEncounter: any;
+  error: string;
 }
 
 const EncounterForm: React.FC<EncounterFormProps> = ({
@@ -18,6 +20,7 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
   setChallengeRating,
   getMonstersByChallengeRating,
   generateEncounter,
+  error,
 }) => {
   return (
     <div className="encounter-info d-flex flex-column">
@@ -26,7 +29,7 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
         <input
           type="text"
           placeholder="Encounter Title"
-          className="info"
+          className={` title-info ${error ? "title-error" : ""}`}
           maxLength={36}
           onChange={(e) => setTitle(String(e.target.value))}
         />
