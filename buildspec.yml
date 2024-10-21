@@ -5,7 +5,7 @@ phases:
       nodejs: 14
     commands:
       - npm install -g create-react-app
-  pre-build:
+  pre_build:
     commands:
       - npm install
   build:
