@@ -27,7 +27,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-sm bg-body-tertiary">
+    <nav className="navbar navbar-expand-sm bg-body-tertiary nav-border">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           Dungeon Delver
