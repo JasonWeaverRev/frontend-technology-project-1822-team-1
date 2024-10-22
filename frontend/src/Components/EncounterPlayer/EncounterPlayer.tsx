@@ -13,7 +13,7 @@ const EncounterPlayer: React.FC<EncounterPlayerProps> = ({
   updateHp,
 }) => {
   return (
-    <div className="player-info d-flex flex-column black-border justify-content-between">
+    <div className="player-info d-flex flex-column justify-content-between">
       <div className="player-hud d-flex flex-column">
         <p>{name}</p>
         <div className="player-hp d-flex justify-content-evenly align-items-baseline">

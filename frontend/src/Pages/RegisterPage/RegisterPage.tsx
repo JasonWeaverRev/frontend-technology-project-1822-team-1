@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./RegisterPage.css"; // Your specific styles
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 
 function RegisterPage() {
@@ -17,7 +16,7 @@ function RegisterPage() {
     if (!email || !username || !password) {
       setErrorMessage("All fields are required!");
     } else {
-      setErrorMessage(""); // Clear error if inputs are valid
+      setErrorMessage("");
     }
 
     try {

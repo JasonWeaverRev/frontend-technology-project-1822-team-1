@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import { useEncounter } from "../../Context/EncounterContext";
 
 function Navbar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const { setEncounter } = useEncounter();
 
   const updateLoginStatus = () => {
     const token = localStorage.getItem("token");
@@ -29,7 +31,11 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-sm bg-body-tertiary nav-border">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <Link
+          className="navbar-brand"
+          onClick={() => setEncounter(null)}
+          to="/"
+        >
           Dungeon Delver
         </Link>
         <button
@@ -48,7 +54,11 @@ function Navbar() {
             {isLoggedIn ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/post-creation">
+                  <Link
+                    className="nav-link"
+                    onClick={() => setEncounter(null)}
+                    to="/post-creation"
+                  >
                     Create New Post
                   </Link>
                 </li>
@@ -74,7 +84,11 @@ function Navbar() {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <Link className="dropdown-item" to="/profile">
+                      <Link
+                        className="dropdown-item"
+                        onClick={() => setEncounter(null)}
+                        to="/profile"
+                      >
                         <img
                           src="/profile-icon.png"
                           alt="Profile"
@@ -85,7 +99,13 @@ function Navbar() {
                       </Link>
                     </li>
                     <li>
-                      <button className="dropdown-item" onClick={handleLogout}>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          setEncounter(null);
+                          handleLogout();
+                        }}
+                      >
                         <img
                           src="/logout-icon.png"
                           alt="Logout"
@@ -101,12 +121,20 @@ function Navbar() {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">
+                  <Link
+                    className="nav-link"
+                    onClick={() => setEncounter(null)}
+                    to="/login"
+                  >
                     Sign In
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/register">
+                  <Link
+                    className="nav-link"
+                    onClick={() => setEncounter(null)}
+                    to="/register"
+                  >
                     Sign Up
                   </Link>
                 </li>

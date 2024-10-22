@@ -41,6 +41,15 @@ const EncounterCreationPage: React.FC = () => {
     }
   );
 
+  useEffect(() => {
+    if (encounter) {
+      setTitle(encounter.title);
+      setEnvironment(encounter.environment);
+      setSetting(encounter.setting);
+      setRoster(encounter.roster);
+    }
+  }, []);
+
   const getMonstersByChallengeRating = async () => {
     await axios
       .get(
@@ -95,8 +104,10 @@ const EncounterCreationPage: React.FC = () => {
     if (!hasErrors) {
       const thisEncounter = {
         title: title,
-        setting: environment && setting ? `${environment}: ${setting}` : "",
+        environment: environment ? environment : "",
+        setting: setting ? setting : "",
         roster: roster,
+        id: encounter?.id,
       };
       setEncounter(thisEncounter);
       navivate("/encounter");
@@ -114,6 +125,9 @@ const EncounterCreationPage: React.FC = () => {
           getMonstersByChallengeRating={getMonstersByChallengeRating}
           generateEncounter={generateEncounter}
           error={errorMessage.titleError}
+          title={title}
+          setting={setting}
+          environment={environment}
         ></EncounterForm>
 
         <div className="monster-list flex-grow-1 m-1">
