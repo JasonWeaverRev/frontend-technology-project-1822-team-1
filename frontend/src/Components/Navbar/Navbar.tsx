@@ -25,7 +25,7 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     updateLoginStatus(); // Update the state after removing token (solve refresh issue)
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -51,6 +51,11 @@ function Navbar() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/encounter-creation">
+                Create New Encounter
+              </Link>
+            </li>
             {isLoggedIn ? (
               <>
                 <li className="nav-item">
@@ -60,11 +65,6 @@ function Navbar() {
                     to="/post-creation"
                   >
                     Create New Post
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/encounter-creation">
-                    Create New Encounter
                   </Link>
                 </li>
                 <li className="nav-item dropdown">
@@ -86,8 +86,7 @@ function Navbar() {
                     <li>
                       <Link
                         className="dropdown-item"
-                        onClick={() => setEncounter(null)}
-                        to="/profile"
+                        to={`/profile/${localStorage.getItem("username")}`}
                       >
                         <img
                           src="/profile-icon.png"

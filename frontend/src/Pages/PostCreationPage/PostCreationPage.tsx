@@ -151,7 +151,7 @@ const PostCreationPage = () => {
             )}
 
             <button
-              className="btn btn-primary"
+              className="PC-btn btn-primary"
               type="submit"
               disabled={isSubmitting}
             >

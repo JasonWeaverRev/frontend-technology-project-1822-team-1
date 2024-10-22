@@ -81,7 +81,7 @@ function Post({ title, username, post_id, content }: PostItem) {
               <div dangerouslySetInnerHTML={{ __html: content }} />
             )}
           </div>
-          <p className="mb-0">{username}</p>
+          <Link to={`/profile/${username}`}>{username}</Link>
         </div>
       </div>
     </>

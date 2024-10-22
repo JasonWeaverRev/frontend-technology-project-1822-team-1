@@ -1,4 +1,5 @@
-.auth-container-fluid {
+/* Renamed container class to avoid conflicts */
+.register-container-fluid {
   display: flex;
   align-items: center;
   height: 100vh;
@@ -72,4 +73,14 @@
   .register-auth-form {
     padding: 15px !important;
   }
+}
+
+@media (max-width: 576px) {
+  .register-auth-form {
+    padding: 15px !important;
+  }
+}
+
+.prelink-text {
+  color: rgb(114, 114, 114);
 }

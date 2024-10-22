@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Comments.css";
 
 import likeUnselectedIcon from "./CommentImages/upvote-unselected-arrows.png";
@@ -11,12 +11,11 @@ interface CommentItem {
   username: string;
   time: string;
   commentId: string;
-  alert: {type: string; message: string} | null;
   handleSubmitClick: (commentText: string, parentId?: string) => void;
   fetchReplies: (commentText: string, parentId?: string) => void;
 }
 
-function Comments({ body, username, time, commentId, alert, handleSubmitClick, fetchReplies}: CommentItem) {
+function Comments({ body, username, time, commentId, handleSubmitClick, fetchReplies}: CommentItem) {
   const [commentText, setCommentText] = useState<string>('');
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -25,6 +24,8 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
   const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const [replies, setReplies] = useState<any>([]);
+  const [alert, setAlert] = useState<any>(undefined);
+
 
 
   
@@ -67,12 +68,41 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
  const handleTextChange = (event: any) => {
   setCommentText(event.target.value)
 }
+
+/**
+ * Uses the handleSubmitClick function from the parent PostPage to submit
+ * a comment reply
+ */
+const handleReplySubmitForComment = async () => {
+  if (!commentText.trim()) {
+    setAlert({
+      message: "Comments should not be empty",
+      type: "danger",
+    });
+    return;
+  }
+
+  const submitAlert = await handleSubmitClick(commentText, commentId);
+  console.log(submitAlert);
+  setAlert(submitAlert);
   
+}
+  
+useEffect(() => {
+  if (alert) {
+    setTimeout(clearAlert, 5000);
+  }
+}, [alert]);
+
+const clearAlert = () => {
+  setAlert(undefined);
+};
+
 
   return (
     <>
       <div className="comment-bg row"> {/* COMMENT CONTAINER */}
-        <div className="col-1 d-flex flex-column justify-content-center"> {/* LIKE/DISLIKE BUTTONS */}
+        <div className="col-1 d-flex flex-column justify-content-top align-items-center mt-3"> {/* LIKE/DISLIKE BUTTONS */}
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm button-comment-like-format border-0"
@@ -128,7 +158,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
               {alert.message}
             </div>
           )}
-        </div>
+          </div>
 
            {/* REPLY FORM */}
           {showReplyForm && (
@@ -143,7 +173,7 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
                   
                 <button 
                   className="btn btn-secondary align-self-end"
-                  onClick={() => handleSubmitClick(commentText, commentId)}>
+                  onClick={() => handleReplySubmitForComment()}>
                   Submit
                 </button>
               </div>
@@ -160,7 +190,6 @@ function Comments({ body, username, time, commentId, alert, handleSubmitClick, f
                   body={reply.body}
                   time={reply.creation_time}
                   commentId={reply.post_id}
-                  alert={alert}
                   handleSubmitClick={handleSubmitClick}
                   fetchReplies={fetchReplies}
                 />

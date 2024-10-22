@@ -30,9 +30,7 @@ function PostPage() {
   const [commentNumber, setCommentNumber] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState<boolean>(true);
-  const [alert, setAlert] = useState<{ message: string; type: string } | null>(
-    null
-  );
+  const [alert, setAlert] = useState<any>(undefined);
 
   // #region request/response interceptors
   // Request Interceptor
@@ -143,19 +141,12 @@ function PostPage() {
 
     // Validate incoming text
     if (!token) {
-      setAlert({
+      const postPageAlert = {
         message: "You must be logged in to submit a comment",
         type: "danger",
-      });
-      return;
-    }
-
-    if (!commentText.trim()) {
-      setAlert({
-        message: "Comments should not be empty",
-        type: "danger",
-      });
-      return;
+      };
+      setAlert(postPageAlert);
+      return postPageAlert;
     }
 
     // Check if response to main post or a comment
@@ -171,23 +162,30 @@ function PostPage() {
 
       // Alerts when successful or errors occur
       if (response.status === 201) {
-        setAlert({
+        const postPageAlert = {
           message: "Comment succesfully submitted!",
           type: "success",
-        });
+        };
+        setAlert(postPageAlert);
+        return postPageAlert;
       } else {
-        setAlert({
+        const postPageAlert = {
           message: "Failed to submit the comment",
           type: "danger",
-        });
+        };
+        setAlert(postPageAlert);
+        return postPageAlert;
       }
     } catch (err) {
       console.error("Error submitting comment:", err);
-      setAlert({
+
+      const postPageAlert = {
         message:
           "An error occurred while submitting your comment. Please try again.",
         type: "danger",
-      });
+      };
+      setAlert(postPageAlert);
+      return postPageAlert;
     }
   };
 
@@ -198,30 +196,22 @@ function PostPage() {
     setPage(page + 1);
   };
 
-  /**
-   * Resets the alert
-   */
+  useEffect(() => {
+    if (alert) {
+      setTimeout(clearAlert, 5000);
+    }
+  }, [alert]);
+
   const clearAlert = () => {
-    setAlert(null);
+    setAlert(undefined);
   };
-
-  /**
-   * Automatically refreshes the alert after 5 seconds
-   */
-  if (alert) {
-    setTimeout(clearAlert, 5000);
-  }
-
-  console.log(content); // Log content before rendering
 
   return (
     <div className="post-page">
       <div className="post-page-padding">
+        {/* TOP POST BODY: BUTTONS */}
         <div className="row">
-          {" "}
-          {/* TOP POST BODY */}
-          <div className="post-page-button-cont col-1 d-flex flex-column align-items-center justify-content-center">
-            {" "}
+          <div className="post-page-button-cont col-1">
             {/* Buttons */}
             <button
               type="button"
@@ -262,7 +252,6 @@ function PostPage() {
         <div>
           <CommentForm
             commentNumber={commentNumber}
-            alert={alert}
             handleSubmitClick={handleSubmitClick}
           />
         </div>
@@ -277,7 +266,6 @@ function PostPage() {
               body={comment.body}
               time={comment.creation_time}
               commentId={comment.post_id}
-              alert={alert}
               handleSubmitClick={handleSubmitClick}
               fetchReplies={fetchReplies}
             />

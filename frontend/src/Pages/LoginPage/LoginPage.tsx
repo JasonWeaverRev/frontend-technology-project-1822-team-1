@@ -3,6 +3,26 @@ import "./LoginPage.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const storeLoggedInUser = async () => {
+  try {
+    const response = await axios.get(
+      "http://localhost:4000/api/accounts/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    console.log(response);
+
+    localStorage.setItem("username", response.data.userProfile.username);
+    localStorage.setItem("role", response.data.userProfile.role);
+  } catch (error) {
+    console.error("Error fetching user profile: ", error);
+  }
+};
+
 function LoginPage() {
   const [identifier, setIdentifier] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -110,7 +130,7 @@ function LoginPage() {
                 >
                   {isSubmitting ? "Logging In..." : "Log In"}
                 </button>
-                <p>
+                <p className="prelink-text">
                   Don't have an account?{" "}
                   <Link to="/register">Register here</Link>
                 </p>
