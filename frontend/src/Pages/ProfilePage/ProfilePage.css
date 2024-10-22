@@ -86,7 +86,7 @@
 }
 
 #forum-post-container .card-container {
-    max-height: calc(10 * 5rem);
+    max-height: calc(7 * 5rem);
 }
 
 .card-container::-webkit-scrollbar {
