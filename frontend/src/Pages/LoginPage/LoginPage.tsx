@@ -113,7 +113,7 @@ function LoginPage() {
                 >
                   {isSubmitting ? "Logging In..." : "Log In"}
                 </button>
-                <p>
+                <p className="prelink-text">
                   Don't have an account?{" "}
                   <Link to="/register">Register here</Link>
                 </p>

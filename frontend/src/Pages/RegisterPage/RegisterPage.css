@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* Renamed container class to avoid conflicts */
 .register-container-fluid {
   display: flex;
@@ -6,9 +5,6 @@
   height: 100vh;
   overflow-x: hidden;
 }
-=======
-
->>>>>>> login
 
 .register-auth-form {
   background-color: white;
@@ -73,17 +69,18 @@
 }
 
 /* Form padding for smaller screens */
-<<<<<<< HEAD
 @media (max-width: 576px) {
   .register-auth-form {
     padding: 15px !important;
   }
 }
 
-=======
->>>>>>> login
 @media (max-width: 576px) {
   .register-auth-form {
     padding: 15px !important;
   }
+}
+
+.prelink-text {
+  color: rgb(114, 114, 114);
 }
