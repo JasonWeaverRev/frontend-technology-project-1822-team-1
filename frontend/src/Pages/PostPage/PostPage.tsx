@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./PostPage.css";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Comments from "../../Components/Comments/Comments";
 
 import likeUnselectedIcon from "./PostPageImages/upvote-unselected-arrows.png";
@@ -19,6 +19,9 @@ function PostPage() {
   const title = location.state?.title;
   const username = location.state?.username;
   const content = location.state?.content;
+  // const likedby = location.state?.likedby;
+  // const dislikedby = location.state?.dislikedby;
+
 
   /**
    * State variable declarations
@@ -26,6 +29,8 @@ function PostPage() {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
+  const [likedByList, setLikedByList] = useState<string[]>([]);
+  const [dislikedByList, setDislikedByList] = useState<string[]>([]);
   const [comments, setComments] = useState<any[]>([]);
   const [commentNumber, setCommentNumber] = useState<number>(0);
   const [page, setPage] = useState(1);
@@ -93,24 +98,121 @@ function PostPage() {
   /**
    * HANDLERS
    */
+
+
+
   /**
-   * Handles like events
-   *
-   * @param type 'like' or 'dislike', depending on type of like option selected
+   * Handles 'like' or 'dislike' button events
+   * 
+   * @param type 
    */
-  const handleLikeButtonClick = (type: "like" | "dislike") => {
+  const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
       setIsLiked((state) => !state);
       if (isDisliked) {
         setIsDisliked(false);
       }
+
+      await handleUpvote();
+
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
         setIsLiked(false);
       }
+
+      await handleDownvote();
     }
   };
+
+  /**
+   * Likes a post
+   */
+  const handleUpvote = async () => {
+    try {
+      const response = await axios.post(
+      `http://localhost:4000/api/forums/like`,
+      {
+        post_id: postId,
+      }
+    );
+
+    await getLikes();
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * Dislikes a post
+   */
+  const handleDownvote = async () => {
+    try {
+      const response = await axios.post(
+      `http://localhost:4000/api/forums/dislike`,
+      {
+        post_id: postId,
+      }
+    );
+    
+    await getLikes();
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * Retrieves likes from a specific post
+   */
+  const getLikes = async () => {
+    await axios
+    .get(`http://localhost:4000/api/forums/posts/likes/${postId}`)
+    .then((response) => {
+      
+      setLikes(response.data);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  /**
+   * Retrieves likes from a specific post
+   */
+    const getLikedBy = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/api/forums/posts/${postId}`)
+
+        setLikedByList(response.data.liked_by);
+        setDislikedByList(response.data.disliked_by);
+        
+      } catch(error) {
+        console.log(error);
+      }
+    };
+
+  /**
+   * Retrieves likes on initial page load
+   */
+  useEffect(() => {
+    getLikes();
+    getLikedBy();
+  }, []);
+
+  useEffect(() => {
+    const activeUsername = localStorage.getItem("username");
+
+    if (activeUsername && likedByList && likedByList.includes(activeUsername)) {
+      setIsLiked(true);
+
+    } else if (activeUsername && dislikedByList && dislikedByList.includes(activeUsername)) {
+      setIsDisliked(true);
+    }
+
+  }, [likedByList, dislikedByList])
 
   /**
    * Handles comment reply events
@@ -202,6 +304,7 @@ function PostPage() {
     }
   }, [alert]);
 
+
   const clearAlert = () => {
     setAlert(undefined);
   };
@@ -216,7 +319,7 @@ function PostPage() {
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm button-format border-0"
-              onClick={() => handleLikeButtonClick("like")}
+              onClick={() => handleButtonClick("like")}
             >
               <img
                 src={isLiked ? likeSelectedIcon : likeUnselectedIcon}
@@ -228,7 +331,7 @@ function PostPage() {
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm button-format border-0"
-              onClick={() => handleLikeButtonClick("dislike")}
+              onClick={() => handleButtonClick("dislike")}
             >
               <img
                 src={isDisliked ? dislikeSelectedIcon : dislikeUnselectedIcon}
@@ -240,10 +343,15 @@ function PostPage() {
           <div className="post-body-bg col-11 d-flex flex-column align-items-center">
             {/* Post Text */}
             <h3 className="text-post-page-format">{title}</h3>
-            <p className="text-post-page-format">{username}</p>
+            <Link 
+              to={`/profile/${username}`}
+              className="text-decoration-none text-dark ms-0"
+            >
+              {username}
+            </Link>
             {/* Render the content as HTML */}
             <div
-              className="text-post-page-format"
+              className="text-post-page-format mt-4"
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>

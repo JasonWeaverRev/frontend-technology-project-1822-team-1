@@ -5,6 +5,8 @@ import likeUnselectedIcon from "./CommentImages/upvote-unselected-arrows.png";
 import likeSelectedIcon from "./CommentImages/upvote-selected-arrows.png";
 import dislikeUnselectedIcon from "./CommentImages/downvote-unselected-arrows.png";
 import dislikeSelectedIcon from "./CommentImages/downvote-selected-arrows.png";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface CommentItem {
   body: string;
@@ -21,6 +23,8 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
+  const [likedByList, setLikedByList] = useState<string[]>([]);
+  const [dislikedByList, setDislikedByList] = useState<string[]>([]);
   const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const [replies, setReplies] = useState<any>([]);
@@ -29,19 +33,118 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
 
 
   
-  const handleButtonClick = (type: "like" | "dislike") => {
+  /**
+   * Handles 'like' or 'dislike' button events
+   * 
+   * @param type 
+   */
+  const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
       setIsLiked((state) => !state);
       if (isDisliked) {
         setIsDisliked(false);
       }
+
+      await handleUpvote();
+
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
         setIsLiked(false);
       }
+
+      await handleDownvote();
     }
   };
+
+  /**
+   * Likes a post
+   */
+  const handleUpvote = async () => {
+    try {
+      const response = await axios.post(
+      `http://localhost:4000/api/forums/like`,
+      {
+        post_id: commentId,
+      }
+    );
+
+    await getLikes();
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * Dislikes a post
+   */
+  const handleDownvote = async () => {
+    try {
+      const response = await axios.post(
+      `http://localhost:4000/api/forums/dislike`,
+      {
+        post_id: commentId,
+      }
+    );
+    
+    await getLikes();
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /**
+   * Retrieves likes from a specific post
+   */
+  const getLikes = async () => {
+    await axios
+    .get(`http://localhost:4000/api/forums/posts/likes/${commentId}`)
+    .then((response) => {
+      
+      setLikes(response.data);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  /**
+   * Retrieves likes from a specific post
+   */
+    const getLikedBy = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/api/forums/posts/${commentId}`)
+
+        setLikedByList(response.data.liked_by);
+        setDislikedByList(response.data.disliked_by);
+        
+      } catch(error) {
+        console.log(error);
+      }
+    };
+
+  /**
+   * Retrieves likes on initial page load
+   */
+  useEffect(() => {
+    getLikes();
+    getLikedBy();
+  }, []);
+
+  useEffect(() => {
+    const activeUsername = localStorage.getItem("username");
+
+    if (activeUsername && likedByList && likedByList.includes(activeUsername)) {
+      setIsLiked(true);
+
+    } else if (activeUsername && dislikedByList && dislikedByList.includes(activeUsername)) {
+      setIsDisliked(true);
+    }
+
+  }, [likedByList, dislikedByList])
 
   /**
    * Tracks whether the reply form is tracked or not
@@ -129,7 +232,12 @@ const clearAlert = () => {
         
          <div className="col-11 landing-page-text-format"> {/* COMMENT INFORMATION BODY */}
           <div className="d-flex justify-content-start comment-header">
-            <p className="ms-0">{username}</p>
+            <Link 
+              to={`/profile/${username}`}
+              className="text-decoration-none text-dark ms-0"
+            >
+              {username}
+            </Link>
             <p className="ms-4 fw-bold">{likes}</p> 
             <p className="ms-4">{time}</p>
           </div>
