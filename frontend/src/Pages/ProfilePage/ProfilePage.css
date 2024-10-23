@@ -135,7 +135,7 @@
     transform: translateY(1px);
 }
 
-.delete-confirmation-popup {
+.confirmation-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -201,11 +201,22 @@
 
 .delete-button:hover {
     color: #ff6060;
+    transform: translateY(1px);
 }
 
 .confirm-delete-btn,
 .cancel-btn {
     transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(173, 173, 173);
+    transform: translateY(-2px);
+}
+
+.cancel-btn:active {
+    background-color: rgb(85, 85, 85);
+    transform: translateY(1px);
 }
 
 

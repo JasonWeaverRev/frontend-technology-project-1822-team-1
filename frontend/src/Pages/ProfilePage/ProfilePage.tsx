@@ -169,6 +169,10 @@ function ProfilePage() {
   }
   // #endregion
 
+  // #region assign Campaign Title
+
+  // #endregion
+
   // #region Populate Forum Posts
   const getUserPosts = async () => {
     try {
@@ -255,10 +259,18 @@ function ProfilePage() {
                   <p>will be filled with preview of monsters comma separated</p>
 
                   <div id="encounter-button-container">
-                    {isCurrentUser && (
-                      <button onClick={() => { setEncounterToDelete(entry.encounter_id); setShowDeletePopup(true); }} className="delete-button">
-                        &times;
-                      </button>
+                    {isCurrentUser ? (
+                      <button onClick={() => {
+                        setEncounterToDelete(entry.encounter_id);
+                        setShowDeletePopup(true); }}
+                      className="delete-button">&times;</button>
+
+                      // <button onClick={() => {
+                      //   setEncounterToModify(entry.encounter_id);
+                      //   setShowCampaignPopup(true); }}
+                      // className="campaign-button">🎯</button>
+                    ) : (
+                      <div className="button-placeholder"></div>
                     )}
                     <p className="encounter-date">{formattedDate}</p>
                   </div>
@@ -270,7 +282,7 @@ function ProfilePage() {
 
           {/* Popup for delete confirmation */}
           {showDeletePopup && (
-            <div className="delete-confirmation-popup">
+            <div className="confirmation-popup">
               <div className="popup-content">
                 <h2>Confirm Deletion</h2>
                 <p>Are you sure you want to delete this encounter?</p>
