@@ -15,7 +15,7 @@ function LandingPage() {
 
   const getPosts = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
+      .get(`http://35.175.254.24:4000/api/forums/landing?page=${page}`)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setPosts(response.data[0]);

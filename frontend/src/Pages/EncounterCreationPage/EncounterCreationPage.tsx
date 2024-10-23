@@ -44,7 +44,7 @@ const EncounterCreationPage: React.FC = () => {
   const getMonstersByChallengeRating = async () => {
     await axios
       .get(
-        `http://localhost:4000/api/encounters/monsters?challenge_rating=${challengeRating}`
+        `http://35.175.254.24:4000/api/encounters/monsters?challenge_rating=${challengeRating}`
       )
       .then((response) => {
         setMonsters(response.data.monsters.map((monster: any) => monster));
