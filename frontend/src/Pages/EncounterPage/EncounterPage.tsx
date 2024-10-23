@@ -75,6 +75,40 @@ function EncounterPage() {
     }
   };
 
+  const editEncounter = async () => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:4000/api/encounters/encounter`,
+        {
+          monsters: encounter.roster,
+          encounter_title: encounter.title,
+          setting: encounter.setting,
+          encounter_id: encounter.id,
+        }
+      );
+
+      const data = response.data;
+      console.log(data);
+
+      if (response.status === 200) {
+        setSuccess(true);
+
+        const savedEncounter = {
+          title: data.encounter.encounter_title,
+          setting: data.encounter.setting,
+          roster: data.encounter.monsters,
+          id: data.encounter.encounter_id,
+        };
+        setEncounter(savedEncounter);
+        console.log("Encounter saved");
+      } else {
+        console.log("Encounter not saved");
+      }
+    } catch (err) {
+      console.error("Error submitting comment:", err);
+    }
+  };
+
   if (success) {
     setTimeout(() => setSuccess(false), 3000);
   }
@@ -120,7 +154,13 @@ function EncounterPage() {
         )}
         {localStorage.getItem("token") && (
           <div className="save-encounter-button d-flex justify-content-end pt-2 gap-2 flex-column col-2 align-content-end align-self-end">
-            <button onClick={saveEncounter}>Save Encounter</button>
+            <button
+              onClick={() =>
+                !encounter.id ? saveEncounter() : editEncounter()
+              }
+            >
+              Save Encounter
+            </button>
             {encounter.id && (
               <button onClick={() => navigate("/encounter-creation")}>
                 Edit Encounter
