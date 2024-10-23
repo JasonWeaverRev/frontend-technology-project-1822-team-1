@@ -63,7 +63,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://localhost:4000/api/forums/like`,
+      `http://35.175.254.24:4000/api/forums/like`,
       {
         post_id: commentId,
       }
@@ -82,7 +82,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://localhost:4000/api/forums/dislike`,
+      `http://35.175.254.24:4000/api/forums/dislike`,
       {
         post_id: commentId,
       }
@@ -100,7 +100,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    */
   const getLikes = async () => {
     await axios
-    .get(`http://localhost:4000/api/forums/posts/likes/${commentId}`)
+    .get(`http://35.175.254.24:4000/api/forums/posts/likes/${commentId}`)
     .then((response) => {
       
       setLikes(response.data);
@@ -116,7 +116,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    */
     const getLikedBy = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/forums/posts/${commentId}`)
+        const response = await axios.get(`http://35.175.254.24:4000/api/forums/posts/${commentId}`)
 
         setLikedByList(response.data.liked_by);
         setDislikedByList(response.data.disliked_by);
