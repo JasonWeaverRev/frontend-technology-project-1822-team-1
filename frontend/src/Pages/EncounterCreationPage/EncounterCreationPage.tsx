@@ -43,6 +43,7 @@ const EncounterCreationPage: React.FC = () => {
 
   useEffect(() => {
     if (encounter) {
+      console.log(encounter);
       setTitle(encounter.title);
       setEnvironment(encounter.environment);
       setSetting(encounter.setting);
