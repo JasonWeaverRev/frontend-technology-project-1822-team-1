@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import "./ProfilePage.css";
+import { useEncounter } from "../../Context/EncounterContext";
 
+// #region Interfaces
 interface Profile {
   email: string;
   username: string;
   about_me: string;
   role: string;
   creation_time: string;
+  profile_pic: string;
 }
 
 interface Encounter {
   encounter_id: string;
   encounter_title: string;
-  monsters:	Monster[];
+  monsters: Monster[];
   saves: number;
   creation_time: string;
   campaign_title: string;
@@ -34,28 +37,31 @@ interface Monster {
   name: string;
   type: string;
 }
+// #endregion
 
 function ProfilePage() {
   // #region Variables and States
 
   // Variables to determine view and profile
   const { username } = useParams(); // gets profile name from URL -- the profile to be loaded
-  const TOKEN = localStorage.getItem("token") || ''; // get login token from local storage, permission check to edit profile
-  const loggedInUser = localStorage.getItem("username") || ''; // gets username of currently logged user
+  const TOKEN = localStorage.getItem("token") || ""; // get login token from local storage, permission check to edit profile
+  const loggedInUser = localStorage.getItem("username") || ""; // gets username of currently logged user
   const isCurrentUser = loggedInUser === username; // check if the user should be able to make changes to this page
 
   // States that hold data to populate areas
   const [profile, setProfile] = useState<Profile>(); // holds user's profile
   const [encounters, setEncounters] = useState<Encounter[]>([]); // array holding user Encounters
   const [posts, setPosts] = useState<Post[]>([]); // array holding user Posts;
-  
+
   // States that determine if editor or popups should show
-  const [editAboutMe, setEditAboutMe] = useState(''); // holds new about me to patch
+  const [editAboutMe, setEditAboutMe] = useState(""); // holds new about me to patch
   const [isEditing, setIsEditing] = useState(false); // state to manage whether the about me editor is open
-  const [encounterToDelete, setEncounterToDelete] = useState<string | null>(null); // ID of the encounter to delete
+  const [encounterToDelete, setEncounterToDelete] = useState<string | null>(
+    null
+  ); // ID of the encounter to delete
   const [showDeletePopup, setShowDeletePopup] = useState(false); // Whether to show the confirmation popup
   // #endregion
-  
+
   // #region req/res interceptor setup
   axios.interceptors.request.use(
     (config: any): any => {
@@ -77,7 +83,9 @@ function ProfilePage() {
   );
   // #endregion
 
-  // #region Get User Profile info w/ auth token & Edit About Me
+  const { setEncounter } = useEncounter();
+
+  // #region Profile getters
   const getProfile = async () => {
     try {
       const response = await axios.get(`http://localhost:4000/api/accounts/profile/${username}`, {
@@ -93,28 +101,32 @@ function ProfilePage() {
 
   const updateAboutMe = async () => {
     try {
-      await axios.patch(`http://localhost:4000/api/accounts/about-me`, {
-        about_me: editAboutMe
-      }, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`}
-      });
+      await axios.patch(
+        `http://localhost:4000/api/accounts/about-me`,
+        {
+          about_me: editAboutMe,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        }
+      );
 
       setProfile((prev) => ({
-        email: prev?.email || '',
-        username: prev?.username || '',
+        email: prev?.email || "",
+        username: prev?.username || "",
         about_me: editAboutMe,
-        role: prev?.role || '',
-        creation_time: prev?.creation_time || '',
+        role: prev?.role || "",
+        creation_time: prev?.creation_time || "",
+        profile_pic: prev?.profile_pic || ""
       }));
-
     } catch (error) {
       console.error("Error patching User about me section: ", error);
-
     } finally {
       setIsEditing(false);
     }
-  }
+  };
 
   useEffect(() => {
     getProfile();
@@ -124,15 +136,20 @@ function ProfilePage() {
   // #region Populates Encounters
   const getUserEncounters = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/encounters/${username}`, { // sends get request to the backend thru URL
-      });
+      const response = await axios.get(
+        `http://localhost:4000/api/encounters/${username}`,
+        {
+          // sends get request to the backend thru URL
+        }
+      );
       setEncounters(response.data.encounters); // encounters = response.data
     } catch (error) {
       console.error("Error fetching user encounters: ", error);
     }
-  }
+  };
 
-  useEffect(() => { // runs fetchUserEncounters after mounting (initial render)
+  useEffect(() => {
+    // runs fetchUserEncounters after mounting (initial render)
     getUserEncounters();
   }, []);
   // #endregion
@@ -142,31 +159,34 @@ function ProfilePage() {
     console.log("inside deleteEncounter: ", encounter_id);
 
     try {
-      
-      const response = await axios.delete(`http://localhost:4000/api/encounters/encounter`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,  // Ensure the token is correct
-        },
-        params: { encounter_id },  // Send the encounter_id as a query parameter
-      });
-  
+      const response = await axios.delete(
+        `http://localhost:4000/api/encounters/encounter`,
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`, // Ensure the token is correct
+          },
+          params: { encounter_id }, // Send the encounter_id as a query parameter
+        }
+      );
+
       console.log("Encounter deleted:", response.data);
 
       setEncounters((prevEncounters) =>
-        prevEncounters.filter((encounter) => encounter.encounter_id !== encounter_id)
+        prevEncounters.filter(
+          (encounter) => encounter.encounter_id !== encounter_id
+        )
       );
-
     } catch (error) {
       console.error("Error deleting encounter from user profile: ", error);
     }
-  }
+  };
 
   const handleDelete = () => {
     if (encounterToDelete) {
       deleteEncounter(encounterToDelete);
       setShowDeletePopup(false);
     }
-  }
+  };
   // #endregion
 
   // #region assign Campaign Title
@@ -176,13 +196,15 @@ function ProfilePage() {
   // #region Populate Forum Posts
   const getUserPosts = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/forums/${username}`);
+      const response = await axios.get(
+        `http://localhost:4000/api/forums/${username}`
+      );
       setPosts(response.data);
       console.log("user posts: ", response.data);
     } catch (error) {
       console.error("Error getting user posts: ", error);
     }
-  }
+  };
 
   useEffect(() => {
     getUserPosts();
@@ -190,14 +212,25 @@ function ProfilePage() {
   // #endregion
 
   // Populates "Your Campaigns" field
-  const campaigns = Array.from(new Set(encounters.map((entry) => entry.campaign_title)));
+  const campaigns = Array.from(
+    new Set(encounters.map((entry) => entry.campaign_title))
+  );
 
   return (
-  <>
+    <>
     {/* User profile header, contains profile pic, username, and about me sections */}
     <div id="profile-bio-section" className="container-fluid row">
-      <div id="image-container" className="col-4 d-flex justify-content-end align-self-start"> {/* Profile picture */}
-        <img src="https://picsum.photos/200" alt="Profile placeholder" className="img-fluid" />
+      <div
+        id="image-container"
+        className="col-4 d-flex justify-content-end align-self-start"
+      >
+        {" "}
+        {/* Profile picture */}
+        <img
+          src="https://picsum.photos/200"
+          alt="Profile placeholder"
+          className="img-fluid"
+        />
       </div>
       <div id="user_bio" className="col-8 text-start">
         <h1 id="username">{profile?.username}</h1> {/* Username */}
@@ -209,14 +242,16 @@ function ProfilePage() {
               className="form-control mb-2"
               rows={4}
             />
-            <button onClick={updateAboutMe} id="save-button">Save</button>
+            <button onClick={updateAboutMe} id="save-button">
+              Save
+            </button>
           </div>
         ) : (
           <div className="about-me-container">
             <p id="about_me">{profile?.about_me}</p> {/* About Me */}
-            {isCurrentUser && ( // Conditionally render button only if it's the user's own profile
-              <button onClick={() => setIsEditing(true)} id="edit-button">Edit About Me</button>
-            )}
+            <button onClick={() => setIsEditing(true)} id="edit-button">
+              Edit About Me
+            </button>
           </div>
         )}
       </div>
@@ -229,12 +264,12 @@ function ProfilePage() {
 
           <div className="card-container">
             {campaigns.map((campaign, index) => (
-              
-              <Link 
-                to={`/campaign/${encodeURIComponent(campaign)}`} 
+              <Link
+                to={`/campaign/${encodeURIComponent(campaign)}`}
                 key={index}
                 className="content-card"
-                style={{ textDecoration: 'none' }}>
+                style={{ textDecoration: "none" }}
+              >
                 <h3>{campaign}</h3>
               </Link>
             ))}
@@ -255,7 +290,20 @@ function ProfilePage() {
 
               return (
                 <div key={entry.encounter_id} className="content-card">
-                  <h3>{entry.encounter_title + " and also the id " + entry.encounter_id}</h3>
+                  <Link
+                      className="title-link"
+                      onClick={() => {
+                        const thisEncounter = {
+                          title: entry.encounter_title,
+                          setting: entry.setting,
+                          roster: entry.monsters,
+                          id: entry.encounter_id,
+                        };
+                        setEncounter(thisEncounter);
+                      }}
+                      to={"/encounter"}>
+                      <h3>{entry.encounter_title}</h3>
+                  </Link>
                   <p>will be filled with preview of monsters comma separated</p>
 
                   <div id="encounter-button-container">
@@ -298,7 +346,6 @@ function ProfilePage() {
             </div>
           )}
 
-
         </div>
       </div>
 
@@ -307,10 +354,10 @@ function ProfilePage() {
         <div className="card-container">
           {posts.map((post, index) => {
             const date = new Date(post.creation_time);
-            const formattedDate = date.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
+            const formattedDate = date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
             });
 
             return (
@@ -324,8 +371,8 @@ function ProfilePage() {
         </div>
       </div>
     </div>
-  </>
-  )
+    </>
+  );
 }
 
 export default ProfilePage;

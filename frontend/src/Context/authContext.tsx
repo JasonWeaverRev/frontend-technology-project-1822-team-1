@@ -1,16 +1,15 @@
 import React, {
   createContext,
-  useState,
   useContext,
-  useEffect,
   ReactNode,
+  useState,
+  useEffect,
 } from "react";
 
 // Define the types for the context values
 type AuthContextType = {
   token: string | null;
-  user: any;
-  login: (token: string, userData: any) => void;
+  login: (token: string) => void;
   logout: () => void;
 };
 
@@ -33,44 +32,26 @@ interface AuthProviderProps {
 
 // AuthProvider component that will wrap the app and provide the auth state
 export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
 
-  // Load token from localStorage on initial load
-  useEffect(() => {
-    /*
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-      // Optionally, load user data as well
-    }
-    */
-  }, []);
-
-  // Login function to store the token and user data
-  const login = (token: string, userData: any) => {
+  // Login function to store the token
+  const login = (token: string) => {
     setToken(token);
-    setUser(userData);
-    /*
     localStorage.setItem("token", token);
-    // Optionally, store user data in localStorage if needed
-    */
   };
 
-  // Logout function to clear the token and user data
+  // Logout function to clear the token
   const logout = () => {
     setToken(null);
-    setUser(null);
-    /*
     localStorage.removeItem("token");
-    // Optionally, remove user data from localStorage if stored
-    */
   };
 
   // Return the context provider with the value to share state across the app
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
-      {children} {/* Ensure children is rendered here */}
+    <AuthContext.Provider value={{ token, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
 };

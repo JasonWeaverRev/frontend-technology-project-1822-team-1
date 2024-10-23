@@ -1,3 +1,4 @@
+// LandingPage.tsx
 import React, { useState, useEffect } from "react";
 import Post from "../../Components/Post/Post";
 import axios from "axios";
@@ -12,37 +13,13 @@ function LandingPage() {
     setPage(page + 1);
   };
 
-  /**
-   * INTERCEPTORS
-   */
-  // Request Interceptor
-  axios.interceptors.request.use(
-    (config: any): any => {
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
-  // Response Interceptor
-  axios.interceptors.response.use(
-    (response: any): any => {
-      return response;
-    },
-    (error) => {
-      console.error(error);
-      return Promise.reject(error);
-    }
-  );
-
   const getPosts = async () => {
     await axios
-      .get(`http://35.175.254.24:4000/api/forums/landing?page=${page}`)
+      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
       .then((response) => {
-        console.log(response.data); // Log the response data for debugging
+        console.log(response.data);
         if (Array.isArray(response.data)) {
-          setPosts(response.data[0]); // Make sure this is an array
+          setPosts(response.data[0]);
         } else {
           console.error("Response is not an array:", response.data);
         }
@@ -56,9 +33,6 @@ function LandingPage() {
       });
   };
 
-  /**
-   * Loads in pages on start up and page changes
-   */
   useEffect(() => {
     getPosts();
   }, [page]);

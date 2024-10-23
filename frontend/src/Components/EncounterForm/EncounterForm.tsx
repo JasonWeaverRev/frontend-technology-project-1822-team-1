@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LinkButton from "../LinkButton/LinkButton";
+import "./EncounterForm.css";
 
 interface EncounterFormProps {
   setTitle: any;
@@ -9,6 +10,10 @@ interface EncounterFormProps {
   setChallengeRating: any;
   getMonstersByChallengeRating: any;
   generateEncounter: any;
+  error: string;
+  title: string | undefined;
+  setting: string | undefined;
+  environment: string | undefined;
 }
 
 const EncounterForm: React.FC<EncounterFormProps> = ({
@@ -18,6 +23,10 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
   setChallengeRating,
   getMonstersByChallengeRating,
   generateEncounter,
+  error,
+  title,
+  environment,
+  setting,
 }) => {
   return (
     <div className="encounter-info d-flex flex-column">
@@ -26,7 +35,8 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
         <input
           type="text"
           placeholder="Encounter Title"
-          className="info"
+          value={title ? title : ""}
+          className={` title-info ${error ? "title-error" : ""}`}
           maxLength={36}
           onChange={(e) => setTitle(String(e.target.value))}
         />
@@ -34,12 +44,14 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
           type="text"
           placeholder="Environment Name"
           className="info"
+          value={environment ? environment : ""}
           maxLength={36}
           onChange={(e) => setEnvironment(String(e.target.value))}
         />
         <textarea
           placeholder="Environment Notes"
           className="setting info"
+          value={setting ? setting : ""}
           maxLength={144}
           onChange={(e) => setSetting(String(e.target.value))}
         ></textarea>

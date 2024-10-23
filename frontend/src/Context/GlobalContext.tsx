@@ -1,6 +1,6 @@
 import React from "react";
 import { EncounterProvider } from "./EncounterContext";
-import { AuthProvider } from "../Pages/LoginPage/auth/authContext";
+import { AuthProvider } from "./authContext";
 
 const GlobalContext: React.FC<{ children: React.ReactNode }> = ({
   children,

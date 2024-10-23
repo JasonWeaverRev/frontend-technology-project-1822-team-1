@@ -1,88 +1,88 @@
 #profile-bio-section {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-    background-color: #1e1f1e;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  background-color: #1e1f1e;
 }
 
 #profile-bio-section > div > img {
-    border-radius: 50%;
-    object-fit: cover;
-    width: 150px;
-    height: 150px;
-    margin-left: 8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  width: 150px;
+  height: 150px;
+  margin-left: 8rem;
 }
 
-#user_bio > h1, 
+#user_bio > h1,
 .about-me-container {
-    margin-right: 20rem;
-    margin-left: 6rem;
-    max-width: 100%;
+  margin-right: 20rem;
+  margin-left: 6rem;
+  max-width: 100%;
 }
 
 #about_me {
-    word-wrap: break-word;
+  word-wrap: break-word;
 }
 
-#profile-body-section h1{
-    text-align: start;
+#profile-body-section h1 {
+  text-align: start;
 }
 
 #campaigns,
 #encounters,
 #forum-post-container .card-container {
-    width: 80%;
+  width: 80%;
 }
 
 #campaigns,
 #encounters {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .content-card {
-    display: block;
-    background-color: rgb(77, 77, 77);
-    width: 100%;
-    height: 7rem;
-    padding: .5rem .8rem;
-    margin: 1rem 0;
-    border-radius: 15px;
-    text-align: left;
+  display: block;
+  background-color: rgb(77, 77, 77);
+  width: 100%;
+  height: 7rem;
+  padding: 0.5rem 0.8rem;
+  margin: 1rem 0;
+  border-radius: 15px;
+  text-align: left;
 }
 
-.content-card h3 {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: white;
-    text-decoration: none;
+.title-link {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: white;
+  font-size: 2em;
 }
 
 #encounters .content-card p,
 #forum-post-container .content-card p {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
 }
 
 #encounters .content-card p:nth-of-type(2),
 #forum-post-container .content-card p:nth-of-type(2) {
-    text-align: right;
+  text-align: right;
 }
 
 #campaigns .content-card {
-    display: flex;
-    align-items: center;
-    height: 4rem;
+  display: flex;
+  align-items: center;
+  height: 4rem;
 }
 
 .card-container {
-    max-height: calc(5 * 5rem);
-    overflow-y: auto;
-    scrollbar-width: thin; 
-    scrollbar-color: darkgray transparent;
-    width: 100%;
-    padding-right: 2px;
+  max-height: calc(5 * 5rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: darkgray transparent;
+  width: 100%;
+  padding-right: 2px;
 }
 
 #forum-post-container .card-container {
@@ -90,49 +90,49 @@
 }
 
 .card-container::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .card-container::-webkit-scrollbar-track {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .card-container::-webkit-scrollbar-thumb {
-    background-color: darkgray;
-    border-radius: 10px;
+  background-color: darkgray;
+  border-radius: 10px;
 }
 
 #profile-body-section {
-    padding-top: 3rem;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
+  padding-top: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 
 #edit-button,
 #save-button {
-    margin-top: auto;
-    background-color: #862c2c;
-    color: white;
-    border: none;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: auto;
+  background-color: #862c2c;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #edit-button:hover,
 #save-button:hover,
 .confirm-delete-btn:hover {
-    background-color: #d37575;
-    transform: translateY(-2px);
+  background-color: #d37575;
+  transform: translateY(-2px);
 }
 
 #edit-button:active,
 #save-button:active,
 .confirm-delete-btn:active {
-    background-color: #862c2c;
-    transform: translateY(1px);
+  background-color: #862c2c;
+  transform: translateY(1px);
 }
 
 .confirmation-popup {
@@ -147,56 +147,56 @@
     align-items: center;
     z-index: 1000;
 }
-  
+
 .popup-content {
-    background: rgb(54, 54, 54);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
+  background: rgb(54, 54, 54);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
 }
-  
+
 .popup-buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
-  
+
 .confirm-delete-btn {
-    background-color: #862c2c;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 15px;
+  background-color: #862c2c;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
 }
-  
+
 .cancel-btn {
-    background-color: gray;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 15px;
+  background-color: gray;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px;
 }
 
 #encounter-button-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .delete-button {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 2rem;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    line-height: 0;
-    display: inline-block;
-    transition: color 0.3s ease, transform 0.2s ease;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  display: inline-block;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .delete-button:hover {
@@ -206,7 +206,7 @@
 
 .confirm-delete-btn,
 .cancel-btn {
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .cancel-btn:hover {
@@ -222,116 +222,121 @@
 
   
 @media (max-width: 1500px) {
-    #user_bio > h1, 
-    .about-me-container {
-        margin-right: 14rem;
-        margin-left: 4rem;
-    }
+  #user_bio > h1,
+  .about-me-container {
+    margin-right: 14rem;
+    margin-left: 4rem;
+  }
 }
 
 @media (max-width: 1024px) {
-    #profile-bio-section > div > img {
-        width: 120px;
-        height: 120px;
-        margin-left: 4rem;
-    }
+  #profile-bio-section > div > img {
+    width: 120px;
+    height: 120px;
+    margin-left: 4rem;
+  }
 
-    #user_bio > h1, 
-    .about-me-container {
-        margin-right: 10rem;
-        margin-left: 4rem;
-    }
+  #user_bio > h1,
+  .about-me-container {
+    margin-right: 10rem;
+    margin-left: 4rem;
+  }
 }
 
 @media (max-width: 768px) {
-    #profile-bio-section {
-        flex-direction: column;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+  #profile-bio-section {
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 
-    }
+  #profile-bio-section > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+  }
 
-    #profile-bio-section > div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin: 0 auto;
-    }
+  #profile-bio-section > div > img {
+    width: 100px;
+    height: 100px;
+    margin: 0;
+  }
 
-    #profile-bio-section > div > img {
-        width: 100px;
-        height: 100px;
-        margin: 0;
-    }
+  #image-container {
+    align-items: center;
+    padding-bottom: 1rem;
+  }
 
-    #image-container {
-        align-items: center;
-        padding-bottom: 1rem;
-    }
+  #username {
+    text-align: center;
+  }
 
-    #username {
-        text-align: center;
-    }
+  #user_bio > h1,
+  .about-me-container {
+    margin-right: 2rem;
+    margin-left: 2rem;
+  }
 
-    #user_bio > h1, 
-    .about-me-container {
-        margin-right: 2rem;
-        margin-left: 2rem;
-    }
+  .about-me-container {
+    margin: 0 auto;
+  }
 
-    .about-me-container {
-        margin: 0 auto;
-    }
+  #profile-body-section {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    #profile-body-section {
-        flex-direction: column;
-        align-items: center;
-    }
+  #forum-post-container {
+    margin-top: 1rem;
+  }
 
-    #forum-post-container {
-        margin-top: 1rem;
-    }
+  #profile-body-section h1 {
+    text-align: center;
+  }
 
-    #profile-body-section h1{
-        text-align: center;
-    }
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .card-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  #campaigns,
+  #encounters,
+  #forum-post-container .card-container {
+    margin: 0 auto;
+  }
 
-    #campaigns,
-    #encounters,
-    #forum-post-container .card-container {
-        margin: 0 auto;
-    }
+  #campaigns,
+  #encounters,
+  #forum-post-container .card-container {
+    margin: 0 auto;
+  }
 
-    #forum-post-container {
-        padding-top: 1.5rem;
-    }
+  #forum-post-container {
+    padding-top: 1.5rem;
+  }
 
-    .about-me-container {
-        display: flex;
-        flex-direction: column;
-    }
+  .about-me-container {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 576px) {
-    #profile-bio-section {
-        padding: 1rem;
-    }
+  #profile-bio-section {
+    padding: 1rem;
+  }
 
-    #profile-bio-section > div > img {
-        width: 80px;
-        height: 80px;
-    }
+  #profile-bio-section > div > img {
+    width: 80px;
+    height: 80px;
+  }
 
-    #user_bio > h1, 
-    .about-me-container {
-        margin-right: 1rem;
-        margin-left: 1rem;
-    }
+  #user_bio > h1,
+  .about-me-container {
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
 }
