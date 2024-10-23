@@ -10,6 +10,7 @@ interface Profile {
   about_me: string;
   role: string;
   creation_time: string;
+  profile_pic: string;
 }
 
 interface Encounter {
@@ -92,17 +93,16 @@ function ProfilePage() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/accounts/profile/$`,
-        {}
-      );
+      const response = await axios.get(`http://localhost:4000/api/accounts/profile/${username}`, {
+      });
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
       console.log(profile);
+      
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
-  };
+  }
 
   const updateAboutMe = async () => {
     try {
@@ -124,6 +124,7 @@ function ProfilePage() {
         about_me: editAboutMe,
         role: prev?.role || "",
         creation_time: prev?.creation_time || "",
+        profile_pic: prev?.profile_pic || ""
       }));
     } catch (error) {
       console.error("Error patching User about me section: ", error);
@@ -256,31 +257,6 @@ function ProfilePage() {
           )}
         </div>
       </div>
-      <div id="user_bio" className="col-8 text-start">
-        <h1 id="username">{profile?.username}</h1> {/* Username */}
-        {isEditing ? (
-          <div className="about-me-container">
-            <textarea
-              value={editAboutMe}
-              onChange={(e) => setEditAboutMe(e.target.value)}
-              className="form-control mb-2"
-              rows={4}
-            />
-            <button onClick={updateAboutMe} id="save-button">
-              Save
-            </button>
-          </div>
-        ) : (
-          <div className="about-me-container">
-            <p id="about_me">{profile?.about_me}</p> {/* About Me */}
-            {isCurrentUser && ( // Conditionally render button only if it's the user's own profile
-              <button onClick={() => setIsEditing(true)} id="edit-button">
-                Edit About Me
-              </button>
-            )}
-          </div>
-        )}
-      </div>
 
       <div id="profile-body-section">
         <div id="campaign-encounter-container" className="col-10 col-md-5">
@@ -333,47 +309,7 @@ function ProfilePage() {
                     <p>
                       will be filled with preview of monsters comma separated
                     </p>
-                    <p>{formattedDate}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        <div id="forum-post-container" className="col-10 col-md-5">
-          <h1>Forum Posts</h1>
-          <div className="card-container">
-            {user_posts.map((entry, index) => (
-              <div key={index} className="content-card">
-                <h1>{entry}</h1>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div id="encounters" className="mt-4">
-          <h1>Encounters</h1>
-
-          <div className="card-container">
-            {encounters.map((entry) => {
-              const date = new Date(entry.creation_time);
-              const formattedDate = date.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              });
-
-              return (
-                <div key={entry.encounter_id} className="content-card">
-                  <h3>
-                    {entry.encounter_title +
-                      " and also the id " +
-                      entry.encounter_id}
-                  </h3>
-                  <p>will be filled with preview of monsters comma separated</p>
-
-                  <div id="encounter-button-container">
+                    <div id="encounter-button-container">
                     {isCurrentUser && (
                       <button
                         onClick={() => {
@@ -387,35 +323,14 @@ function ProfilePage() {
                     )}
                     <p className="encounter-date">{formattedDate}</p>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Popup for delete confirmation */}
-          {showDeletePopup && (
-            <div className="delete-confirmation-popup">
-              <div className="popup-content">
-                <h2>Confirm Deletion</h2>
-                <p>Are you sure you want to delete this encounter?</p>
-                <div className="popup-buttons">
-                  <button onClick={handleDelete} className="confirm-delete-btn">
-                    Confirm
-                  </button>
-                  <button
-                    onClick={() => setShowDeletePopup(false)}
-                    className="cancel-btn"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
+                  </div>
+                );
+              })}
             </div>
-          )}
+          </div>
         </div>
-      </div>
 
-      <div id="forum-post-container" className="col-10 col-md-5">
+        <div id="forum-post-container" className="col-10 col-md-5">
         <h1>Forum Posts</h1>
         <div className="card-container">
           {posts.map((post, index) => {
@@ -436,6 +351,9 @@ function ProfilePage() {
           })}
         </div>
       </div>
+      </div>
+
+      
     </>
   );
 }
