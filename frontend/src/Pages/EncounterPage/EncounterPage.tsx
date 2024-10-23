@@ -71,7 +71,7 @@ function EncounterPage() {
         console.log("Encounter not saved");
       }
     } catch (err) {
-      console.error("Error submitting comment:", err);
+      console.error("Error saving encounter:", err);
     }
   };
 
@@ -105,7 +105,7 @@ function EncounterPage() {
         console.log("Encounter not saved");
       }
     } catch (err) {
-      console.error("Error submitting comment:", err);
+      console.error("Error saving encounter:", err);
     }
   };
 
