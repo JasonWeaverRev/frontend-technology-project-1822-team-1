@@ -80,7 +80,7 @@ function ProfilePage() {
   // #region Get User Profile info w/ auth token & Edit About Me
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/accounts/profile/${username}`, {
+      const response = await axios.get(`http://3.81.216.218:4000/api/accounts/profile/${username}`, {
       });
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
@@ -93,7 +93,7 @@ function ProfilePage() {
 
   const updateAboutMe = async () => {
     try {
-      await axios.patch(`http://localhost:4000/api/accounts/about-me`, {
+      await axios.patch(`http://3.81.216.218:4000/api/accounts/about-me`, {
         about_me: editAboutMe
       }, {
         headers: {
@@ -124,7 +124,7 @@ function ProfilePage() {
   // #region Populates Encounters
   const getUserEncounters = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/encounters/${username}`, { // sends get request to the backend thru URL
+      const response = await axios.get(`http://3.81.216.218:4000/api/encounters/${username}`, { // sends get request to the backend thru URL
       });
       setEncounters(response.data.encounters); // encounters = response.data
     } catch (error) {
@@ -143,7 +143,7 @@ function ProfilePage() {
 
     try {
       
-      const response = await axios.delete(`http://localhost:4000/api/encounters/encounter`, {
+      const response = await axios.delete(`http://3.81.216.218:4000/api/encounters/encounter`, {
         headers: {
           Authorization: `Bearer ${TOKEN}`,  // Ensure the token is correct
         },
@@ -172,7 +172,7 @@ function ProfilePage() {
   // #region Populate Forum Posts
   const getUserPosts = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/forums/${username}`);
+      const response = await axios.get(`http://3.81.216.218:4000/api/forums/${username}`);
       setPosts(response.data);
       console.log("user posts: ", response.data);
     } catch (error) {

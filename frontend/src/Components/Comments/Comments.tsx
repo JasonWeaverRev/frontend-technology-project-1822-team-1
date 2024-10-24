@@ -73,7 +73,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://localhost:4000/api/forums/like`,
+      `http://3.81.216.218:4000/api/forums/like`,
       {
         post_id: commentId,
       }
@@ -92,7 +92,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://localhost:4000/api/forums/dislike`,
+      `http://3.81.216.218:4000/api/forums/dislike`,
       {
         post_id: commentId,
       }
@@ -110,7 +110,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    */
   const getLikes = async () => {
     await axios
-    .get(`http://localhost:4000/api/forums/posts/likes/${commentId}`)
+    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${commentId}`)
     .then((response) => {
       
       setLikes(response.data);
@@ -126,7 +126,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    */
     const getLikedBy = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/forums/posts/${commentId}`)
+        const response = await axios.get(`http://3.81.216.218:4000/api/forums/posts/${commentId}`)
 
         setLikedByList(response.data.liked_by);
         setDislikedByList(response.data.disliked_by);
@@ -254,7 +254,7 @@ const handleEditSubmitClick = async () => {
     console.log(commentId);
     console.log(time);
     const response = await axios.patch(
-    `http://localhost:4000/api/forums/comments`,
+    `http://3.81.216.218:4000/api/forums/comments`,
       {
         comment_id: commentId,
         comment_creation_time: time,
@@ -296,7 +296,7 @@ const handleDeleteClick = async () => {
       console.log("Deleting Comment Time in Delete Click:", deletingCommentTime);
 
       const response = await axios.delete(
-        `http://localhost:4000/api/forums/comments/${deletingCommentId}/${deletingCommentTime}`
+        `http://3.81.216.218:4000/api/forums/comments/${deletingCommentId}/${deletingCommentTime}`
       );
 
       if (response.status === 200) {
@@ -308,7 +308,7 @@ const handleDeleteClick = async () => {
   } else if (role === "admin") {
     try {
       const response = await axios.delete(
-        `http://localhost:4000/api/forums/${deletingCommentId}`
+        `http://3.81.216.218:4000/api/forums/${deletingCommentId}`
       );
 
       if (response.status === 200) {

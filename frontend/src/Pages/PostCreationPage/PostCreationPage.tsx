@@ -84,7 +84,7 @@ const PostCreationPage = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:4000/api/forums",
+        "http://3.81.216.218:4000/api/forums",
         {
           title,
           body,
