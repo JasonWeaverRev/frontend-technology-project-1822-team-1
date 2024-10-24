@@ -23,7 +23,7 @@ function RegisterPage() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "http://35.175.254.24:4000/api/accounts/register",
+        "http://localhost:4000/api/accounts/register",
         { email, username, password }
       );
       setSuccessMessage("Registration successful!");

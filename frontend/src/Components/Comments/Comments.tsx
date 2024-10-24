@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Comments.css";
 
 import likeUnselectedIcon from "./CommentImages/upvote-unselected-arrows.png";
@@ -7,6 +7,7 @@ import dislikeUnselectedIcon from "./CommentImages/downvote-unselected-arrows.pn
 import dislikeSelectedIcon from "./CommentImages/downvote-selected-arrows.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { isEditable } from "@testing-library/user-event/dist/utils";
 
 interface CommentItem {
   body: string;
@@ -19,6 +20,7 @@ interface CommentItem {
 
 function Comments({ body, username, time, commentId, handleSubmitClick, fetchReplies}: CommentItem) {
   const [commentText, setCommentText] = useState<string>('');
+  const [editText, setEditText] = useState<string>("");
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
@@ -29,6 +31,12 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const [replies, setReplies] = useState<any>([]);
   const [alert, setAlert] = useState<any>(undefined);
+  const [role, setRole] = useState<string | null>(null);
+  const [currUsername, setCurrUsername] = useState<string | null>(null);
+  const [editable, setEditable] = useState<boolean>(false);
+  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null);
+  const [deletingCommentTime, setDeletingCommentTime] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
 
 
@@ -39,6 +47,8 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    * @param type 
    */
   const handleButtonClick = async (type: "like" | "dislike") => {
+   
+    
     if (type === "like") {
       setIsLiked((state) => !state);
       if (isDisliked) {
@@ -63,7 +73,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://35.175.254.24:4000/api/forums/like`,
+      `http://localhost:4000/api/forums/like`,
       {
         post_id: commentId,
       }
@@ -82,7 +92,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://35.175.254.24:4000/api/forums/dislike`,
+      `http://localhost:4000/api/forums/dislike`,
       {
         post_id: commentId,
       }
@@ -100,7 +110,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    */
   const getLikes = async () => {
     await axios
-    .get(`http://35.175.254.24:4000/api/forums/posts/likes/${commentId}`)
+    .get(`http://localhost:4000/api/forums/posts/likes/${commentId}`)
     .then((response) => {
       
       setLikes(response.data);
@@ -116,7 +126,7 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
    */
     const getLikedBy = async () => {
       try {
-        const response = await axios.get(`http://35.175.254.24:4000/api/forums/posts/${commentId}`)
+        const response = await axios.get(`http://localhost:4000/api/forums/posts/${commentId}`)
 
         setLikedByList(response.data.liked_by);
         setDislikedByList(response.data.disliked_by);
@@ -126,12 +136,19 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
       }
     };
 
+    const getUserInfo = async () => {
+        setCurrUsername(localStorage.getItem("username"));
+        setRole(localStorage.getItem("role"));
+    };
+
   /**
-   * Retrieves likes on initial page load
+   * Retrieves likes and user info on initial page load
    */
   useEffect(() => {
+    getUserInfo();
     getLikes();
     getLikedBy();
+    
   }, []);
 
   useEffect(() => {
@@ -146,11 +163,16 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
 
   }, [likedByList, dislikedByList])
 
+  // allows buffer for currUsername and role to be set
+  useEffect(() => {
+    
+  }, [currUsername, role]);
+
   /**
    * Tracks whether the reply form is tracked or not
    */
   const handleReplyClick = () => {
-    setShowReplyForm(visibility => !visibility); // Toggle reply form visibility
+    setShowReplyForm(!showReplyForm); // Toggle reply form visibility
   };
 
   /**
@@ -173,6 +195,19 @@ function Comments({ body, username, time, commentId, handleSubmitClick, fetchRep
 }
 
 /**
+   * Tracks text within the comment form
+   * 
+   * @param event user inputs within the form
+   */
+const handleEditTextChange = (event: any) => {
+  setEditText(event.target.value)
+}
+
+useEffect(() => {
+  setEditText(body);
+}, [body])
+
+/**
  * Uses the handleSubmitClick function from the parent PostPage to submit
  * a comment reply
  */
@@ -190,7 +225,111 @@ const handleReplySubmitForComment = async () => {
   setAlert(submitAlert);
   
 }
+
+/**
+ * Opens edit panel for a comment
+ */
+const handleEditClick = () => {
+  console.log("Comment edit begins");
+
+  setEditable(!editable);
+}
+
+/**
+ * Opens edit panel for a comment
+ */
+const handleEditSubmitClick = async () => {
+  console.log("Comment edit submitted");
+
   
+  if (!editText.trim()) {
+    setAlert({
+      message: "Comments should not be empty",
+      type: "danger",
+    });
+    return;
+  }
+
+  try {
+    console.log(commentId);
+    console.log(time);
+    const response = await axios.patch(
+    `http://localhost:4000/api/forums/comments`,
+      {
+        comment_id: commentId,
+        comment_creation_time: time,
+        body: editText
+      }
+    );
+
+    if (response.status === 200) {
+      setAlert({
+        message: "Comment succesfully edited!",
+        type: "success",
+      });
+      setEditable(false);
+      return;
+    }
+
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+/**
+ * Deletes a comment
+ */
+const handleDeleteOpen = (id: string, delTime: string) => {
+  console.log(id);
+  console.log(delTime);
+  
+  setDeletingCommentId(id);
+  setDeletingCommentTime(delTime);
+  setIsDeleteModalOpen(true);
+};
+
+const handleDeleteClick = async () => {
+  if (role === "user") {
+    try {
+      console.log("Deleting Comment ID in Delete Click:", deletingCommentId);
+      console.log("Deleting Comment Time in Delete Click:", deletingCommentTime);
+
+      const response = await axios.delete(
+        `http://localhost:4000/api/forums/comments/${deletingCommentId}/${deletingCommentTime}`
+      );
+
+      if (response.status === 200) {
+        console.log("Comment deleted");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  } else if (role === "admin") {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4000/api/forums/${deletingCommentId}`
+      );
+
+      if (response.status === 200) {
+        console.log("Comment deleted");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
+useEffect(() => {
+  if (!isDeleteModalOpen) {
+    setDeletingCommentId(null);
+    setDeletingCommentTime(null);
+  }
+}, [isDeleteModalOpen]);
+
+/**
+ * ALERTS
+ */
 useEffect(() => {
   if (alert) {
     setTimeout(clearAlert, 5000);
@@ -256,6 +395,51 @@ const clearAlert = () => {
               onClick={handleShowReplyClick}>
                 show replies
             </p>
+            { (username === currUsername) && (
+              <p className="ms-4"
+                style={{ cursor: 'pointer', display: 'inline'}}
+                onClick={handleEditClick}>
+                  edit
+              </p>
+            )}
+            { ((username === currUsername) || (role === "admin")) && ( 
+              <p className="ms-4"
+                style={{ cursor: 'pointer', display: 'inline'}}
+                onClick={() => handleDeleteOpen(commentId, time)}
+                data-toggle="modal"
+                data-target="#deleteModal">
+                  delete
+              </p>
+            )}
+           
+           {isDeleteModalOpen && (
+            <div className="modal" id="deleteModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Delete Comment Confirmation</h5>
+                  </div>
+                  <div className="modal-body">
+                    <p>
+                      Are you sure you want to delete this comment?
+                    </p>
+
+                    <p>
+                      This process cannot be reverted 
+                    </p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={() => setIsDeleteModalOpen(false)}>Cancel</button>
+                    <button type="button" className="btn btn-danger" onClick={() => {
+                      handleDeleteClick();
+                      setIsDeleteModalOpen(false);
+                    }}>Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
           </div>
 
           <div> {/* ALERT BANNER */}
@@ -282,6 +466,24 @@ const clearAlert = () => {
                 <button 
                   className="btn btn-secondary align-self-end"
                   onClick={() => handleReplySubmitForComment()}>
+                  Submit
+                </button>
+              </div>
+          )}
+
+          {editable && (
+              
+              <div className="d-flex flex-row align-items-start">
+                <textarea
+                  placeholder="Edit your comment here"
+                  className="form-control w-50 h-50"
+                  value={editText}
+                  onChange={handleEditTextChange}>
+                </textarea>
+                  
+                <button 
+                  className="btn btn-secondary align-self-end"
+                  onClick={() => handleEditSubmitClick()}>
                   Submit
                 </button>
               </div>
