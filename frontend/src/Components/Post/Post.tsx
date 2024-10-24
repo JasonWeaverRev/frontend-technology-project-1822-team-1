@@ -79,7 +79,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://localhost:4000/api/forums/like`,
+      `http://3.81.216.218:4000/api/forums/like`,
       {
         post_id: post_id,
       }
@@ -98,7 +98,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://localhost:4000/api/forums/dislike`,
+      `http://3.81.216.218:4000/api/forums/dislike`,
       {
         post_id: post_id,
       }
@@ -116,7 +116,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
    */
   const getLikes = async () => {
     await axios
-    .get(`http://localhost:4000/api/forums/posts/likes/${post_id}`)
+    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
     .then((response) => {
       
       setLikes(response.data);
