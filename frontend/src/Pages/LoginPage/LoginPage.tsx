@@ -6,7 +6,7 @@ import axios from "axios";
 const storeLoggedInUser = async () => {
   try {
     const response = await axios.get(
-      "http://35.175.254.24:4000/api/accounts/profile",
+      "http://localhost:4000/api/accounts/profile",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -40,7 +40,7 @@ function LoginPage() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "http://35.175.254.24:4000/api/accounts/login",
+        "http://localhost:4000/api/accounts/login",
         {
           identifier,
           password,
