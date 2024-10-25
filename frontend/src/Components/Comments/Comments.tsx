@@ -328,6 +328,20 @@ useEffect(() => {
 }, [isDeleteModalOpen]);
 
 /**
+ * DATE FORMATTING
+ */
+const formatDate = () => {
+  const date = new Date(time);
+  const formattedDate = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  })
+
+  return formattedDate;
+}
+
+/**
  * ALERTS
  */
 useEffect(() => {
@@ -339,6 +353,7 @@ useEffect(() => {
 const clearAlert = () => {
   setAlert(undefined);
 };
+
 
 
   return (
@@ -377,8 +392,8 @@ const clearAlert = () => {
             >
               {username}
             </Link>
-            <p className="ms-4 fw-bold">{likes}</p> 
-            <p className="ms-4">{time}</p>
+            <p className="ms-3 fw-bold">{likes}</p> 
+            <p className="ms-3">{formatDate()}</p>
           </div>
           <div 
             className="text-start">
