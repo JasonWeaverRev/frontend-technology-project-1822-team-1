@@ -23,13 +23,24 @@ function LandingPage() {
           console.error("Response is not an array:", response.data);
         }
 
-        if (response.data[1] <= 4 + (page - 1) * 4) {
+        if (response.data[1] <= 6 + (page - 1) * 6) {
           setIsClickable(false);
         }
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  /**
+   * Removes a deleted post from the post page
+   *
+   * @param postId
+   */
+  const removePost = (postId: string) => {
+    setPosts((prevPosts) =>
+      prevPosts.filter((post) => post.post_id !== postId)
+    );
   };
 
   useEffect(() => {
@@ -50,6 +61,7 @@ function LandingPage() {
               time={post.creation_time}
               likedby={post.liked_by}
               dislikedby={post.disliked_by}
+              onDelete={removePost}
             />
           ))
         ) : (

@@ -5,6 +5,7 @@ import likeUnselectedIcon from "./PostImages/upvote-unselected-arrows.png";
 import likeSelectedIcon from "./PostImages/upvote-selected-arrows.png";
 import dislikeUnselectedIcon from "./PostImages/downvote-unselected-arrows.png";
 import dislikeSelectedIcon from "./PostImages/downvote-selected-arrows.png";
+import deleteIcon from "./PostImages/redXformatted.png";
 import axios from "axios";
 
 interface PostItem {
@@ -15,12 +16,24 @@ interface PostItem {
   time: string;
   likedby: string[];
   dislikedby: string[];
+  onDelete: (postid: string) => void;
 }
 
-function Post({ title, username, post_id, content, time, likedby, dislikedby }: PostItem) {
+function Post({
+  title,
+  username,
+  post_id,
+  content,
+  time,
+  likedby,
+  dislikedby,
+  onDelete,
+}: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<any>(0);
+  const [deletingPostId, setDeletingCommentId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   // Request Interceptor
   axios.interceptors.request.use(
@@ -51,8 +64,8 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
 
   /**
    * Handles 'like' or 'dislike' button events
-   * 
-   * @param type 
+   *
+   * @param type
    */
   const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
@@ -62,7 +75,6 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
       }
 
       await handleUpvote();
-
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
@@ -85,12 +97,11 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
       }
     );
 
-    await getLikes();
-    
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Dislikes a post
@@ -104,12 +115,11 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
       }
     );
 
-    await getLikes();
-    
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Retrieves likes from a specific post
@@ -127,13 +137,58 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
     });
   }
 
+  /**
+   * ADMIN POST DELETION
+   *
+   * @param id
+   * @param delTime
+   */
+  const handleDeleteOpen = (id: string) => {
+    console.log(id);
+
+    setDeletingCommentId(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteClick = async () => {
+    if (localStorage.getItem("role") === "admin") {
+      try {
+        console.log("Deleting Post ID in Delete Click:", deletingPostId);
+
+        const response = await axios.delete(
+          `http://3.81.216.218:4000/api/forums/${deletingPostId}`
+        );
+
+        if (response.status === 200) {
+          console.log("Post deleted");
+          onDelete(deletingPostId!); // ! = non-null assertion
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  /**
+   * DATE FORMATTING
+   */
+  const formatDate = () => {
+    const date = new Date(time);
+    const formattedDate = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+
+    return formattedDate;
+  };
+
   useEffect(() => {
     getLikes();
 
-    const activeUsername = localStorage.getItem("username")
+    const activeUsername = localStorage.getItem("username");
 
     if (activeUsername && likedby.includes(activeUsername)) {
-
       setIsLiked(true);
     } else if (activeUsername && dislikedby.includes(activeUsername)) {
       setIsDisliked(true);
@@ -141,16 +196,16 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   }, []);
 
   /**
-   * Trims a post body's html tags, replacing them with an empty div 
-   * 
-   * @param html 
-   * @returns 
+   * Trims a post body's html tags, replacing them with an empty div
+   *
+   * @param html
+   * @returns
    */
   const stripHtml = (html: string) => {
     const div = document.createElement("div");
     div.innerHTML = html;
     return div.innerText;
-  }
+  };
 
   return (
     <>
@@ -180,11 +235,11 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
             />
           </button>
         </div>
-        <div className="col-11 d-flex flex-column text-start text-post-format justify-content-between landing-page-text-format">
+        <div className="col-10 d-flex flex-column text-start text-post-format justify-content-between landing-page-text-format">
           <h4>
             <Link
               to={`/posts/${post_id}`}
-              state={{ title, username, content, likedby, dislikedby }}
+              state={{ title, username, content, time }}
               className="text-decoration-none text-dark"
             >
               {title}
@@ -197,28 +252,87 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
                   __html: content.substring(0, 25) + " . . .",
                 }}
               />
-            ) : (stripHtml(content).trim() !== '' ? (
+            ) : stripHtml(content).trim() !== "" ? (
               <div dangerouslySetInnerHTML={{ __html: content }} />
-              ) : (
-                <div className="fst-italic"> 
-                  [No content to display]
-                </div>
-              )
+            ) : (
+              <div className="fst-italic">[No content to display]</div>
             )}
           </div>
-          
+
           <div className="d-flex justify-content-start mt-3">
-            <Link 
+            <Link
               to={`/profile/${username}`}
               className="text-decoration-none text-dark"
             >
               {username}
             </Link>
-            <p className="ms-4">
-              {time}
-            </p>
+            <p className="ms-4">{formatDate()}</p>
           </div>
         </div>
+        <div className="col-1 d-flex flex-column align-items-center justify-content-center">
+          {localStorage.getItem("role") === "admin" && (
+            <button
+              type="button"
+              className="btn btn-light btn-sm button-format"
+              onClick={() => handleDeleteOpen(post_id)}
+              data-toggle="modal"
+              data-target="#deleteModal"
+            >
+              <img
+                src={deleteIcon}
+                alt="Delete Icon"
+                style={{ width: "24px", height: "24px" }}
+              />
+            </button>
+          )}
+        </div>
+
+        {isDeleteModalOpen && (
+          <div
+            className="modal landing-page-text-format"
+            id="deleteModal"
+            tabIndex={-1}
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Delete Post Confirmation
+                  </h5>
+                </div>
+                <div className="modal-body">
+                  <p>Are you sure you want to delete this post?</p>
+
+                  <p>This process cannot be reverted</p>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
+                    onClick={() => setIsDeleteModalOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    data-dismiss="modal"
+                    onClick={() => {
+                      handleDeleteClick();
+                      setIsDeleteModalOpen(false);
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

@@ -4,12 +4,14 @@ import EncounterPlayer from "../../Components/EncounterPlayer/EncounterPlayer";
 import EncounterMonster from "../../Components/EncounterMonster/EncounterMonster";
 import { useEncounter } from "../../Context/EncounterContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function EncounterPage() {
   const [playerHp, setPlayerHp] = useState<number>(25);
   const [monsterHp, setMonsterHp] = useState<number>(25);
-  const { encounter } = useEncounter();
+  const { encounter, setEncounter } = useEncounter();
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // #region request/response interceptors
   // Request Interceptor
@@ -51,15 +53,59 @@ function EncounterPage() {
         }
       );
 
-      // Alerts when successful or errors occur
+      const data = response.data;
+      console.log(data);
+
       if (response.status === 201) {
         setSuccess(true);
+
+        const savedEncounter = {
+          title: data.encounter.encounter_title,
+          setting: data.encounter.setting,
+          roster: data.encounter.monsters,
+          id: data.encounter.encounter_id,
+        };
+        setEncounter(savedEncounter);
         console.log("Encounter saved");
       } else {
         console.log("Encounter not saved");
       }
     } catch (err) {
-      console.error("Error submitting comment:", err);
+      console.error("Error saving encounter:", err);
+    }
+  };
+
+  const editEncounter = async () => {
+    try {
+      const response = await axios.patch(
+        `http://3.81.216.218:4000/api/encounters/encounter`,
+        {
+          monsters: encounter.roster,
+          encounter_title: encounter.title,
+          setting: encounter.setting,
+          encounter_id: encounter.id,
+        }
+      );
+
+      const data = response.data;
+      console.log(data);
+
+      if (response.status === 200) {
+        setSuccess(true);
+
+        const savedEncounter = {
+          title: data.encounter.encounter_title,
+          setting: data.encounter.setting,
+          roster: data.encounter.monsters,
+          id: data.encounter.encounter_id,
+        };
+        setEncounter(savedEncounter);
+        console.log("Encounter saved");
+      } else {
+        console.log("Encounter not saved");
+      }
+    } catch (err) {
+      console.error("Error saving encounter:", err);
     }
   };
 
@@ -78,14 +124,12 @@ function EncounterPage() {
           hp={playerHp}
           updateHp={setPlayerHp}
         ></EncounterPlayer>
-        <div className="monster-info-container d-flex col-7 flex-column align-self-center black-border">
+        <div className="monster-info-container d-flex col-7 flex-column align-self-center">
           <div className="monster-info d-flex gap-4 px-3 mt-1 flex-wrap">
             {encounter.roster.map((monster: any, index: any) => (
               <EncounterMonster
                 key={index}
-                name={monster.name}
-                hp={monster.hp}
-                img={monster.image}
+                monster={monster}
                 updateHp={setMonsterHp}
               />
             ))}
@@ -96,6 +140,7 @@ function EncounterPage() {
           ></textarea>
         </div>
         <div className="event-info d-flex flex-column col-2 text-start p-2 gap-2">
+          {encounter.environment && <div>{encounter.environment}:</div>}
           {encounter.setting && <div>{encounter.setting}</div>}
         </div>
       </div>
@@ -107,8 +152,18 @@ function EncounterPage() {
         )}
         {localStorage.getItem("token") && (
           <div className="save-encounter-button d-flex justify-content-end pt-2 gap-2 flex-column col-2 align-content-end align-self-end">
-            <button onClick={saveEncounter}>Save Encounter</button>
-            <button>Edit Encounter</button>
+            <button
+              onClick={() =>
+                !encounter.id ? saveEncounter() : editEncounter()
+              }
+            >
+              Save Encounter
+            </button>
+            {encounter.id && (
+              <button onClick={() => navigate("/encounter-creation")}>
+                Edit Encounter
+              </button>
+            )}
           </div>
         )}
       </div>
