@@ -126,11 +126,11 @@ function PostPage() {
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-        `http://3.81.216.218:4000/api/forums/like`,
-        {
-          post_id: postId,
-        }
-      );
+      `http://3.81.216.218:4000/api/forums/like`,
+      {
+        post_id: postId,
+      }
+    );
 
       await getLikes();
     } catch (error) {
@@ -144,13 +144,14 @@ function PostPage() {
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-        `http://3.81.216.218:4000/api/forums/dislike`,
-        {
-          post_id: postId,
-        }
-      );
-
-      await getLikes();
+      `http://3.81.216.218:4000/api/forums/dislike`,
+      {
+        post_id: postId,
+      }
+    );
+    
+    await getLikes();
+    
     } catch (error) {
       console.log(error);
     }
@@ -161,23 +162,23 @@ function PostPage() {
    */
   const getLikes = async () => {
     await axios
-      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${postId}`)
-      .then((response) => {
-        setLikes(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${postId}`)
+    .then((response) => {
+      
+      setLikes(response.data);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
   /**
    * Retrieves likes from a specific post
    */
-  const getLikedBy = async () => {
-    try {
-      const response = await axios.get(
-        `http://3.81.216.218:4000/api/forums/posts/${postId}`
-      );
+    const getLikedBy = async () => {
+      try {
+        const response = await axios.get(`http://3.81.216.218:4000/api/forums/posts/${postId}`)
 
       setLikedByList(response.data.liked_by);
       setDislikedByList(response.data.disliked_by);
