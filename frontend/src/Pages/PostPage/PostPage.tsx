@@ -19,8 +19,7 @@ function PostPage() {
   const title = location.state?.title;
   const username = location.state?.username;
   const content = location.state?.content;
-  // const likedby = location.state?.likedby;
-  // const dislikedby = location.state?.dislikedby;
+  const time = location.state?.time;
 
   /**
    * State variable declarations
@@ -264,6 +263,10 @@ function PostPage() {
           type: "success",
         };
         setAlert(postPageAlert);
+
+        setPage(1); 
+        await getComments(); 
+
         return postPageAlert;
       } else {
         const postPageAlert = {
@@ -292,6 +295,25 @@ function PostPage() {
   const handleLoadMore = () => {
     setPage(page + 1);
   };
+
+  /**
+ * DATE FORMATTING
+ */
+  const formatDate = () => {
+    
+    let formattedDate = "[Cannot retrieve the date at this time]";
+    
+    if(time) {
+      const date = new Date(time);
+      formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+    }
+
+    return formattedDate;
+  }
 
   useEffect(() => {
     if (alert) {
@@ -334,6 +356,7 @@ function PostPage() {
               />
             </button>
           </div>
+         
           <div className="post-body-bg col-11 d-flex flex-column align-items-center">
             {/* Post Text */}
             <h3 className="text-post-page-format">{title}</h3>
@@ -344,8 +367,11 @@ function PostPage() {
               {username}
             </Link>
             {/* Render the content as HTML */}
+            <p className="text-post-page-format mt-1">
+              {formatDate()}
+            </p>
             <div
-              className="text-post-page-format mt-4"
+              className="text-post-page-format mt-0"
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>
