@@ -45,7 +45,7 @@ function EncounterPage() {
   const saveEncounter = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           monsters: encounter.roster,
           encounter_title: encounter.title,

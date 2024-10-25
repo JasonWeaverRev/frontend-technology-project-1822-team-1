@@ -93,7 +93,7 @@ function ProfilePage() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/accounts/profile/${username}`, {
+      const response = await axios.get(`http://3.81.216.218:4000/api/accounts/profile/${username}`, {
       });
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
@@ -106,17 +106,12 @@ function ProfilePage() {
 
   const updateAboutMe = async () => {
     try {
-      await axios.patch(
-        `http://localhost:4000/api/accounts/about-me`,
-        {
-          about_me: editAboutMe,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        }
-      );
+      await axios.patch(`http://3.81.216.218:4000/api/accounts/about-me`, {
+        about_me: editAboutMe
+      }, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`}
+      });
 
       setProfile((prev) => ({
         email: prev?.email || "",
@@ -141,12 +136,8 @@ function ProfilePage() {
   // #region Populates Encounters
   const getUserEncounters = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/encounters/${username}`,
-        {
-          // sends get request to the backend thru URL
-        }
-      );
+      const response = await axios.get(`http://3.81.216.218:4000/api/encounters/${username}`, { // sends get request to the backend thru URL
+      });
       setEncounters(response.data.encounters); // encounters = response.data
     } catch (error) {
       console.error("Error fetching user encounters: ", error);
@@ -164,16 +155,14 @@ function ProfilePage() {
     console.log("inside deleteEncounter: ", encounter_id);
 
     try {
-      const response = await axios.delete(
-        `http://localhost:4000/api/encounters/encounter`,
-        {
-          headers: {
-            Authorization: `Bearer ${TOKEN}`, // Ensure the token is correct
-          },
-          params: { encounter_id }, // Send the encounter_id as a query parameter
-        }
-      );
-
+      
+      const response = await axios.delete(`http://3.81.216.218:4000/api/encounters/encounter`, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,  // Ensure the token is correct
+        },
+        params: { encounter_id },  // Send the encounter_id as a query parameter
+      });
+  
       console.log("Encounter deleted:", response.data);
 
       setEncounters((prevEncounters) =>
@@ -197,9 +186,7 @@ function ProfilePage() {
   // #region Populate Forum Posts
   const getUserPosts = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:4000/api/forums/${username}`
-      );
+      const response = await axios.get(`http://3.81.216.218:4000/api/forums/${username}`);
       setPosts(response.data);
       console.log("user posts: ", response.data);
     } catch (error) {

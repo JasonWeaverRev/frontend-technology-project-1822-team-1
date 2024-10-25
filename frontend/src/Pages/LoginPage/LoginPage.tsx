@@ -6,7 +6,7 @@ import axios from "axios";
 const storeLoggedInUser = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:4000/api/accounts/profile",
+      "http://3.81.216.218:4000/api/accounts/profile",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -40,7 +40,7 @@ function LoginPage() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "http://localhost:4000/api/accounts/login",
+        "http://3.81.216.218:4000/api/accounts/login",
         {
           identifier,
           password,
@@ -48,7 +48,11 @@ function LoginPage() {
       );
 
       const { token } = response.data;
+      console.log(response.data);
+      console.log("token received:", token);
       localStorage.setItem("token", token);
+
+      console.log(localStorage.getItem("token"));
 
       // Trigger an immediate state update for login status
       window.dispatchEvent(new Event("storage"));

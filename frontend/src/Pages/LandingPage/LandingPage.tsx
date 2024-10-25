@@ -15,9 +15,8 @@ function LandingPage() {
 
   const getPosts = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
+      .get(`http://3.81.216.218:4000/api/forums/landing?page=${page}`)
       .then((response) => {
-        console.log(response.data);
         if (Array.isArray(response.data)) {
           setPosts(response.data[0]);
         } else {
@@ -48,6 +47,9 @@ function LandingPage() {
               username={post.written_by}
               post_id={post.post_id}
               content={post.body}
+              time={post.creation_time}
+              likedby={post.liked_by}
+              dislikedby={post.disliked_by}
             />
           ))
         ) : (
