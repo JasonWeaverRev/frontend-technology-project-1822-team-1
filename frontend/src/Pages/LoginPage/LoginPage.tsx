@@ -50,6 +50,8 @@ function LoginPage() {
       const { token } = response.data;
       localStorage.setItem("token", token);
 
+      console.log(localStorage.getItem("token"));
+
       // Trigger an immediate state update for login status
       window.dispatchEvent(new Event("storage"));
 
