@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./EncounterMonster.css";
+import ReactTooltip from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
 interface EncounterMonsterProps {
   monster: any;
@@ -11,7 +13,13 @@ const EncounterMonster: React.FC<EncounterMonsterProps> = ({ monster }) => {
   return (
     <div className="single-monster">
       <div className="monster-hud d-flex flex-column">
-        <p>{monster.name}</p>
+        <a
+          href={`${monster.monsterPage}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {monster.name}
+        </a>
         <div className="monster-hp d-flex justify-content-between align-items-baseline">
           <input
             type="range"
@@ -27,11 +35,24 @@ const EncounterMonster: React.FC<EncounterMonsterProps> = ({ monster }) => {
         </div>
       </div>
       <div className="d-flex flex-column gap-4 align-items-center">
-        <img
-          className="monster-icon"
-          src={monster.image}
-          alt="Monster Icon"
-        ></img>
+        <span
+          title={`
+            Stats:
+        ac: ${monster.armorClass}
+        str: ${monster.strength}
+        dex: ${monster.dexterity}
+        con: ${monster.constitution}
+        int: ${monster.intelligence}
+        wis: ${monster.wisdom}
+        cha: ${monster.charisma}
+        `}
+        >
+          <img
+            className="monster-icon"
+            src={monster.image}
+            alt="Monster Icon"
+          ></img>
+        </span>
       </div>
     </div>
   );

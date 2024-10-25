@@ -14,3 +14,16 @@
   min-width: calc(1 * 1em);
   max-width: calc(4 * 2em);
 }
+
+a {
+  color: #e4e4e4;
+}
+
+a:hover {
+  color: #736d6d;
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
