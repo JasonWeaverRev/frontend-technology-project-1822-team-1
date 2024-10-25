@@ -220,6 +220,14 @@ const handleReplySubmitForComment = async () => {
     return;
   }
 
+  if (commentText.length > 500) {
+    setAlert({
+      message: "Commments must be 500 characters or less",
+      type: "danger",
+    });
+    return;
+  }
+
   const submitAlert = await handleSubmitClick(commentText, commentId);
   console.log(submitAlert);
   setAlert(submitAlert);
@@ -396,7 +404,8 @@ const clearAlert = () => {
             <p className="ms-3">{formatDate()}</p>
           </div>
           <div 
-            className="text-start">
+            className="text-start"
+            style={{ wordWrap: "break-word", overflowWrap: "break-word" }}> 
               <p>{body}</p>
           </div>
           <div className="comment-footer text-start fw-bold mb-2">
@@ -473,7 +482,9 @@ const clearAlert = () => {
               <div className="d-flex flex-row align-items-start">
                 <textarea
                   placeholder="Write your reply here"
-                  className="form-control w-50 h-50"
+                  className="form-control"
+                  style={{ width: '60%', height: '100px', marginRight: '10px' }}
+                  maxLength={500}
                   value={commentText}
                   onChange={handleTextChange}>
                 </textarea>
@@ -491,7 +502,9 @@ const clearAlert = () => {
               <div className="d-flex flex-row align-items-start">
                 <textarea
                   placeholder="Edit your comment here"
-                  className="form-control w-50 h-50"
+                  className="form-control"
+                  style={{ width: '60%', height: '100px', marginRight: '10px' }}
+                  maxLength={500}
                   value={editText}
                   onChange={handleEditTextChange}>
                 </textarea>
