@@ -79,7 +79,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/like`,
+      `http://localhost:4000/api/forums/like`,
       {
         post_id: post_id,
       }
@@ -98,7 +98,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/dislike`,
+      `http://localhost:4000/api/forums/dislike`,
       {
         post_id: post_id,
       }
@@ -116,7 +116,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
    */
   const getLikes = async () => {
     await axios
-    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
+    .get(`http://localhost:4000/api/forums/posts/likes/${post_id}`)
     .then((response) => {
       
       setLikes(response.data);
@@ -125,6 +125,20 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
     .catch((error) => {
       console.log(error);
     });
+  }
+
+  /**
+  * DATE FORMATTING
+  */
+  const formatDate = () => {
+    const date = new Date(time);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    })
+
+    return formattedDate;
   }
 
   useEffect(() => {
@@ -184,7 +198,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
           <h4>
             <Link
               to={`/posts/${post_id}`}
-              state={{ title, username, content, likedby, dislikedby }}
+              state={{ title, username, content, time }}
               className="text-decoration-none text-dark"
             >
               {title}
@@ -215,7 +229,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
               {username}
             </Link>
             <p className="ms-4">
-              {time}
+              {formatDate()}
             </p>
           </div>
         </div>

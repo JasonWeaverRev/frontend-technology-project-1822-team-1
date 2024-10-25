@@ -19,8 +19,7 @@ function PostPage() {
   const title = location.state?.title;
   const username = location.state?.username;
   const content = location.state?.content;
-  // const likedby = location.state?.likedby;
-  // const dislikedby = location.state?.dislikedby;
+  const time = location.state?.time;
 
 
   /**
@@ -73,7 +72,7 @@ function PostPage() {
   const getComments = async () => {
     await axios
       .get(
-        `http://3.81.216.218:4000/api/forums/comments/post?id=${postId}&page=${page}`
+        `http://localhost:4000/api/forums/comments/post?id=${postId}&page=${page}`
       )
       .then((response) => {
         setComments(response.data[0]);
@@ -131,7 +130,7 @@ function PostPage() {
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/like`,
+      `http://localhost:4000/api/forums/like`,
       {
         post_id: postId,
       }
@@ -150,7 +149,7 @@ function PostPage() {
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/dislike`,
+      `http://localhost:4000/api/forums/dislike`,
       {
         post_id: postId,
       }
@@ -168,7 +167,7 @@ function PostPage() {
    */
   const getLikes = async () => {
     await axios
-    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${postId}`)
+    .get(`http://localhost:4000/api/forums/posts/likes/${postId}`)
     .then((response) => {
       
       setLikes(response.data);
@@ -184,7 +183,7 @@ function PostPage() {
    */
     const getLikedBy = async () => {
       try {
-        const response = await axios.get(`http://3.81.216.218:4000/api/forums/posts/${postId}`)
+        const response = await axios.get(`http://localhost:4000/api/forums/posts/${postId}`)
 
         setLikedByList(response.data.liked_by);
         setDislikedByList(response.data.disliked_by);
@@ -220,7 +219,7 @@ function PostPage() {
   const fetchReplies = async (parentId: string | undefined): Promise<any[]> => {
     try {
       const response = await axios.get(
-        `http://3.81.216.218:4000/api/forums/comments/post?id=${parentId}&page=1`
+        `http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`
       );
 
       const replies = response.data[0];
@@ -256,7 +255,7 @@ function PostPage() {
 
     try {
       const response = await axios.post(
-        `http://3.81.216.218:4000/api/forums/${responseId}`,
+        `http://localhost:4000/api/forums/${responseId}`,
         {
           body: commentText,
         }
@@ -269,6 +268,10 @@ function PostPage() {
           type: "success",
         };
         setAlert(postPageAlert);
+
+        setPage(1); 
+        await getComments(); 
+
         return postPageAlert;
       } else {
         const postPageAlert = {
@@ -297,6 +300,25 @@ function PostPage() {
   const handleLoadMore = () => {
     setPage(page + 1);
   };
+
+  /**
+ * DATE FORMATTING
+ */
+  const formatDate = () => {
+    
+    let formattedDate = "[Cannot retrieve the date at this time]";
+    
+    if(time) {
+      const date = new Date(time);
+      formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+    }
+
+    return formattedDate;
+  }
 
   useEffect(() => {
     if (alert) {
@@ -340,6 +362,7 @@ function PostPage() {
               />
             </button>
           </div>
+         
           <div className="post-body-bg col-11 d-flex flex-column align-items-center">
             {/* Post Text */}
             <h3 className="text-post-page-format">{title}</h3>
@@ -350,8 +373,11 @@ function PostPage() {
               {username}
             </Link>
             {/* Render the content as HTML */}
+            <p className="text-post-page-format mt-1">
+              {formatDate()}
+            </p>
             <div
-              className="text-post-page-format mt-4"
+              className="text-post-page-format mt-0"
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>
