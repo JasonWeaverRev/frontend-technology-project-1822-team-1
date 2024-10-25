@@ -15,7 +15,7 @@ function LandingPage() {
 
   const getPosts = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
+      .get(`http://3.81.216.218:4000/api/forums/landing?page=${page}`)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setPosts(response.data[0]);
@@ -34,11 +34,13 @@ function LandingPage() {
 
   /**
    * Removes a deleted post from the post page
-   * 
-   * @param postId 
+   *
+   * @param postId
    */
   const removePost = (postId: string) => {
-    setPosts((prevPosts) => prevPosts.filter((post) => post.post_id !== postId));
+    setPosts((prevPosts) =>
+      prevPosts.filter((post) => post.post_id !== postId)
+    );
   };
 
   useEffect(() => {
