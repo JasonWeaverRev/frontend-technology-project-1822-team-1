@@ -34,6 +34,7 @@ function Post({
   const [likes, setLikes] = useState<any>(0);
   const [deletingPostId, setDeletingCommentId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isClickable, setIsClickable] = useState<boolean>(true);
 
   // Request Interceptor
   axios.interceptors.request.use(
@@ -91,11 +92,11 @@ function Post({
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/like`,
-      {
-        post_id: post_id,
-      }
-    );
+        `http://3.81.216.218:4000/api/forums/like`,
+        {
+          post_id: post_id,
+        }
+      );
 
       await getLikes();
     } catch (error) {
@@ -109,11 +110,11 @@ function Post({
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/dislike`,
-      {
-        post_id: post_id,
-      }
-    );
+        `http://3.81.216.218:4000/api/forums/dislike`,
+        {
+          post_id: post_id,
+        }
+      );
 
       await getLikes();
     } catch (error) {
@@ -126,16 +127,14 @@ function Post({
    */
   const getLikes = async () => {
     await axios
-    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
-    .then((response) => {
-      
-      setLikes(response.data);
-
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
+      .then((response) => {
+        setLikes(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   /**
    * ADMIN POST DELETION
@@ -214,6 +213,7 @@ function Post({
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm button-format border-0"
+            disabled={!isClickable}
             onClick={() => handleButtonClick("like")}
           >
             <img
@@ -226,6 +226,7 @@ function Post({
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm button-format border-0"
+            disabled={!isClickable}
             onClick={() => handleButtonClick("dislike")}
           >
             <img
@@ -246,10 +247,10 @@ function Post({
             </Link>
           </h4>
           <div className="flex-grow-1 d-flex align-items-center mb-0 mt-2">
-            {content.length > 25 ? (
+            {content.length > 40 ? (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: content.substring(0, 25) + " . . .",
+                  __html: stripHtml(content).substring(0, 40) + " . . .",
                 }}
               />
             ) : stripHtml(content).trim() !== "" ? (

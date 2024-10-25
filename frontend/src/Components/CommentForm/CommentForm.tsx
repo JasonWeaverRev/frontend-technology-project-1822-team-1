@@ -36,6 +36,14 @@ const handleReplySubmitForComment = async () => {
     return;
   }
 
+  if (commentText.length > 500) {
+    setAlert({
+      message: "Commments must be 500 characters or less",
+      type: "danger",
+    });
+    return;
+  }
+
   const submitAlert = await handleSubmitClick(commentText);
   setAlert(submitAlert);
   
@@ -73,7 +81,8 @@ const clearAlert = () => {
           <textarea
             placeholder="Write your comment here"
             className="form-control"
-            style={{ width: '40%', height: '70px', marginRight: '10px' }}
+            style={{ width: '50%', height: '140px', marginRight: '10px' }}
+            maxLength={500}
             value={commentText}
             onChange={handleTextChange}>
           </textarea>

@@ -144,7 +144,7 @@ function EncounterPage() {
           {encounter.setting && <div>{encounter.setting}</div>}
         </div>
       </div>
-      <div className="d-flex justify-content-end gap-4">
+      <div className="button-container d-flex justify-content-end gap-4">
         {success && (
           <div className="alert alert-success mt-2 pt-2 success-alert">
             Successfully saved encounter!
