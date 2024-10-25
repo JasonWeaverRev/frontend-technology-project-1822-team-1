@@ -34,11 +34,13 @@ function LandingPage() {
 
   /**
    * Removes a deleted post from the post page
-   * 
-   * @param postId 
+   *
+   * @param postId
    */
   const removePost = (postId: string) => {
-    setPosts((prevPosts) => prevPosts.filter((post) => post.post_id !== postId));
+    setPosts((prevPosts) =>
+      prevPosts.filter((post) => post.post_id !== postId)
+    );
   };
 
   useEffect(() => {

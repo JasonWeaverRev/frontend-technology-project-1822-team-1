@@ -21,7 +21,6 @@ function PostPage() {
   const content = location.state?.content;
   const time = location.state?.time;
 
-
   /**
    * State variable declarations
    */
@@ -98,12 +97,10 @@ function PostPage() {
    * HANDLERS
    */
 
-
-
   /**
    * Handles 'like' or 'dislike' button events
-   * 
-   * @param type 
+   *
+   * @param type
    */
   const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
@@ -113,7 +110,6 @@ function PostPage() {
       }
 
       await handleUpvote();
-
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
@@ -136,12 +132,11 @@ function PostPage() {
       }
     );
 
-    await getLikes();
-    
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Dislikes a post
@@ -160,7 +155,7 @@ function PostPage() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Retrieves likes from a specific post
@@ -185,13 +180,12 @@ function PostPage() {
       try {
         const response = await axios.get(`http://localhost:4000/api/forums/posts/${postId}`)
 
-        setLikedByList(response.data.liked_by);
-        setDislikedByList(response.data.disliked_by);
-        
-      } catch(error) {
-        console.log(error);
-      }
-    };
+      setLikedByList(response.data.liked_by);
+      setDislikedByList(response.data.disliked_by);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /**
    * Retrieves likes on initial page load
@@ -206,12 +200,14 @@ function PostPage() {
 
     if (activeUsername && likedByList && likedByList.includes(activeUsername)) {
       setIsLiked(true);
-
-    } else if (activeUsername && dislikedByList && dislikedByList.includes(activeUsername)) {
+    } else if (
+      activeUsername &&
+      dislikedByList &&
+      dislikedByList.includes(activeUsername)
+    ) {
       setIsDisliked(true);
     }
-
-  }, [likedByList, dislikedByList])
+  }, [likedByList, dislikedByList]);
 
   /**
    * Handles comment reply events
@@ -269,8 +265,8 @@ function PostPage() {
         };
         setAlert(postPageAlert);
 
-        setPage(1); 
-        await getComments(); 
+        setPage(1);
+        await getComments();
 
         return postPageAlert;
       } else {
@@ -302,30 +298,28 @@ function PostPage() {
   };
 
   /**
- * DATE FORMATTING
- */
+   * DATE FORMATTING
+   */
   const formatDate = () => {
-    
     let formattedDate = "[Cannot retrieve the date at this time]";
-    
-    if(time) {
+
+    if (time) {
       const date = new Date(time);
-      formattedDate = date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
+      formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
       });
     }
 
     return formattedDate;
-  }
+  };
 
   useEffect(() => {
     if (alert) {
       setTimeout(clearAlert, 5000);
     }
   }, [alert]);
-
 
   const clearAlert = () => {
     setAlert(undefined);
@@ -362,20 +356,18 @@ function PostPage() {
               />
             </button>
           </div>
-         
+
           <div className="post-body-bg col-11 d-flex flex-column align-items-center">
             {/* Post Text */}
             <h3 className="text-post-page-format">{title}</h3>
-            <Link 
+            <Link
               to={`/profile/${username}`}
               className="text-decoration-none text-dark ms-0"
             >
               {username}
             </Link>
             {/* Render the content as HTML */}
-            <p className="text-post-page-format mt-1">
-              {formatDate()}
-            </p>
+            <p className="text-post-page-format mt-1">{formatDate()}</p>
             <div
               className="text-post-page-format mt-0"
               dangerouslySetInnerHTML={{ __html: content }}

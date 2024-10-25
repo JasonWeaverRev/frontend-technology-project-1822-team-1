@@ -98,11 +98,10 @@ function ProfilePage() {
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
       console.log(profile);
-      
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
-  }
+  };
 
   const updateAboutMe = async () => {
     try {
@@ -119,7 +118,7 @@ function ProfilePage() {
         about_me: editAboutMe,
         role: prev?.role || "",
         creation_time: prev?.creation_time || "",
-        profile_pic: prev?.profile_pic || ""
+        profile_pic: prev?.profile_pic || "",
       }));
     } catch (error) {
       console.error("Error patching User about me section: ", error);
@@ -297,19 +296,19 @@ function ProfilePage() {
                       will be filled with preview of monsters comma separated
                     </p>
                     <div id="encounter-button-container">
-                    {isCurrentUser && (
-                      <button
-                        onClick={() => {
-                          setEncounterToDelete(entry.encounter_id);
-                          setShowDeletePopup(true);
-                        }}
-                        className="delete-button"
-                      >
-                        &times;
-                      </button>
-                    )}
-                    <p className="encounter-date">{formattedDate}</p>
-                  </div>
+                      {isCurrentUser && (
+                        <button
+                          onClick={() => {
+                            setEncounterToDelete(entry.encounter_id);
+                            setShowDeletePopup(true);
+                          }}
+                          className="delete-button"
+                        >
+                          &times;
+                        </button>
+                      )}
+                      <p className="encounter-date">{formattedDate}</p>
+                    </div>
                   </div>
                 );
               })}
@@ -318,29 +317,27 @@ function ProfilePage() {
         </div>
 
         <div id="forum-post-container" className="col-10 col-md-5">
-        <h1>Forum Posts</h1>
-        <div className="card-container">
-          {posts.map((post, index) => {
-            const date = new Date(post.creation_time);
-            const formattedDate = date.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
+          <h1>Forum Posts</h1>
+          <div className="card-container">
+            {posts.map((post, index) => {
+              const date = new Date(post.creation_time);
+              const formattedDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
 
-            return (
-              <div key={index} className="content-card">
-                <h3>{post.title}</h3>
-                <p>{post.body}</p>
-                <p>{formattedDate}</p>
-              </div>
-            );
-          })}
+              return (
+                <div key={index} className="content-card">
+                  <h3>{post.title}</h3>
+                  <p>{post.body}</p>
+                  <p>{formattedDate}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-      </div>
-
-      
     </>
   );
 }
