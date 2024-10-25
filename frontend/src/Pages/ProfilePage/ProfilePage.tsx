@@ -93,25 +93,31 @@ function ProfilePage() {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://3.81.216.218:4000/api/accounts/profile/${username}`, {
-      });
+      const response = await axios.get(
+        `http://localhost:4000/api/accounts/profile/${username}`,
+        {}
+      );
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
       console.log(profile);
-      
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
-  }
+  };
 
   const updateAboutMe = async () => {
     try {
-      await axios.patch(`http://3.81.216.218:4000/api/accounts/about-me`, {
-        about_me: editAboutMe
-      }, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`}
-      });
+      await axios.patch(
+        `http://localhost:4000/api/accounts/about-me`,
+        {
+          about_me: editAboutMe,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        }
+      );
 
       setProfile((prev) => ({
         email: prev?.email || "",
@@ -119,7 +125,7 @@ function ProfilePage() {
         about_me: editAboutMe,
         role: prev?.role || "",
         creation_time: prev?.creation_time || "",
-        profile_pic: prev?.profile_pic || ""
+        profile_pic: prev?.profile_pic || "",
       }));
     } catch (error) {
       console.error("Error patching User about me section: ", error);
@@ -136,8 +142,12 @@ function ProfilePage() {
   // #region Populates Encounters
   const getUserEncounters = async () => {
     try {
-      const response = await axios.get(`http://3.81.216.218:4000/api/encounters/${username}`, { // sends get request to the backend thru URL
-      });
+      const response = await axios.get(
+        `http://localhost:4000/api/encounters/${username}`,
+        {
+          // sends get request to the backend thru URL
+        }
+      );
       setEncounters(response.data.encounters); // encounters = response.data
     } catch (error) {
       console.error("Error fetching user encounters: ", error);
@@ -155,14 +165,16 @@ function ProfilePage() {
     console.log("inside deleteEncounter: ", encounter_id);
 
     try {
-      
-      const response = await axios.delete(`http://3.81.216.218:4000/api/encounters/encounter`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,  // Ensure the token is correct
-        },
-        params: { encounter_id },  // Send the encounter_id as a query parameter
-      });
-  
+      const response = await axios.delete(
+        `http://localhost:4000/api/encounters/encounter`,
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`, // Ensure the token is correct
+          },
+          params: { encounter_id }, // Send the encounter_id as a query parameter
+        }
+      );
+
       console.log("Encounter deleted:", response.data);
 
       setEncounters((prevEncounters) =>
@@ -186,7 +198,9 @@ function ProfilePage() {
   // #region Populate Forum Posts
   const getUserPosts = async () => {
     try {
-      const response = await axios.get(`http://3.81.216.218:4000/api/forums/${username}`);
+      const response = await axios.get(
+        `http://localhost:4000/api/forums/${username}`
+      );
       setPosts(response.data);
       console.log("user posts: ", response.data);
     } catch (error) {
@@ -297,19 +311,19 @@ function ProfilePage() {
                       will be filled with preview of monsters comma separated
                     </p>
                     <div id="encounter-button-container">
-                    {isCurrentUser && (
-                      <button
-                        onClick={() => {
-                          setEncounterToDelete(entry.encounter_id);
-                          setShowDeletePopup(true);
-                        }}
-                        className="delete-button"
-                      >
-                        &times;
-                      </button>
-                    )}
-                    <p className="encounter-date">{formattedDate}</p>
-                  </div>
+                      {isCurrentUser && (
+                        <button
+                          onClick={() => {
+                            setEncounterToDelete(entry.encounter_id);
+                            setShowDeletePopup(true);
+                          }}
+                          className="delete-button"
+                        >
+                          &times;
+                        </button>
+                      )}
+                      <p className="encounter-date">{formattedDate}</p>
+                    </div>
                   </div>
                 );
               })}
@@ -318,29 +332,27 @@ function ProfilePage() {
         </div>
 
         <div id="forum-post-container" className="col-10 col-md-5">
-        <h1>Forum Posts</h1>
-        <div className="card-container">
-          {posts.map((post, index) => {
-            const date = new Date(post.creation_time);
-            const formattedDate = date.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
+          <h1>Forum Posts</h1>
+          <div className="card-container">
+            {posts.map((post, index) => {
+              const date = new Date(post.creation_time);
+              const formattedDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
 
-            return (
-              <div key={index} className="content-card">
-                <h3>{post.title}</h3>
-                <p>{post.body}</p>
-                <p>{formattedDate}</p>
-              </div>
-            );
-          })}
+              return (
+                <div key={index} className="content-card">
+                  <h3>{post.title}</h3>
+                  <p>{post.body}</p>
+                  <p>{formattedDate}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-      </div>
-
-      
     </>
   );
 }

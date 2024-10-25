@@ -22,7 +22,6 @@ function PostPage() {
   // const likedby = location.state?.likedby;
   // const dislikedby = location.state?.dislikedby;
 
-
   /**
    * State variable declarations
    */
@@ -73,7 +72,7 @@ function PostPage() {
   const getComments = async () => {
     await axios
       .get(
-        `http://3.81.216.218:4000/api/forums/comments/post?id=${postId}&page=${page}`
+        `http://localhost:4000/api/forums/comments/post?id=${postId}&page=${page}`
       )
       .then((response) => {
         setComments(response.data[0]);
@@ -99,12 +98,10 @@ function PostPage() {
    * HANDLERS
    */
 
-
-
   /**
    * Handles 'like' or 'dislike' button events
-   * 
-   * @param type 
+   *
+   * @param type
    */
   const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
@@ -114,7 +111,6 @@ function PostPage() {
       }
 
       await handleUpvote();
-
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
@@ -131,18 +127,17 @@ function PostPage() {
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/like`,
-      {
-        post_id: postId,
-      }
-    );
+        `http://localhost:4000/api/forums/like`,
+        {
+          post_id: postId,
+        }
+      );
 
-    await getLikes();
-    
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Dislikes a post
@@ -150,49 +145,47 @@ function PostPage() {
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/dislike`,
-      {
-        post_id: postId,
-      }
-    );
-    
-    await getLikes();
-    
+        `http://localhost:4000/api/forums/dislike`,
+        {
+          post_id: postId,
+        }
+      );
+
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Retrieves likes from a specific post
    */
   const getLikes = async () => {
     await axios
-    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${postId}`)
-    .then((response) => {
-      
-      setLikes(response.data);
-
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+      .get(`http://localhost:4000/api/forums/posts/likes/${postId}`)
+      .then((response) => {
+        setLikes(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   /**
    * Retrieves likes from a specific post
    */
-    const getLikedBy = async () => {
-      try {
-        const response = await axios.get(`http://3.81.216.218:4000/api/forums/posts/${postId}`)
+  const getLikedBy = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/forums/posts/${postId}`
+      );
 
-        setLikedByList(response.data.liked_by);
-        setDislikedByList(response.data.disliked_by);
-        
-      } catch(error) {
-        console.log(error);
-      }
-    };
+      setLikedByList(response.data.liked_by);
+      setDislikedByList(response.data.disliked_by);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /**
    * Retrieves likes on initial page load
@@ -207,12 +200,14 @@ function PostPage() {
 
     if (activeUsername && likedByList && likedByList.includes(activeUsername)) {
       setIsLiked(true);
-
-    } else if (activeUsername && dislikedByList && dislikedByList.includes(activeUsername)) {
+    } else if (
+      activeUsername &&
+      dislikedByList &&
+      dislikedByList.includes(activeUsername)
+    ) {
       setIsDisliked(true);
     }
-
-  }, [likedByList, dislikedByList])
+  }, [likedByList, dislikedByList]);
 
   /**
    * Handles comment reply events
@@ -220,7 +215,7 @@ function PostPage() {
   const fetchReplies = async (parentId: string | undefined): Promise<any[]> => {
     try {
       const response = await axios.get(
-        `http://3.81.216.218:4000/api/forums/comments/post?id=${parentId}&page=1`
+        `http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`
       );
 
       const replies = response.data[0];
@@ -256,7 +251,7 @@ function PostPage() {
 
     try {
       const response = await axios.post(
-        `http://3.81.216.218:4000/api/forums/${responseId}`,
+        `http://localhost:4000/api/forums/${responseId}`,
         {
           body: commentText,
         }
@@ -304,7 +299,6 @@ function PostPage() {
     }
   }, [alert]);
 
-
   const clearAlert = () => {
     setAlert(undefined);
   };
@@ -343,7 +337,7 @@ function PostPage() {
           <div className="post-body-bg col-11 d-flex flex-column align-items-center">
             {/* Post Text */}
             <h3 className="text-post-page-format">{title}</h3>
-            <Link 
+            <Link
               to={`/profile/${username}`}
               className="text-decoration-none text-dark ms-0"
             >

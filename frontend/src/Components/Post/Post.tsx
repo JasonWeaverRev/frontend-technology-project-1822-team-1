@@ -17,7 +17,15 @@ interface PostItem {
   dislikedby: string[];
 }
 
-function Post({ title, username, post_id, content, time, likedby, dislikedby }: PostItem) {
+function Post({
+  title,
+  username,
+  post_id,
+  content,
+  time,
+  likedby,
+  dislikedby,
+}: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<any>(0);
@@ -51,8 +59,8 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
 
   /**
    * Handles 'like' or 'dislike' button events
-   * 
-   * @param type 
+   *
+   * @param type
    */
   const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
@@ -62,7 +70,6 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
       }
 
       await handleUpvote();
-
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
@@ -79,18 +86,17 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/like`,
-      {
-        post_id: post_id,
-      }
-    );
+        `http://localhost:4000/api/forums/like`,
+        {
+          post_id: post_id,
+        }
+      );
 
-    await getLikes();
-    
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Dislikes a post
@@ -98,42 +104,38 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-      `http://3.81.216.218:4000/api/forums/dislike`,
-      {
-        post_id: post_id,
-      }
-    );
+        `http://localhost:4000/api/forums/dislike`,
+        {
+          post_id: post_id,
+        }
+      );
 
-    await getLikes();
-    
+      await getLikes();
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /**
    * Retrieves likes from a specific post
    */
   const getLikes = async () => {
     await axios
-    .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
-    .then((response) => {
-      
-      setLikes(response.data);
-
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+      .get(`http://localhost:4000/api/forums/posts/likes/${post_id}`)
+      .then((response) => {
+        setLikes(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     getLikes();
 
-    const activeUsername = localStorage.getItem("username")
+    const activeUsername = localStorage.getItem("username");
 
     if (activeUsername && likedby.includes(activeUsername)) {
-
       setIsLiked(true);
     } else if (activeUsername && dislikedby.includes(activeUsername)) {
       setIsDisliked(true);
@@ -141,16 +143,16 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   }, []);
 
   /**
-   * Trims a post body's html tags, replacing them with an empty div 
-   * 
-   * @param html 
-   * @returns 
+   * Trims a post body's html tags, replacing them with an empty div
+   *
+   * @param html
+   * @returns
    */
   const stripHtml = (html: string) => {
     const div = document.createElement("div");
     div.innerHTML = html;
     return div.innerText;
-  }
+  };
 
   return (
     <>
@@ -197,26 +199,21 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
                   __html: content.substring(0, 25) + " . . .",
                 }}
               />
-            ) : (stripHtml(content).trim() !== '' ? (
+            ) : stripHtml(content).trim() !== "" ? (
               <div dangerouslySetInnerHTML={{ __html: content }} />
-              ) : (
-                <div className="fst-italic"> 
-                  [No content to display]
-                </div>
-              )
+            ) : (
+              <div className="fst-italic">[No content to display]</div>
             )}
           </div>
-          
+
           <div className="d-flex justify-content-start mt-3">
-            <Link 
+            <Link
               to={`/profile/${username}`}
               className="text-decoration-none text-dark"
             >
               {username}
             </Link>
-            <p className="ms-4">
-              {time}
-            </p>
+            <p className="ms-4">{time}</p>
           </div>
         </div>
       </div>
