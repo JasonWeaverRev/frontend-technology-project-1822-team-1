@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import "./ProfilePage.css";
@@ -51,15 +51,19 @@ function ProfilePage() {
   // States that hold data to populate areas
   const [profile, setProfile] = useState<Profile>(); // holds user's profile
   const [encounters, setEncounters] = useState<Encounter[]>([]); // array holding user Encounters
+  const [campaigns, setCampaigns] = useState<string[]>([]); // array holding string titles
   const [posts, setPosts] = useState<Post[]>([]); // array holding user Posts;
+  const [profilePicture, setProfilePicture] = useState<string | null>(null); // profile picture link
+  const [base64Image, setBase64Image] = useState<string | null>(null); // base64 conversion of an image
 
   // States that determine if editor or popups should show
   const [editAboutMe, setEditAboutMe] = useState(""); // holds new about me to patch
   const [isEditing, setIsEditing] = useState(false); // state to manage whether the about me editor is open
-  const [encounterToDelete, setEncounterToDelete] = useState<string | null>(
-    null
-  ); // ID of the encounter to delete
+  const [encounterToDelete, setEncounterToDelete] = useState<string | null>(null); // ID of the encounter to delete
   const [showDeletePopup, setShowDeletePopup] = useState(false); // Whether to show the confirmation popup
+  const [encounterToModify, setEncounterToModify] = useState<string | null>(null); // ID of the encounter to modify
+  const [campaignTitle, setCampaignTitle] = useState<string>(""); // The campaign title to set
+  const [showCampaignPopup, setShowCampaignPopup] = useState(false); // Whether to show confirmation popup
   // #endregion
 
   // #region req/res interceptor setup
@@ -92,7 +96,7 @@ function ProfilePage() {
       });
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
-      console.log(profile);
+      setProfilePicture(response.data.userProfile.profile_pic || null);
       
     } catch (error) {
       console.error("Error fetching user profile: ", error);
@@ -128,6 +132,57 @@ function ProfilePage() {
     }
   };
 
+  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files?.[0];
+    const reader = new FileReader();
+
+    if (!file) return;
+  
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        const base64 = reader.result.split(',')[1];
+        setBase64Image(base64);
+        uploadProfilePic(base64, file.type);
+
+      } else {
+        setBase64Image(null);
+      }
+    };
+  
+    reader.onerror = (error) => {
+      console.error('Error: ', error);
+    };
+  };
+
+  const uploadProfilePic = async (base64: string, mimeType: string) => {
+    try {
+      const response = await axios.patch('http://localhost:4000/api/accounts/profile-pic', {
+        image: {
+          mime: mimeType,
+          data: base64,
+        },
+      }, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`, // Add your token here
+        },
+      });
+
+      // Update the profile picture state with the new URL after a successful upload
+      if (response.data) {
+        setProfilePicture(response.data.presignedUrl); // Adjust according to your response structure
+      }
+
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error uploading profile picture: ', error.response?.data || error.message);
+      } else {
+        console.error('Unexpected error: ', error);
+      }
+    }
+  };
+
   useEffect(() => {
     getProfile();
   }, []);
@@ -149,12 +204,11 @@ function ProfilePage() {
   };
 
   useEffect(() => {
-    // runs fetchUserEncounters after mounting (initial render)
     getUserEncounters();
   }, []);
   // #endregion
 
-  // #region delete Encounter
+  // #region delete/modify Encounter
   const deleteEncounter = async (encounter_id: string) => {
     console.log("inside deleteEncounter: ", encounter_id);
 
@@ -187,10 +241,32 @@ function ProfilePage() {
       setShowDeletePopup(false);
     }
   };
-  // #endregion
 
-  // #region assign Campaign Title
+  const modifyEncounterCampaign = async (encounter_id: string, campaign_title: string) => {
+    try {
+      const response = await axios.patch(
+        'http://localhost:4000/api/encounters/campaign',
+        {
+          action: 'set',
+          campaign_title,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          params: { encounter_id },
+        }
+      );
 
+      getUserEncounters()
+  
+      setEncounterToModify(null);
+      setShowCampaignPopup(false);
+  
+    } catch (error) {
+      console.error('Error modifying encounter campaign:', error);
+    }
+  };
   // #endregion
 
   // #region Populate Forum Posts
@@ -200,7 +276,7 @@ function ProfilePage() {
         `http://localhost:4000/api/forums/${username}`
       );
       setPosts(response.data);
-      console.log("user posts: ", response.data);
+
     } catch (error) {
       console.error("Error getting user posts: ", error);
     }
@@ -212,9 +288,18 @@ function ProfilePage() {
   // #endregion
 
   // Populates "Your Campaigns" field
-  const campaigns = Array.from(
-    new Set(encounters.map((entry) => entry.campaign_title))
-  );
+  useEffect(() => {
+    const updatedCampaigns = Array.from(
+      new Set(
+        encounters
+          .map((entry) => entry.campaign_title)
+          .filter(Boolean) // Remove any null or undefined titles
+      )
+    );
+  
+    // Update the `campaigns` state directly with the new list
+    setCampaigns(updatedCampaigns);
+  }, [encounters]);
 
   return (
     <>
@@ -222,16 +307,18 @@ function ProfilePage() {
     <div id="profile-bio-section" className="container-fluid row">
       <div
         id="image-container"
-        className="col-4 d-flex justify-content-end align-self-start"
-      >
-        {" "}
+        className="col-4 d-flex justify-content-end align-self-start">
         {/* Profile picture */}
         <img
-          src="https://picsum.photos/200"
-          alt="Profile placeholder"
+          src={profilePicture || "/profile-icon.png"}
+          alt="Profile avatar"
           className="img-fluid"
         />
+
+        {/* IMAGE UPLOAD TESTING */}
+        
       </div>
+
       <div id="user_bio" className="col-8 text-start">
         <h1 id="username">{profile?.username}</h1> {/* Username */}
         {isEditing ? (
@@ -252,6 +339,18 @@ function ProfilePage() {
             <button onClick={() => setIsEditing(true)} id="edit-button">
               Edit About Me
             </button>
+            <span>
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="file-upload"
+              />
+              <label htmlFor="file-upload" id="upload-label">
+                Upload Avatar
+              </label>
+            </span>
           </div>
         )}
       </div>
@@ -265,7 +364,7 @@ function ProfilePage() {
           <div className="card-container">
             {campaigns.map((campaign, index) => (
               <Link
-                to={`/campaign/${encodeURIComponent(campaign)}`}
+                to={`/profile/${profile?.username}/${encodeURIComponent(campaign)}`}
                 key={index}
                 className="content-card"
                 style={{ textDecoration: "none" }}
@@ -299,24 +398,34 @@ function ProfilePage() {
                           roster: entry.monsters,
                           id: entry.encounter_id,
                         };
+                        
                         setEncounter(thisEncounter);
+                        
                       }}
                       to={"/encounter"}>
                       <h3>{entry.encounter_title}</h3>
                   </Link>
-                  <p>will be filled with preview of monsters comma separated</p>
+                  <p>
+                    { entry.monsters.length > 0
+                      ? entry.monsters.map((monster) => monster.name).join(", ")
+                      : "No monsters in this encounter."}
+                  </p>
 
                   <div id="encounter-button-container">
                     {isCurrentUser ? (
-                      <button onClick={() => {
-                        setEncounterToDelete(entry.encounter_id);
-                        setShowDeletePopup(true); }}
-                      className="delete-button">&times;</button>
+                      <span>
+                        <button onClick={() => {
+                          setEncounterToDelete(entry.encounter_id);
+                          setShowDeletePopup(true); }}
+                        className="delete-button">&times;</button>
 
-                      // <button onClick={() => {
-                      //   setEncounterToModify(entry.encounter_id);
-                      //   setShowCampaignPopup(true); }}
-                      // className="campaign-button">🎯</button>
+                        <button onClick={() => {
+                          setEncounterToModify(entry.encounter_id);
+                          setShowCampaignPopup(true); }}
+                        className="delete-button pencil">&#x1F589;</button>
+                      </span>
+
+                      
                     ) : (
                       <div className="button-placeholder"></div>
                     )}
@@ -334,11 +443,53 @@ function ProfilePage() {
               <div className="popup-content">
                 <h2>Confirm Deletion</h2>
                 <p>Are you sure you want to delete this encounter?</p>
+
                 <div className="popup-buttons">
                   <button onClick={handleDelete} className="confirm-delete-btn">
                     Confirm
                   </button>
                   <button onClick={() => setShowDeletePopup(false)} className="cancel-btn">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showCampaignPopup && (
+            <div className="confirmation-popup">
+              <div className="popup-content">
+                <h2>Enter a Campaign Title</h2>
+                <p>Encounters with matching titles will automatically be grouped together (case sensitive)</p>
+                
+                {/* Text input for campaign title */}
+                <input
+                  type="text"
+                  maxLength={24}
+                  value={campaignTitle}
+                  onChange={(e) => setCampaignTitle(e.target.value)}
+                  className="campaign-title-input"
+                  placeholder="Enter campaign title"
+                />
+
+                <div className="popup-buttons">
+                  {/* Confirm button */}
+                  <button
+                    onClick={() => {
+                      setShowCampaignPopup(false)
+                      modifyEncounterCampaign(encounterToModify!, campaignTitle); // Pass the campaign title and encounter ID
+                    }}
+                    className="confirm-delete-btn"
+                    disabled={!campaignTitle.trim()} // Disable if no valid input
+                  >
+                    Confirm
+                  </button>
+
+                  {/* Cancel button */}
+                  <button
+                    onClick={() => setShowCampaignPopup(false)}
+                    className="cancel-btn"
+                  >
                     Cancel
                   </button>
                 </div>
