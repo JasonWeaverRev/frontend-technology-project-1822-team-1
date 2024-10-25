@@ -48,6 +48,7 @@ function LoginPage() {
       );
 
       const { token } = response.data;
+      console.log("token received:", token);
       localStorage.setItem("token", token);
 
       console.log(localStorage.getItem("token"));
