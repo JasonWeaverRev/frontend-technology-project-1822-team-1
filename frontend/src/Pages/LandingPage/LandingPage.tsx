@@ -32,6 +32,15 @@ function LandingPage() {
       });
   };
 
+  /**
+   * Removes a deleted post from the post page
+   * 
+   * @param postId 
+   */
+  const removePost = (postId: string) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.post_id !== postId));
+  };
+
   useEffect(() => {
     getPosts();
   }, [page]);
@@ -50,6 +59,7 @@ function LandingPage() {
               time={post.creation_time}
               likedby={post.liked_by}
               dislikedby={post.disliked_by}
+              onDelete={removePost}
             />
           ))
         ) : (

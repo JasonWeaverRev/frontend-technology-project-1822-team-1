@@ -5,6 +5,7 @@ import likeUnselectedIcon from "./PostImages/upvote-unselected-arrows.png";
 import likeSelectedIcon from "./PostImages/upvote-selected-arrows.png";
 import dislikeUnselectedIcon from "./PostImages/downvote-unselected-arrows.png";
 import dislikeSelectedIcon from "./PostImages/downvote-selected-arrows.png";
+import deleteIcon from "./PostImages/redXformatted.png";
 import axios from "axios";
 
 interface PostItem {
@@ -15,12 +16,15 @@ interface PostItem {
   time: string;
   likedby: string[];
   dislikedby: string[];
+  onDelete: (postid: string) => void;
 }
 
-function Post({ title, username, post_id, content, time, likedby, dislikedby }: PostItem) {
+function Post({ title, username, post_id, content, time, likedby, dislikedby, onDelete }: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<any>(0);
+  const [deletingPostId, setDeletingCommentId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
   // Request Interceptor
   axios.interceptors.request.use(
@@ -128,6 +132,38 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
   }
 
   /**
+   * ADMIN POST DELETION
+   * 
+   * @param id 
+   * @param delTime 
+   */
+  const handleDeleteOpen = (id: string) => {
+    console.log(id);
+    
+    setDeletingCommentId(id);
+    setIsDeleteModalOpen(true);
+  };
+  
+  const handleDeleteClick = async () => {
+    if (localStorage.getItem("role") === "admin") {
+      try {
+        console.log("Deleting Post ID in Delete Click:", deletingPostId);
+  
+        const response = await axios.delete(
+          `http://localhost:4000/api/forums/${deletingPostId}`
+        );
+  
+        if (response.status === 200) {
+          console.log("Post deleted");
+          onDelete(deletingPostId!); // ! = non-null assertion
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } 
+  };
+
+  /**
   * DATE FORMATTING
   */
   const formatDate = () => {
@@ -194,7 +230,7 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
             />
           </button>
         </div>
-        <div className="col-11 d-flex flex-column text-start text-post-format justify-content-between landing-page-text-format">
+        <div className="col-10 d-flex flex-column text-start text-post-format justify-content-between landing-page-text-format">
           <h4>
             <Link
               to={`/posts/${post_id}`}
@@ -233,6 +269,51 @@ function Post({ title, username, post_id, content, time, likedby, dislikedby }: 
             </p>
           </div>
         </div>
+        <div className="col-1 d-flex flex-column align-items-center justify-content-center">
+              {(localStorage.getItem("role") === "admin") && (
+              <button
+                type="button"
+                className="btn btn-light btn-sm button-format"
+                onClick={() => handleDeleteOpen(post_id)}
+                data-toggle="modal"
+                data-target="#deleteModal">
+                <img
+                  src={deleteIcon}
+                  alt="Delete Icon"
+                  style={{ width: "24px", height: "24px" }}
+                />
+              </button>
+            )}
+        </div>
+
+        {isDeleteModalOpen && (
+            <div className="modal landing-page-text-format" id="deleteModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLabel">Delete Post Confirmation</h5>
+                  </div>
+                  <div className="modal-body">
+                    <p>
+                      Are you sure you want to delete this post?
+                    </p>
+
+                    <p>
+                      This process cannot be reverted 
+                    </p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => setIsDeleteModalOpen(false)}>Cancel</button>
+                    <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={() => {
+                      handleDeleteClick();
+                      setIsDeleteModalOpen(false);
+                    }}>Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
       </div>
     </>
   );
