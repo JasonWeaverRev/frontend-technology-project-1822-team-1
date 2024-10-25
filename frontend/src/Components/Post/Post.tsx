@@ -34,6 +34,7 @@ function Post({
   const [likes, setLikes] = useState<any>(0);
   const [deletingPostId, setDeletingCommentId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isClickable, setIsClickable] = useState<boolean>(true);
 
   // Request Interceptor
   axios.interceptors.request.use(
@@ -214,6 +215,7 @@ function Post({
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm button-format border-0"
+            disabled={!isClickable}
             onClick={() => handleButtonClick("like")}
           >
             <img
@@ -226,6 +228,7 @@ function Post({
           <button
             type="button"
             className="btn btn-outline-secondary btn-sm button-format border-0"
+            disabled={!isClickable}
             onClick={() => handleButtonClick("dislike")}
           >
             <img
@@ -246,10 +249,10 @@ function Post({
             </Link>
           </h4>
           <div className="flex-grow-1 d-flex align-items-center mb-0 mt-2">
-            {content.length > 25 ? (
+            {content.length > 40 ? (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: content.substring(0, 25) + " . . .",
+                  __html: stripHtml(content).substring(0, 40) + " . . .",
                 }}
               />
             ) : stripHtml(content).trim() !== "" ? (
