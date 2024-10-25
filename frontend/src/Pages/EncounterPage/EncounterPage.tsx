@@ -43,7 +43,7 @@ function EncounterPage() {
   // #endregion
 
   const saveEncounter = async () => {
-    try {
+    try {3.81.216.218
       const response = await axios.post(
         `http://3.81.216.218:4000/api/encounters/encounter`,
         {
