@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import "./EncounterMonster.css";
-import ReactTooltip from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
 
 interface EncounterMonsterProps {
   monster: any;
