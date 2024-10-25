@@ -56,7 +56,7 @@ function LoginPage() {
 
       setIsSubmitting(false);
       await storeLoggedInUser();
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       setIsSubmitting(false);
       if (axios.isAxiosError(error) && error.response) {
