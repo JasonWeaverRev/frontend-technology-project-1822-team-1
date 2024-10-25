@@ -78,7 +78,7 @@ function EncounterPage() {
   const editEncounter = async () => {
     try {
       const response = await axios.patch(
-        `http://3.81.216.218:4000api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           monsters: encounter.roster,
           encounter_title: encounter.title,
