@@ -23,7 +23,7 @@ function LandingPage() {
           console.error("Response is not an array:", response.data);
         }
 
-        if (response.data[1] <= 4 + (page - 1) * 4) {
+        if (response.data[1] <= 6 + (page - 1) * 6) {
           setIsClickable(false);
         }
       })
