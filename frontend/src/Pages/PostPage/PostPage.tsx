@@ -77,11 +77,14 @@ function PostPage() {
         setComments(response.data[0]);
         setCommentNumber(response.data[1]);
 
+        console.log(response.data[1]);
+
         if (response.data[1] <= 8 + (page - 1) * 8) {
           setIsClickable(false);
         }
       })
       .catch((error) => {
+        setIsClickable(false);
         console.log(error);
       });
   };
@@ -263,8 +266,10 @@ function PostPage() {
           type: "success",
         };
         setAlert(postPageAlert);
-
+        //Re-render the page to reflect the added comments
+        const tempPage = page;
         setPage(1);
+        setPage(tempPage);
         await getComments();
 
         return postPageAlert;
@@ -356,19 +361,17 @@ function PostPage() {
             </button>
           </div>
 
-          <div className="post-body-bg col-11 d-flex flex-column align-items-center">
+          <div className="post-body-bg col-11 d-flex flex-column align-items-start">
             {/* Post Text */}
-            <h3 className="text-post-page-format">{title}</h3>
-            <Link
-              to={`/profile/${username}`}
-              className="text-decoration-none text-dark ms-0"
-            >
-              {username}
-            </Link>
-            {/* Render the content as HTML */}
-            <p className="text-post-page-format mt-1">{formatDate()}</p>
+            <h3 className="text-post-page-format text-start">{title}</h3>
+            <div className="d-flex">
+              <Link to={`/profile/${username}`} className="text-decoration-none text-dark">
+                {username}
+              </Link>
+              <p className="text-post-page-format ms-3">{formatDate()}</p>
+            </div>
             <div
-              className="text-post-page-format mt-0"
+              className="text-post-page-format mt-2 text-start"
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>
