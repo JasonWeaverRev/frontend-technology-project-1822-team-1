@@ -92,7 +92,7 @@ function Post({
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/like`,
+        `http://3.81.216.218:4000/api/forums/like`,
         {
           post_id: post_id,
         }
@@ -110,7 +110,7 @@ function Post({
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/dislike`,
+        `http://3.81.216.218:4000/api/forums/dislike`,
         {
           post_id: post_id,
         }
@@ -127,7 +127,7 @@ function Post({
    */
   const getLikes = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/posts/likes/${post_id}`)
+      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
       .then((response) => {
         setLikes(response.data);
       })
@@ -155,7 +155,7 @@ function Post({
         console.log("Deleting Post ID in Delete Click:", deletingPostId);
 
         const response = await axios.delete(
-          `http://localhost:4000/api/forums/${deletingPostId}`
+          `http://3.81.216.218:4000/api/forums/${deletingPostId}`
         );
 
         if (response.status === 200) {
