@@ -336,21 +336,25 @@ function ProfilePage() {
         ) : (
           <div className="about-me-container">
             <p id="about_me">{profile?.about_me}</p> {/* About Me */}
-            <button onClick={() => setIsEditing(true)} id="edit-button">
-              Edit About Me
-            </button>
-            <span>
-              <input
-                type="file"
-                onChange={handleFileUpload}
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="file-upload"
-              />
-              <label htmlFor="file-upload" id="upload-label">
-                Upload Avatar
-              </label>
-            </span>
+            {isCurrentUser ? (
+              <span>
+              <button onClick={() => setIsEditing(true)} id="edit-button">
+                Edit About Me
+              </button>
+              <span>
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  id="file-upload"
+                />
+                <label htmlFor="file-upload" id="upload-label">
+                  Upload Avatar
+                </label>
+              </span>
+              </span>
+            ) : (<span></span>)}
           </div>
         )}
       </div>
