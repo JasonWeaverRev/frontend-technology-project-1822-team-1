@@ -16,6 +16,7 @@ interface PostItem {
   time: string;
   likedby: string[];
   dislikedby: string[];
+  encounterId?: string;
   onDelete: (postid: string) => void;
 }
 
