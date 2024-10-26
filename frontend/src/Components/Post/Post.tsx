@@ -16,8 +16,8 @@ interface PostItem {
   time: string;
   likedby: string[];
   dislikedby: string[];
-  encounterId?: string;
   onDelete: (postid: string) => void;
+  encounterId: string | null;
 }
 
 function Post({
@@ -29,6 +29,7 @@ function Post({
   likedby,
   dislikedby,
   onDelete,
+  encounterId
 }: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
@@ -93,7 +94,7 @@ function Post({
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-        `http://3.81.216.218:4000/api/forums/like`,
+        `http://localhost:4000/api/forums/like`,
         {
           post_id: post_id,
         }
@@ -111,7 +112,7 @@ function Post({
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-        `http://3.81.216.218:4000/api/forums/dislike`,
+        `http://localhost:4000/api/forums/dislike`,
         {
           post_id: post_id,
         }
@@ -128,7 +129,7 @@ function Post({
    */
   const getLikes = async () => {
     await axios
-      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${post_id}`)
+      .get(`http://localhost:4000/api/forums/posts/likes/${post_id}`)
       .then((response) => {
         setLikes(response.data);
       })
@@ -156,7 +157,7 @@ function Post({
         console.log("Deleting Post ID in Delete Click:", deletingPostId);
 
         const response = await axios.delete(
-          `http://3.81.216.218:4000/api/forums/${deletingPostId}`
+          `http://localhost:4000/api/forums/${deletingPostId}`
         );
 
         if (response.status === 200) {
@@ -185,6 +186,8 @@ function Post({
 
   useEffect(() => {
     getLikes();
+
+    console.log(encounterId);
 
     const activeUsername = localStorage.getItem("username");
 
@@ -241,7 +244,7 @@ function Post({
           <h4>
             <Link
               to={`/posts/${post_id}`}
-              state={{ title, username, content, time }}
+              state={{ title, username, content, time, encounterId }}
               className="text-decoration-none text-dark"
             >
               {title}
@@ -269,6 +272,9 @@ function Post({
               {username}
             </Link>
             <p className="ms-4">{formatDate()}</p>
+            {encounterId && (
+              <p className="ms-4">Encounter ID: {encounterId}</p>
+            )}
           </div>
         </div>
         <div className="col-1 d-flex flex-column align-items-center justify-content-center">

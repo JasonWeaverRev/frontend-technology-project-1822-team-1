@@ -3,8 +3,13 @@ import React, { useState, useEffect } from "react";
 import Post from "../../Components/Post/Post";
 import axios from "axios";
 import "./LandingPage.css";
+import { useEncounterPostContext } from "../../Context/EncounterPostContext";
+
 
 function LandingPage() {
+ 
+  const { postEncounterMap } = useEncounterPostContext();
+ 
   const [posts, setPosts] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState(true);
@@ -15,10 +20,12 @@ function LandingPage() {
 
   const getPosts = async () => {
     await axios
-      .get(`http://3.81.216.218:4000/api/forums/landing?page=${page}`)
+      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
       .then((response) => {
         if (Array.isArray(response.data)) {
-          setPosts(response.data[0]);
+          const newPosts = response.data[0];
+          setPosts(newPosts);
+
         } else {
           console.error("Response is not an array:", response.data);
         }
@@ -32,11 +39,6 @@ function LandingPage() {
       });
   };
 
-  /**
-   * Removes a deleted post from the post page
-   *
-   * @param postId
-   */
   const removePost = (postId: string) => {
     setPosts((prevPosts) =>
       prevPosts.filter((post) => post.post_id !== postId)
@@ -45,6 +47,8 @@ function LandingPage() {
 
   useEffect(() => {
     getPosts();
+
+    console.log(postEncounterMap);
   }, [page]);
 
   return (
@@ -62,6 +66,7 @@ function LandingPage() {
               likedby={post.liked_by}
               dislikedby={post.disliked_by}
               onDelete={removePost}
+              encounterId={postEncounterMap[post.post_id]} // Pass encounterId to Post component
             />
           ))
         ) : (
