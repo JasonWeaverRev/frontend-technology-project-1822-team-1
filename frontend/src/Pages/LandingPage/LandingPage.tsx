@@ -5,9 +5,7 @@ import axios from "axios";
 import "./LandingPage.css";
 import { useEncounter } from "../../Context/EncounterContext";
 
-
 function LandingPage() {
- 
   const { setEncounter } = useEncounter();
 
   const [posts, setPosts] = useState<any[]>([]);
@@ -20,12 +18,11 @@ function LandingPage() {
 
   const getPosts = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
+      .get(`http://3.81.216.218:4000/api/forums/landing?page=${page}`)
       .then((response) => {
         if (Array.isArray(response.data)) {
           const newPosts = response.data[0];
           setPosts(newPosts);
-
         } else {
           console.error("Response is not an array:", response.data);
         }

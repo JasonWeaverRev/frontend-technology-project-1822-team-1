@@ -27,7 +27,6 @@ interface EncounterOption {
 }
 
 const PostCreationPage: React.FC = () => {
-  
   const [body, setBody] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -71,7 +70,9 @@ const PostCreationPage: React.FC = () => {
   const fetchOptions = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/encounters/${localStorage.getItem("username")}`
+        `http://3.81.216.218:4000/api/encounters/${localStorage.getItem(
+          "username"
+        )}`
       );
       setOptions(response.data.encounters);
       // Assuming response data is an array of options
@@ -103,7 +104,7 @@ const PostCreationPage: React.FC = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:4000/api/forums",
+        "http://3.81.216.218:4000/api/forums",
         {
           title,
           body,

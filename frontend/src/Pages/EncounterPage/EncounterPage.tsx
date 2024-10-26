@@ -45,7 +45,7 @@ function EncounterPage() {
   const saveEncounter = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           monsters: encounter.roster,
           encounter_title: encounter.title,
@@ -78,7 +78,7 @@ function EncounterPage() {
   const editEncounter = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:4000/api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           monsters: encounter.roster,
           encounter_title: encounter.title,
@@ -88,7 +88,6 @@ function EncounterPage() {
       );
 
       const data = response.data;
-      console.log(data);
 
       if (response.status === 200) {
         setSuccess(true);
@@ -140,7 +139,6 @@ function EncounterPage() {
           ></textarea>
         </div>
         <div className="event-info d-flex flex-column col-2 text-start p-2 gap-2">
-          {encounter.environment && <div>{encounter.environment}:</div>}
           {encounter.setting && <div>{encounter.setting}</div>}
         </div>
       </div>

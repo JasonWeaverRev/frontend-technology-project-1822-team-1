@@ -22,7 +22,7 @@ function RegisterPage() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "http://localhost:4000/api/accounts/register",
+        "http://3.81.216.218:4000/api/accounts/register",
         { email, username, password }
       );
       setSuccessMessage("Registration successful!");
@@ -91,7 +91,10 @@ function RegisterPage() {
                 {isSubmitting ? "Registering..." : "Register"}
               </button>
               <p className="prelink-text">
-                Already have an account? <Link to="/login">Login here</Link>
+                Already have an account?{" "}
+                <Link className="register-here" to="/login">
+                  Login here
+                </Link>
               </p>
             </form>
           </div>

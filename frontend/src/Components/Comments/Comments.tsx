@@ -78,7 +78,7 @@ function Comments({
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/like`,
+        `http://3.81.216.218:4000/api/forums/like`,
         {
           post_id: commentId,
         }
@@ -96,7 +96,7 @@ function Comments({
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/dislike`,
+        `http://3.81.216.218:4000/api/forums/dislike`,
         {
           post_id: commentId,
         }
@@ -113,7 +113,7 @@ function Comments({
    */
   const getLikes = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/posts/likes/${commentId}`)
+      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${commentId}`)
       .then((response) => {
         setLikes(response.data);
       })
@@ -128,7 +128,7 @@ function Comments({
   const getLikedBy = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/forums/posts/${commentId}`
+        `http://3.81.216.218:4000/api/forums/posts/${commentId}`
       );
 
       setLikedByList(response.data.liked_by);
@@ -253,7 +253,7 @@ function Comments({
       console.log(commentId);
       console.log(time);
       const response = await axios.patch(
-        `http://localhost:4000/api/forums/comments`,
+        `http://3.81.216.218:4000/api/forums/comments`,
         {
           comment_id: commentId,
           comment_creation_time: time,
@@ -296,7 +296,7 @@ function Comments({
         );
 
         const response = await axios.delete(
-          `http://localhost:4000/api/forums/comments/${deletingCommentId}/${deletingCommentTime}`
+          `http://3.81.216.218:4000/api/forums/comments/${deletingCommentId}/${deletingCommentTime}`
         );
 
         if (response.status === 200) {
@@ -308,7 +308,7 @@ function Comments({
     } else if (role === "admin") {
       try {
         const response = await axios.delete(
-          `http://localhost:4000/api/forums/${deletingCommentId}`
+          `http://3.81.216.218:4000/api/forums/${deletingCommentId}`
         );
 
         if (response.status === 200) {
@@ -398,9 +398,10 @@ function Comments({
             <p className="ms-3 fw-bold">{likes}</p>
             <p className="ms-3">{formatDate()}</p>
           </div>
-          <div 
+          <div
             className="text-start"
-            style={{ wordWrap: "break-word", overflowWrap: "break-word" }}>
+            style={{ wordWrap: "break-word", overflowWrap: "break-word" }}
+          >
             <p>{body}</p>
           </div>
           <div className="comment-footer text-start fw-bold mb-2">
@@ -500,7 +501,7 @@ function Comments({
               <textarea
                 placeholder="Write your reply here"
                 className="form-control"
-                style={{ width: '60%', height: '120px', marginRight: '10px' }}
+                style={{ width: "60%", height: "120px", marginRight: "10px" }}
                 value={commentText}
                 onChange={handleTextChange}
               ></textarea>
@@ -518,7 +519,7 @@ function Comments({
               <textarea
                 placeholder="Edit your comment here"
                 className="form-control"
-                style={{ width: '60%', height: '120px', marginRight: '10px' }}
+                style={{ width: "60%", height: "120px", marginRight: "10px" }}
                 value={editText}
                 onChange={handleEditTextChange}
               ></textarea>
