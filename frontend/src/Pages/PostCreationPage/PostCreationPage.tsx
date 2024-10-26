@@ -3,7 +3,6 @@ import "./PostCreationPage.css";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-import { useEncounterPostContext } from "../../Context/EncounterPostContext";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"],
@@ -28,7 +27,6 @@ interface EncounterOption {
 }
 
 const PostCreationPage: React.FC = () => {
-  const { setPostEncounterMap } = useEncounterPostContext();
   
   const [body, setBody] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -73,7 +71,7 @@ const PostCreationPage: React.FC = () => {
   const fetchOptions = async () => {
     try {
       const response = await axios.get(
-        `http://3.81.216.218:4000/api/encounters/${localStorage.getItem("username")}`
+        `http://localhost:4000/api/encounters/${localStorage.getItem("username")}`
       );
       setOptions(response.data.encounters);
       // Assuming response data is an array of options
@@ -96,6 +94,8 @@ const PostCreationPage: React.FC = () => {
       return;
     }
 
+    console.log(selectedOption);
+
     setErrorMessage("");
 
     try {
@@ -103,11 +103,11 @@ const PostCreationPage: React.FC = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://3.81.216.218:4000/api/forums",
+        "http://localhost:4000/api/forums",
         {
           title,
           body,
-          selectedEncounter: selectedOption,
+          encounterId: selectedOption,
         },
         {
           headers: {
@@ -115,11 +115,6 @@ const PostCreationPage: React.FC = () => {
           },
         }
       );
-
-      setPostEncounterMap((prevMap) => ({
-        ...prevMap,
-        [response.data.data]: selectedOption || null,
-      }));
 
       setSuccessMessage("Post successfully created!");
       setTitle("");
