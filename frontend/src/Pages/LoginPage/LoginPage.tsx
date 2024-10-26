@@ -42,7 +42,7 @@ function LoginPage() {
       const response = await axios.post(
         "http://3.81.216.218:4000/api/accounts/login",
         {
-          identifier,
+          identifier: identifier.trim(),
           password,
         }
       );
