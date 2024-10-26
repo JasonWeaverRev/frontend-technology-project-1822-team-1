@@ -57,16 +57,27 @@ const PostCreationPage: React.FC = () => {
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
-      // Apply black color as the default for all text to override webview styles
-      editor.format("color", "#000000");
-      editor.on("text-change", fixLinks);
-    }
-    return () => {
-      if (quillRef.current) {
-        const editor = quillRef.current.getEditor();
+
+      // Apply default color whenever the content changes
+      const applyDefaultColor = () => {
+        const length = editor.getLength();
+        editor.formatText(0, length, "color", "#000000");
+      };
+
+      // Initially set default color on load
+      applyDefaultColor();
+
+      // Reapply default color on text change
+      editor.on("text-change", () => {
+        fixLinks();
+        applyDefaultColor();
+      });
+
+      return () => {
+        editor.off("text-change", applyDefaultColor);
         editor.off("text-change", fixLinks);
-      }
-    };
+      };
+    }
   }, []);
 
   const fetchOptions = async () => {
