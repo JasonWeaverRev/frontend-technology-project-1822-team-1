@@ -7,7 +7,9 @@ const GlobalContext: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return (
     <AuthProvider>
-      <EncounterProvider>{children}</EncounterProvider>
+      <EncounterProvider>
+          {children}
+      </EncounterProvider>
     </AuthProvider>
   );
 };

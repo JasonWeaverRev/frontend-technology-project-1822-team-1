@@ -9,6 +9,7 @@ import dislikeUnselectedIcon from "./PostPageImages/downvote-unselected-arrows.p
 import dislikeSelectedIcon from "./PostPageImages/downvote-selected-arrows.png";
 import axios from "axios";
 import CommentForm from "../../Components/CommentForm/CommentForm";
+import { useEncounter } from "../../Context/EncounterContext";
 
 function PostPage() {
   /**
@@ -20,6 +21,12 @@ function PostPage() {
   const username = location.state?.username;
   const content = location.state?.content;
   const time = location.state?.time;
+  const encounterId = location.state?.encounterId;
+
+  /**
+   * Context setters
+   */
+  const { setEncounter } = useEncounter();
 
   /**
    * State variable declarations
@@ -34,6 +41,7 @@ function PostPage() {
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState<boolean>(true);
   const [alert, setAlert] = useState<any>(undefined);
+  const [encounterPost, setEncounterPost] = useState<any>(undefined);
 
   // #region request/response interceptors
   // Request Interceptor
@@ -76,8 +84,6 @@ function PostPage() {
       .then((response) => {
         setComments(response.data[0]);
         setCommentNumber(response.data[1]);
-
-        console.log(response.data[1]);
 
         if (response.data[1] <= 8 + (page - 1) * 8) {
           setIsClickable(false);
@@ -301,10 +307,39 @@ function PostPage() {
     setPage(page + 1);
   };
 
+
+  const getPostEncounter = async () => {
+
+    try {
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/encounters/encounter?encounter_id=${encounterId}`
+      );
+
+      setEncounterPost(response.data.encounter);
+      
+      // setEncounterPost(response.data.encounters);
+    } catch (error) {
+      console.error("Error fetching user encounters: ", error);
+    }
+  };
+
+  useEffect(() => {
+    // runs fetchUserEncounters after mounting (initial render)
+    getPostEncounter();
+  }, []);
+
+  useEffect(() => {
+    if (encounterPost) {
+
+    }
+    
+  }, [encounterPost])
+
   /**
    * DATE FORMATTING
    */
   const formatDate = () => {
+    
     let formattedDate = "[Cannot retrieve the date at this time]";
 
     if (time) {
@@ -361,7 +396,7 @@ function PostPage() {
             </button>
           </div>
 
-          <div className="post-body-bg col-11 d-flex flex-column align-items-start">
+          <div className="post-body-bg col-11 d-flex flex-column">
             {/* Post Text */}
             <h3 className="text-post-page-format text-start">{title}</h3>
             <div className="d-flex">
@@ -370,11 +405,43 @@ function PostPage() {
               </Link>
               <p className="text-post-page-format ms-3">{formatDate()}</p>
             </div>
+            
+            {/* Encounter Link */}
+            <div className="row">
+              <div className="col-10 d-flex justify-content-center"> {/* Center align at the column level */}
+                {encounterPost && (
+                  <div
+                    className="encounter-link-container-format d-flex flex-column align-items-center p-3"
+                  >
+                    <span className="encounter-link-post-page-format">Encounter Link</span>
+                    <Link
+                      className="encounter-link-post-page-format text-decoration-none mt-2"
+                      onClick={() => {
+                        const thisEncounter = {
+                          title: encounterPost.encounter_title,
+                          setting: encounterPost.setting,
+                          roster: encounterPost.monsters,
+                          id: encounterPost.encounter_id,
+                        };
+                        setEncounter(thisEncounter);
+                      }}
+                      to={"/encounter"}
+                    >
+                      <button className="btn btn-outline-dark mt-2">
+                        {encounterPost.encounter_title}
+                      </button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div
-              className="text-post-page-format mt-2 text-start"
+              className="text-post-page-format mt-0 text-start"
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>
+
         </div>
 
         <div>

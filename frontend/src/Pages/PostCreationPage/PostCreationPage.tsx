@@ -27,6 +27,7 @@ interface EncounterOption {
 }
 
 const PostCreationPage: React.FC = () => {
+  
   const [body, setBody] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -34,9 +35,6 @@ const PostCreationPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [options, setOptions] = useState<EncounterOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [selectedEncounter, setSelectedEncounter] = useState<string | null>(
-    null
-  ); //ignore
 
   const quillRef = useRef<ReactQuill | null>(null);
 
@@ -96,6 +94,8 @@ const PostCreationPage: React.FC = () => {
       return;
     }
 
+    console.log(selectedOption);
+
     setErrorMessage("");
 
     try {
@@ -107,7 +107,7 @@ const PostCreationPage: React.FC = () => {
         {
           title,
           body,
-          selectedEncounter: selectedOption,
+          encounterId: selectedOption,
         },
         {
           headers: {
@@ -115,6 +115,7 @@ const PostCreationPage: React.FC = () => {
           },
         }
       );
+
       setSuccessMessage("Post successfully created!");
       setTitle("");
       setBody("");

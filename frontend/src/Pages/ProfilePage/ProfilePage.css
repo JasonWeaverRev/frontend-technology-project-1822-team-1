@@ -1,3 +1,12 @@
+#profile-body-section h3,
+.title-link {
+  color: #E4E4E4;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 #profile-bio-section {
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -86,7 +95,7 @@
 }
 
 #forum-post-container .card-container {
-  max-height: calc(10 * 5rem);
+    max-height: calc(7 * 5rem);
 }
 
 .card-container::-webkit-scrollbar {
@@ -107,6 +116,7 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
+  padding-bottom: 5rem;
 }
 
 #edit-button,
@@ -135,17 +145,17 @@
   transform: translateY(1px);
 }
 
-.delete-confirmation-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.confirmation-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .popup-content {
@@ -201,6 +211,7 @@
 
 .delete-button:hover {
   color: #ff6060;
+  transform: translateY(1px);
 }
 
 .confirm-delete-btn,
@@ -208,6 +219,56 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.cancel-btn:hover {
+  background-color: rgb(173, 173, 173);
+  transform: translateY(-2px);
+}
+
+.cancel-btn:active {
+  background-color: rgb(85, 85, 85);
+  transform: translateY(1px);
+}
+
+.pencil {
+  color: rgb(0, 216, 0);
+  font-size: 1.6rem;
+}
+
+.pencil:hover {
+  color: rgb(61, 238, 61);
+}
+
+.pencil:active {
+  color: rgb(0, 139, 0);
+}
+
+#upload-label {
+  margin-top: auto;
+  background-color: #2093ff;
+  color: white;
+  border: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 1px 4px;
+  margin-left: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+#upload-label {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#upload-label:hover {
+  background-color: #5aaefc;
+  transform: translateY(-2px);
+}
+
+#upload-label:active {
+  background-color: #0a67be;
+  transform: translateY(-2px);
+}
+  
 @media (max-width: 1500px) {
   #user_bio > h1,
   .about-me-container {
@@ -252,6 +313,8 @@
   }
 
   #image-container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     padding-bottom: 1rem;
   }
@@ -308,6 +371,12 @@
   .about-me-container {
     display: flex;
     flex-direction: column;
+  }
+
+  #upload-label {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 5px;
   }
 }
 

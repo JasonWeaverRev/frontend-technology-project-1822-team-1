@@ -17,6 +17,7 @@ interface PostItem {
   likedby: string[];
   dislikedby: string[];
   onDelete: (postid: string) => void;
+  encounterId: string | null;
 }
 
 function Post({
@@ -28,6 +29,7 @@ function Post({
   likedby,
   dislikedby,
   onDelete,
+  encounterId
 }: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
@@ -240,7 +242,7 @@ function Post({
           <h4>
             <Link
               to={`/posts/${post_id}`}
-              state={{ title, username, content, time }}
+              state={{ title, username, content, time, encounterId }}
               className="text-decoration-none text-dark"
             >
               {title}
