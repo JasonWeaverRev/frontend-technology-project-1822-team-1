@@ -2,38 +2,55 @@ import React, { useState } from "react";
 import "./EncounterMonster.css";
 
 interface EncounterMonsterProps {
-  name: string;
-  hp: number;
-  img: string;
+  monster: any;
   updateHp: any;
 }
 
-const EncounterMonster: React.FC<EncounterMonsterProps> = ({
-  name,
-  hp,
-  img,
-}) => {
-  const [monsterHp, setMonsterHp] = useState<number>(hp);
+const EncounterMonster: React.FC<EncounterMonsterProps> = ({ monster }) => {
+  const [monsterHp, setMonsterHp] = useState<number>(monster.hp);
   return (
     <div className="single-monster">
       <div className="monster-hud d-flex flex-column">
-        <p>{name}</p>
+        <a
+          href={`${monster.monsterPage}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {monster.name}
+        </a>
         <div className="monster-hp d-flex justify-content-between align-items-baseline">
           <input
             type="range"
             id="monster-hp"
             name="monster hp"
             min={0}
-            max={hp}
+            max={monster.hp}
             onChange={(e: any) => setMonsterHp(e.target.value)}
           ></input>
           <p>
-            {monsterHp}/{hp}
+            {monsterHp}/{monster.hp}
           </p>
         </div>
       </div>
       <div className="d-flex flex-column gap-4 align-items-center">
-        <img className="monster-icon" src={img} alt="Monster Icon"></img>
+        <span
+          title={`
+            Stats:
+        ac: ${monster.armorClass}
+        str: ${monster.strength}
+        dex: ${monster.dexterity}
+        con: ${monster.constitution}
+        int: ${monster.intelligence}
+        wis: ${monster.wisdom}
+        cha: ${monster.charisma}
+        `}
+        >
+          <img
+            className="monster-icon"
+            src={monster.image}
+            alt="Monster Icon"
+          ></img>
+        </span>
       </div>
     </div>
   );

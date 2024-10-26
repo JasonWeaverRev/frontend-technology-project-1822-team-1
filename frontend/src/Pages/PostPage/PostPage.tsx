@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./PostPage.css";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Comments from "../../Components/Comments/Comments";
 
 import likeUnselectedIcon from "./PostPageImages/upvote-unselected-arrows.png";
@@ -9,6 +9,7 @@ import dislikeUnselectedIcon from "./PostPageImages/downvote-unselected-arrows.p
 import dislikeSelectedIcon from "./PostPageImages/downvote-selected-arrows.png";
 import axios from "axios";
 import CommentForm from "../../Components/CommentForm/CommentForm";
+import { useEncounter } from "../../Context/EncounterContext";
 
 function PostPage() {
   /**
@@ -19,6 +20,13 @@ function PostPage() {
   const title = location.state?.title;
   const username = location.state?.username;
   const content = location.state?.content;
+  const time = location.state?.time;
+  const encounterId = location.state?.encounterId;
+
+  /**
+   * Context setters
+   */
+  const { setEncounter } = useEncounter();
 
   /**
    * State variable declarations
@@ -26,11 +34,14 @@ function PostPage() {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
+  const [likedByList, setLikedByList] = useState<string[]>([]);
+  const [dislikedByList, setDislikedByList] = useState<string[]>([]);
   const [comments, setComments] = useState<any[]>([]);
   const [commentNumber, setCommentNumber] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [isClickable, setIsClickable] = useState<boolean>(true);
   const [alert, setAlert] = useState<any>(undefined);
+  const [encounterPost, setEncounterPost] = useState<any>(undefined);
 
   // #region request/response interceptors
   // Request Interceptor
@@ -68,7 +79,7 @@ function PostPage() {
   const getComments = async () => {
     await axios
       .get(
-        `http://localhost:4000/api/forums/comments/post?id=${postId}&page=${page}`
+        `http://3.81.216.218:4000/api/forums/comments/post?id=${postId}&page=${page}`
       )
       .then((response) => {
         setComments(response.data[0]);
@@ -79,6 +90,7 @@ function PostPage() {
         }
       })
       .catch((error) => {
+        setIsClickable(false);
         console.log(error);
       });
   };
@@ -93,24 +105,117 @@ function PostPage() {
   /**
    * HANDLERS
    */
+
   /**
-   * Handles like events
+   * Handles 'like' or 'dislike' button events
    *
-   * @param type 'like' or 'dislike', depending on type of like option selected
+   * @param type
    */
-  const handleLikeButtonClick = (type: "like" | "dislike") => {
+  const handleButtonClick = async (type: "like" | "dislike") => {
     if (type === "like") {
       setIsLiked((state) => !state);
       if (isDisliked) {
         setIsDisliked(false);
       }
+
+      await handleUpvote();
     } else if (type === "dislike") {
       setIsDisliked((state) => !state);
       if (isLiked) {
         setIsLiked(false);
       }
+
+      await handleDownvote();
     }
   };
+
+  /**
+   * Likes a post
+   */
+  const handleUpvote = async () => {
+    try {
+      const response = await axios.post(
+        `http://3.81.216.218:4000/api/forums/like`,
+        {
+          post_id: postId,
+        }
+      );
+
+      await getLikes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Dislikes a post
+   */
+  const handleDownvote = async () => {
+    try {
+      const response = await axios.post(
+        `http://3.81.216.218:4000/api/forums/dislike`,
+        {
+          post_id: postId,
+        }
+      );
+
+      await getLikes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Retrieves likes from a specific post
+   */
+  const getLikes = async () => {
+    await axios
+      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${postId}`)
+      .then((response) => {
+        setLikes(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  /**
+   * Retrieves likes from a specific post
+   */
+  const getLikedBy = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/forums/posts/${postId}`
+      );
+
+      setLikedByList(response.data.liked_by);
+      setDislikedByList(response.data.disliked_by);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Retrieves likes on initial page load
+   */
+  useEffect(() => {
+    getLikes();
+    getLikedBy();
+  }, []);
+
+  useEffect(() => {
+    const activeUsername = localStorage.getItem("username");
+
+    if (activeUsername && likedByList && likedByList.includes(activeUsername)) {
+      setIsLiked(true);
+    } else if (
+      activeUsername &&
+      dislikedByList &&
+      dislikedByList.includes(activeUsername)
+    ) {
+      setIsDisliked(true);
+    }
+  }, [likedByList, dislikedByList]);
 
   /**
    * Handles comment reply events
@@ -118,7 +223,7 @@ function PostPage() {
   const fetchReplies = async (parentId: string | undefined): Promise<any[]> => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`
+        `http://3.81.216.218:4000/api/forums/comments/post?id=${parentId}&page=1`
       );
 
       const replies = response.data[0];
@@ -154,7 +259,7 @@ function PostPage() {
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/${responseId}`,
+        `http://3.81.216.218:4000/api/forums/${responseId}`,
         {
           body: commentText,
         }
@@ -167,6 +272,12 @@ function PostPage() {
           type: "success",
         };
         setAlert(postPageAlert);
+        //Re-render the page to reflect the added comments
+        const tempPage = page;
+        setPage(1);
+        setPage(tempPage);
+        await getComments();
+
         return postPageAlert;
       } else {
         const postPageAlert = {
@@ -196,6 +307,53 @@ function PostPage() {
     setPage(page + 1);
   };
 
+
+  const getPostEncounter = async () => {
+
+    try {
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/encounters/encounter?encounter_id=${encounterId}`
+      );
+
+      setEncounterPost(response.data.encounter);
+      
+      // setEncounterPost(response.data.encounters);
+    } catch (error) {
+      console.error("Error fetching user encounters: ", error);
+    }
+  };
+
+  useEffect(() => {
+    // runs fetchUserEncounters after mounting (initial render)
+    getPostEncounter();
+  }, []);
+
+  useEffect(() => {
+    if (encounterPost) {
+
+    }
+    
+  }, [encounterPost])
+
+  /**
+   * DATE FORMATTING
+   */
+  const formatDate = () => {
+    
+    let formattedDate = "[Cannot retrieve the date at this time]";
+
+    if (time) {
+      const date = new Date(time);
+      formattedDate = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+      });
+    }
+
+    return formattedDate;
+  };
+
   useEffect(() => {
     if (alert) {
       setTimeout(clearAlert, 5000);
@@ -216,7 +374,7 @@ function PostPage() {
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm button-format border-0"
-              onClick={() => handleLikeButtonClick("like")}
+              onClick={() => handleButtonClick("like")}
             >
               <img
                 src={isLiked ? likeSelectedIcon : likeUnselectedIcon}
@@ -228,7 +386,7 @@ function PostPage() {
             <button
               type="button"
               className="btn btn-outline-secondary btn-sm button-format border-0"
-              onClick={() => handleLikeButtonClick("dislike")}
+              onClick={() => handleButtonClick("dislike")}
             >
               <img
                 src={isDisliked ? dislikeSelectedIcon : dislikeUnselectedIcon}
@@ -237,16 +395,53 @@ function PostPage() {
               />
             </button>
           </div>
-          <div className="post-body-bg col-11 d-flex flex-column align-items-center">
+
+          <div className="post-body-bg col-11 d-flex flex-column">
             {/* Post Text */}
-            <h3 className="text-post-page-format">{title}</h3>
-            <p className="text-post-page-format">{username}</p>
-            {/* Render the content as HTML */}
+            <h3 className="text-post-page-format text-start">{title}</h3>
+            <div className="d-flex">
+              <Link to={`/profile/${username}`} className="text-decoration-none text-dark">
+                {username}
+              </Link>
+              <p className="text-post-page-format ms-3">{formatDate()}</p>
+            </div>
+            
+            {/* Encounter Link */}
+            <div className="row">
+              <div className="col-10 d-flex justify-content-center"> {/* Center align at the column level */}
+                {encounterPost && (
+                  <div
+                    className="encounter-link-container-format d-flex flex-column align-items-center p-3"
+                  >
+                    <span className="encounter-link-post-page-format">Encounter Link</span>
+                    <Link
+                      className="encounter-link-post-page-format text-decoration-none mt-2"
+                      onClick={() => {
+                        const thisEncounter = {
+                          title: encounterPost.encounter_title,
+                          setting: encounterPost.setting,
+                          roster: encounterPost.monsters,
+                          id: encounterPost.encounter_id,
+                        };
+                        setEncounter(thisEncounter);
+                      }}
+                      to={"/encounter"}
+                    >
+                      <button className="btn btn-outline-dark mt-2">
+                        {encounterPost.encounter_title}
+                      </button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div
-              className="text-post-page-format"
+              className="text-post-page-format mt-0 text-start"
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>
+
         </div>
 
         <div>

@@ -18,6 +18,15 @@
   .event-info {
     width: 100%;
   }
+  .save-encounter-button {
+    width: 100%;
+  }
+  .edit-encounter-button {
+    width: 100%;
+  }
+  .button-container {
+    flex-direction: column;
+  }
 }
 
 .page {

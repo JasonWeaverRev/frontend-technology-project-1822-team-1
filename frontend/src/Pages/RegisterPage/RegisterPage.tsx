@@ -22,7 +22,7 @@ function RegisterPage() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "http://localhost:4000/api/accounts/register",
+        "http://3.81.216.218:4000/api/accounts/register",
         { email, username, password }
       );
       setSuccessMessage("Registration successful!");
@@ -45,7 +45,7 @@ function RegisterPage() {
         <div className="logo-container-unique">
           <h1 className="register-mb-3">Welcome to</h1>
           <img
-            src={"/dungeon-delver-logo.png"}
+            src={"/grey-DDlogo.png"}
             className="logo-unique"
             alt="Dungeon Delver Logo"
           />

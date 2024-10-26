@@ -6,7 +6,7 @@ import axios from "axios";
 const storeLoggedInUser = async () => {
   try {
     const response = await axios.get(
-      "http://localhost:4000/api/accounts/profile",
+      "http://3.81.216.218:4000/api/accounts/profile",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,14 +42,15 @@ function LoginPage() {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "http://localhost:4000/api/accounts/login",
+        "http://3.81.216.218:4000/api/accounts/login",
         {
-          identifier,
+          identifier: identifier.trim(),
           password,
         }
       );
 
       const { token } = response.data;
+
       localStorage.setItem("token", token);
 
       // Trigger an immediate state update for login status
@@ -69,9 +70,10 @@ function LoginPage() {
   };
 
   const storeLoggedInUser = async () => {
+    console.log("store logged in user");
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/accounts/profile`,
+        `http://3.81.216.218:4000/api/accounts/profile`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -101,7 +103,7 @@ function LoginPage() {
         <div className="logo-container-unique">
           <h1 className="register-mb-3">Welcome to</h1>
           <img
-            src="/dungeon-delver-logo.png"
+            src="/grey-DDlogo.png"
             className="logo-unique"
             alt="Dungeon Delver Logo"
           />
@@ -112,13 +114,11 @@ function LoginPage() {
               <form onSubmit={handleSubmit}>
                 <h2 className="register-title-text">Log in to your account</h2>
                 {errorMessage && (
-                  <div className="alert alert-danger-unique">
-                    {errorMessage}
-                  </div>
+                  <div className="register-error-message">{errorMessage}</div>
                 )}
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="Username or Email"
                   className="form-control-login mb-3"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}

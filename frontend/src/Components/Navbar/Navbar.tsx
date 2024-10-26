@@ -24,6 +24,8 @@ function Navbar() {
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
     updateLoginStatus(); // Update the state after removing token (solve refresh issue)
     navigate("/");
   };

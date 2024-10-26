@@ -92,8 +92,10 @@ function ProfilePage() {
   // #region Profile getters
   const getProfile = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/accounts/profile/${username}`, {
-      });
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/accounts/profile/${username}`,
+        {}
+      );
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
       setProfilePicture(response.data.userProfile.profile_pic || null);
@@ -101,12 +103,12 @@ function ProfilePage() {
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
-  }
+  };
 
   const updateAboutMe = async () => {
     try {
       await axios.patch(
-        `http://localhost:4000/api/accounts/about-me`,
+        `http://3.81.216.218:4000/api/accounts/about-me`,
         {
           about_me: editAboutMe,
         },
@@ -123,7 +125,7 @@ function ProfilePage() {
         about_me: editAboutMe,
         role: prev?.role || "",
         creation_time: prev?.creation_time || "",
-        profile_pic: prev?.profile_pic || ""
+        profile_pic: prev?.profile_pic || "",
       }));
     } catch (error) {
       console.error("Error patching User about me section: ", error);
@@ -193,7 +195,7 @@ function ProfilePage() {
   const getUserEncounters = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/encounters/${username}`,
+        `http://3.81.216.218:4000/api/encounters/${username}`,
         {
           // sends get request to the backend thru URL
         }
@@ -215,7 +217,7 @@ function ProfilePage() {
 
     try {
       const response = await axios.delete(
-        `http://localhost:4000/api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           headers: {
             Authorization: `Bearer ${TOKEN}`, // Ensure the token is correct
@@ -274,7 +276,7 @@ function ProfilePage() {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/forums/${username}`
+        `http://3.81.216.218:4000/api/forums/${username}`
       );
       setPosts(response.data);
 
@@ -516,18 +518,17 @@ function ProfilePage() {
               day: "numeric",
             });
 
-            return (
-              <div key={index} className="content-card">
-                <h3>{post.title}</h3>
-                <p>{post.body}</p>
-                <p>{formattedDate}</p>
-              </div>
-            );
-          })}
+              return (
+                <div key={index} className="content-card">
+                  <h3>{post.title}</h3>
+                  <p>{post.body}</p>
+                  <p>{formattedDate}</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-
-    </div>
     </>
   );
 }

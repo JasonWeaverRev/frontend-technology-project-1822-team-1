@@ -1,0 +1,21 @@
+{
+  "monsters": [
+    {
+      "armorClass": 11,
+      "challengeRating": 0.25,
+      "charisma": 5,
+      "constitution": 12,
+      "dexterity": 11,
+      "hp": 11,
+      "image": "/api/images/monsters/boar.png",
+      "intelligence": 2,
+      "monsterPage": "https://www.dndbeyond.com/monsters/Boar",
+      "name": "Boar",
+      "size": "Medium",
+      "strength": 13,
+      "wisdom": 9
+    }
+  ],
+  "encounter_title": "New Test Title",
+  "setting": "Very cool setting that I've written up for this test"
+}

@@ -1,50 +1,51 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./PostCreationPage.css";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Add styling
+import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 
 const toolbarOptions = [
-  ["bold", "italic", "underline", "strike"], // Formatting buttons
-  ["blockquote", "code-block"],
+  ["bold", "italic", "underline", "strike"],
   ["link", "formula"],
-
-  [{ header: 1 }, { header: 2 }], // Header buttons
-  [{ list: "ordered" }, { list: "bullet" }], // List types
-  [{ script: "sub" }, { script: "super" }], // Super/sub script
-  [{ indent: "-1" }, { indent: "+1" }], // Indent
-  [{ direction: "rtl" }], // Text direction
-
-  [{ size: ["small", false, "large", "huge"] }], // Size options
-  [{ header: [1, 2, 3, 4, 5, 6, false] }], // Header levels
-
-  [{ color: [] }, { background: [] }], // Color options
+  [{ header: 1 }, { header: 2 }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ script: "sub" }, { script: "super" }],
+  [{ indent: "-1" }, { indent: "+1" }],
+  [{ direction: "rtl" }],
+  [{ size: ["small", false, "large", "huge"] }],
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ color: [] }, { background: [] }],
   [{ font: [] }],
-  [{ align: [] }], // Text alignment
-
-  ["clean"], // Clear formatting
+  [{ align: [] }],
+  ["clean"],
 ];
 
-const PostCreationPage = () => {
-  const [body, setBody] = useState("");
+// Define the type of options we expect from the API
+interface EncounterOption {
+  encounter_id: string;
+  encounter_title: string;
+}
+
+const PostCreationPage: React.FC = () => {
+  
+  const [body, setBody] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [options, setOptions] = useState<EncounterOption[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string>("");
 
-  // Quill editor reference using useRef
   const quillRef = useRef<ReactQuill | null>(null);
 
   const handleContentChange = (value: string) => {
     setBody(value);
   };
 
-  // Function to automatically add 'https://' to links without protocol
   const fixLinks = () => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
       const links = editor.root.querySelectorAll("a");
-
       links.forEach((link: HTMLAnchorElement) => {
         const href = link.getAttribute("href") || "";
         if (!href.startsWith("http://") && !href.startsWith("https://")) {
@@ -57,10 +58,8 @@ const PostCreationPage = () => {
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
-      // Listen to text changes and fix links
       editor.on("text-change", fixLinks);
     }
-    // Clean up the event listener on unmount
     return () => {
       if (quillRef.current) {
         const editor = quillRef.current.getEditor();
@@ -69,6 +68,25 @@ const PostCreationPage = () => {
     };
   }, []);
 
+  const fetchOptions = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/encounters/${localStorage.getItem("username")}`
+      );
+      setOptions(response.data.encounters);
+      // Assuming response data is an array of options
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
+
+  // Fetch options from the table
+  useEffect(() => {
+    fetchOptions();
+  }, []);
+
+  useEffect(() => {}, [options]);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!title || !body) {
@@ -76,28 +94,32 @@ const PostCreationPage = () => {
       return;
     }
 
-    setErrorMessage(""); // Clear error if inputs are valid
+    console.log(selectedOption);
+
+    setErrorMessage("");
 
     try {
       setIsSubmitting(true);
-      // Retrieve token from localStorage
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:4000/api/forums",
+        "http://3.81.216.218:4000/api/forums",
         {
           title,
           body,
+          encounterId: selectedOption,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Add token to the headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+
       setSuccessMessage("Post successfully created!");
       setTitle("");
-      setBody(""); // Reset the content after successful post creation
+      setBody("");
+      setSelectedOption("");
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
@@ -126,18 +148,37 @@ const PostCreationPage = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+            <label id="choice-text" htmlFor="dropdown">
+              Choose an Encounter:
+            </label>
+            <select
+              id="encounter-dropdown"
+              value={selectedOption}
+              onChange={(e) => setSelectedOption(e.target.value)}
+              required
+            >
+              <option value="" disabled>
+                Select an encounter
+              </option>
+              {options.map((encounter) => (
+                <option
+                  key={encounter.encounter_id}
+                  value={encounter.encounter_id}
+                >
+                  {encounter.encounter_title}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="textrow-row">
           <div className="text-container-fluid">
             <ReactQuill
               className="ReactQuill"
-              ref={quillRef} // Attach the ref here
+              ref={quillRef}
               value={body}
               onChange={handleContentChange}
-              modules={{
-                toolbar: toolbarOptions, // Toolbar configuration passed here
-              }}
+              modules={{ toolbar: toolbarOptions }}
             />
           </div>
         </div>

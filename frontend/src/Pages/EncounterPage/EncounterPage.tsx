@@ -45,7 +45,7 @@ function EncounterPage() {
   const saveEncounter = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           monsters: encounter.roster,
           encounter_title: encounter.title,
@@ -71,7 +71,41 @@ function EncounterPage() {
         console.log("Encounter not saved");
       }
     } catch (err) {
-      console.error("Error submitting comment:", err);
+      console.error("Error saving encounter:", err);
+    }
+  };
+
+  const editEncounter = async () => {
+    try {
+      const response = await axios.patch(
+        `http://3.81.216.218:4000/api/encounters/encounter`,
+        {
+          monsters: encounter.roster,
+          encounter_title: encounter.title,
+          setting: encounter.setting,
+          encounter_id: encounter.id,
+        }
+      );
+
+      const data = response.data;
+      console.log(data);
+
+      if (response.status === 200) {
+        setSuccess(true);
+
+        const savedEncounter = {
+          title: data.encounter.encounter_title,
+          setting: data.encounter.setting,
+          roster: data.encounter.monsters,
+          id: data.encounter.encounter_id,
+        };
+        setEncounter(savedEncounter);
+        console.log("Encounter saved");
+      } else {
+        console.log("Encounter not saved");
+      }
+    } catch (err) {
+      console.error("Error saving encounter:", err);
     }
   };
 
@@ -95,9 +129,7 @@ function EncounterPage() {
             {encounter.roster.map((monster: any, index: any) => (
               <EncounterMonster
                 key={index}
-                name={monster.name}
-                hp={monster.hp}
-                img={monster.image}
+                monster={monster}
                 updateHp={setMonsterHp}
               />
             ))}
@@ -112,7 +144,7 @@ function EncounterPage() {
           {encounter.setting && <div>{encounter.setting}</div>}
         </div>
       </div>
-      <div className="d-flex justify-content-end gap-4">
+      <div className="button-container d-flex justify-content-end gap-4">
         {success && (
           <div className="alert alert-success mt-2 pt-2 success-alert">
             Successfully saved encounter!
@@ -120,7 +152,13 @@ function EncounterPage() {
         )}
         {localStorage.getItem("token") && (
           <div className="save-encounter-button d-flex justify-content-end pt-2 gap-2 flex-column col-2 align-content-end align-self-end">
-            <button onClick={saveEncounter}>Save Encounter</button>
+            <button
+              onClick={() =>
+                !encounter.id ? saveEncounter() : editEncounter()
+              }
+            >
+              Save Encounter
+            </button>
             {encounter.id && (
               <button onClick={() => navigate("/encounter-creation")}>
                 Edit Encounter
