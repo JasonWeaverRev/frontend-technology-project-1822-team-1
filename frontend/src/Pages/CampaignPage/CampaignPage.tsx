@@ -30,14 +30,13 @@ function CampaignPage() {
   const [titleToRemove, setTitleToRemove] = useState<string | null>(null); // ID of the encounter to delete
   const [showRemovePopup, setShowRemovePopup] = useState(false); // Whether to show the confirmation popup
 
-
   const { setEncounter } = useEncounter();
 
   // Fetch encounters function
   const getEncounters = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/encounters/campaign/${username}/${campaignTitle}`,
+        `http://3.81.216.218:4000/api/encounters/campaign/${username}/${campaignTitle}`,
         {
           headers: { Authorization: `Bearer ${TOKEN}` },
         }
@@ -53,14 +52,17 @@ function CampaignPage() {
     getEncounters();
   }, []);
 
-  const removeEncounterCampaign = async (encounter_id: string, campaign_title: string) => {
+  const removeEncounterCampaign = async (
+    encounter_id: string,
+    campaign_title: string
+  ) => {
     console.log(encounter_id);
     console.log(campaign_title);
     try {
       const response = await axios.patch(
-        'http://localhost:4000/api/encounters/campaign',
+        "http://3.81.216.218:4000/api/encounters/campaign",
         {
-          action: 'remove',
+          action: "remove",
           campaign_title,
         },
         {
@@ -71,13 +73,12 @@ function CampaignPage() {
         }
       );
 
-      getEncounters()
-  
+      getEncounters();
+
       setTitleToRemove(null);
       setShowRemovePopup(false);
-  
     } catch (error) {
-      console.error('Error modifying encounter campaign:', error);
+      console.error("Error modifying encounter campaign:", error);
     }
   };
 
@@ -113,7 +114,6 @@ function CampaignPage() {
                   };
 
                   setEncounter(thisEncounter);
-
                 }}
                 to={"/encounter"}
               >
@@ -125,14 +125,17 @@ function CampaignPage() {
                   : "No monsters in this encounter."}
               </p>
 
-
               <div id="remove-button-container">
                 {isCurrentUser ? (
-                  <button onClick={() => {
-                    setTitleToRemove(entry.encounter_id);
-                    setShowRemovePopup(true); }}
-                  className="delete-button">&times;</button>
-
+                  <button
+                    onClick={() => {
+                      setTitleToRemove(entry.encounter_id);
+                      setShowRemovePopup(true);
+                    }}
+                    className="delete-button"
+                  >
+                    &times;
+                  </button>
                 ) : (
                   <div className="button-placeholder"></div>
                 )}
@@ -146,13 +149,19 @@ function CampaignPage() {
           <div className="confirmation-popup">
             <div className="popup-content">
               <h2>Remove Encounter from Campaign</h2>
-              <p>If a campaign has no encounters it will be deleted from your profile.</p>
+              <p>
+                If a campaign has no encounters it will be deleted from your
+                profile.
+              </p>
 
               <div className="popup-buttons">
                 <button onClick={handleRemove} className="confirm-delete-btn">
                   Confirm
                 </button>
-                <button onClick={() => setShowRemovePopup(false)} className="cancel-btn">
+                <button
+                  onClick={() => setShowRemovePopup(false)}
+                  className="cancel-btn"
+                >
                   Cancel
                 </button>
               </div>

@@ -59,9 +59,13 @@ function ProfilePage() {
   // States that determine if editor or popups should show
   const [editAboutMe, setEditAboutMe] = useState(""); // holds new about me to patch
   const [isEditing, setIsEditing] = useState(false); // state to manage whether the about me editor is open
-  const [encounterToDelete, setEncounterToDelete] = useState<string | null>(null); // ID of the encounter to delete
+  const [encounterToDelete, setEncounterToDelete] = useState<string | null>(
+    null
+  ); // ID of the encounter to delete
   const [showDeletePopup, setShowDeletePopup] = useState(false); // Whether to show the confirmation popup
-  const [encounterToModify, setEncounterToModify] = useState<string | null>(null); // ID of the encounter to modify
+  const [encounterToModify, setEncounterToModify] = useState<string | null>(
+    null
+  ); // ID of the encounter to modify
   const [campaignTitle, setCampaignTitle] = useState<string>(""); // The campaign title to set
   const [showCampaignPopup, setShowCampaignPopup] = useState(false); // Whether to show confirmation popup
   // #endregion
@@ -99,7 +103,6 @@ function ProfilePage() {
       setProfile(response.data.userProfile);
       setEditAboutMe(response.data.userProfile.about_me);
       setProfilePicture(response.data.userProfile.profile_pic || null);
-      
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
@@ -139,49 +142,54 @@ function ProfilePage() {
     const reader = new FileReader();
 
     if (!file) return;
-  
+
     reader.readAsDataURL(file);
 
     reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        const base64 = reader.result.split(',')[1];
+      if (typeof reader.result === "string") {
+        const base64 = reader.result.split(",")[1];
         setBase64Image(base64);
         uploadProfilePic(base64, file.type);
-
       } else {
         setBase64Image(null);
       }
     };
-  
+
     reader.onerror = (error) => {
-      console.error('Error: ', error);
+      console.error("Error: ", error);
     };
   };
 
   const uploadProfilePic = async (base64: string, mimeType: string) => {
     try {
-      const response = await axios.patch('http://localhost:4000/api/accounts/profile-pic', {
-        image: {
-          mime: mimeType,
-          data: base64,
+      const response = await axios.patch(
+        "http://3.81.216.218:4000/api/accounts/profile-pic",
+        {
+          image: {
+            mime: mimeType,
+            data: base64,
+          },
         },
-      }, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`, // Add your token here
-        },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`, // Add your token here
+          },
+        }
+      );
 
       // Update the profile picture state with the new URL after a successful upload
       if (response.data) {
         localStorage.setItem("profile_pic", response.data.presignedUrl);
         setProfilePicture(response.data.presignedUrl); // Adjust according to your response structure
       }
-
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error('Error uploading profile picture: ', error.response?.data || error.message);
+        console.error(
+          "Error uploading profile picture: ",
+          error.response?.data || error.message
+        );
       } else {
-        console.error('Unexpected error: ', error);
+        console.error("Unexpected error: ", error);
       }
     }
   };
@@ -245,12 +253,15 @@ function ProfilePage() {
     }
   };
 
-  const modifyEncounterCampaign = async (encounter_id: string, campaign_title: string) => {
+  const modifyEncounterCampaign = async (
+    encounter_id: string,
+    campaign_title: string
+  ) => {
     try {
       const response = await axios.patch(
-        'http://localhost:4000/api/encounters/campaign',
+        "http://3.81.216.218:4000/api/encounters/campaign",
         {
-          action: 'set',
+          action: "set",
           campaign_title,
         },
         {
@@ -261,13 +272,12 @@ function ProfilePage() {
         }
       );
 
-      getUserEncounters()
-  
+      getUserEncounters();
+
       setEncounterToModify(null);
       setShowCampaignPopup(false);
-  
     } catch (error) {
-      console.error('Error modifying encounter campaign:', error);
+      console.error("Error modifying encounter campaign:", error);
     }
   };
   // #endregion
@@ -279,7 +289,6 @@ function ProfilePage() {
         `http://3.81.216.218:4000/api/forums/${username}`
       );
       setPosts(response.data);
-
     } catch (error) {
       console.error("Error getting user posts: ", error);
     }
@@ -294,109 +303,111 @@ function ProfilePage() {
   useEffect(() => {
     const updatedCampaigns = Array.from(
       new Set(
-        encounters
-          .map((entry) => entry.campaign_title)
-          .filter(Boolean) // Remove any null or undefined titles
+        encounters.map((entry) => entry.campaign_title).filter(Boolean) // Remove any null or undefined titles
       )
     );
-  
+
     // Update the `campaigns` state directly with the new list
     setCampaigns(updatedCampaigns);
   }, [encounters]);
 
   return (
     <>
-    {/* User profile header, contains profile pic, username, and about me sections */}
-    <div id="profile-bio-section" className="container-fluid row">
-      <div
-        id="image-container"
-        className="col-4 d-flex justify-content-end align-self-start">
-        {/* Profile picture */}
-        <img
-          src={profilePicture || "/profile-icon.png"}
-          alt="Profile avatar"
-          className="img-fluid"
-        />
+      {/* User profile header, contains profile pic, username, and about me sections */}
+      <div id="profile-bio-section" className="container-fluid row">
+        <div
+          id="image-container"
+          className="col-4 d-flex justify-content-end align-self-start"
+        >
+          {/* Profile picture */}
+          <img
+            src={profilePicture || "/profile-icon.png"}
+            alt="Profile avatar"
+            className="img-fluid"
+          />
 
-        {/* IMAGE UPLOAD TESTING */}
-        
-      </div>
-
-      <div id="user_bio" className="col-8 text-start">
-        <h1 id="username">{profile?.username}</h1> {/* Username */}
-        {isEditing ? (
-          <div className="about-me-container">
-            <textarea
-              value={editAboutMe}
-              onChange={(e) => setEditAboutMe(e.target.value)}
-              className="form-control mb-2"
-              rows={4}
-            />
-            <button onClick={updateAboutMe} id="save-button">
-              Save
-            </button>
-          </div>
-        ) : (
-          <div className="about-me-container">
-            <p id="about_me">{profile?.about_me}</p> {/* About Me */}
-            {isCurrentUser ? (
-              <span>
-              <button onClick={() => setIsEditing(true)} id="edit-button">
-                Edit About Me
-              </button>
-              <span>
-                <input
-                  type="file"
-                  onChange={handleFileUpload}
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="file-upload"
-                />
-                <label htmlFor="file-upload" id="upload-label">
-                  Upload Avatar
-                </label>
-              </span>
-              </span>
-            ) : (<span></span>)}
-          </div>
-        )}
-      </div>
-    </div>
-
-    <div id="profile-body-section">
-      <div id="campaign-encounter-container" className="col-10 col-md-5">
-        <div id="campaigns">
-          <h1>Campaigns</h1>
-
-          <div className="card-container">
-            {campaigns.map((campaign, index) => (
-              <Link
-                to={`/profile/${profile?.username}/${encodeURIComponent(campaign)}`}
-                key={index}
-                className="content-card"
-                style={{ textDecoration: "none" }}
-              >
-                <h3>{campaign}</h3>
-              </Link>
-            ))}
-          </div>
+          {/* IMAGE UPLOAD TESTING */}
         </div>
 
-        <div id="encounters" className="mt-4">
-          <h1>Encounters</h1>
+        <div id="user_bio" className="col-8 text-start">
+          <h1 id="username">{profile?.username}</h1> {/* Username */}
+          {isEditing ? (
+            <div className="about-me-container">
+              <textarea
+                value={editAboutMe}
+                onChange={(e) => setEditAboutMe(e.target.value)}
+                className="form-control mb-2"
+                rows={4}
+              />
+              <button onClick={updateAboutMe} id="save-button">
+                Save
+              </button>
+            </div>
+          ) : (
+            <div className="about-me-container">
+              <p id="about_me">{profile?.about_me}</p> {/* About Me */}
+              {isCurrentUser ? (
+                <span>
+                  <button onClick={() => setIsEditing(true)} id="edit-button">
+                    Edit About Me
+                  </button>
+                  <span>
+                    <input
+                      type="file"
+                      onChange={handleFileUpload}
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="file-upload"
+                    />
+                    <label htmlFor="file-upload" id="upload-label">
+                      Upload Avatar
+                    </label>
+                  </span>
+                </span>
+              ) : (
+                <span></span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
-          <div className="card-container">
-            {encounters.map((entry) => {
-              const date = new Date(entry.creation_time);
-              const formattedDate = date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              });
+      <div id="profile-body-section">
+        <div id="campaign-encounter-container" className="col-10 col-md-5">
+          <div id="campaigns">
+            <h1>Campaigns</h1>
 
-              return (
-                <div key={entry.encounter_id} className="content-card">
-                  <Link
+            <div className="card-container">
+              {campaigns.map((campaign, index) => (
+                <Link
+                  to={`/profile/${profile?.username}/${encodeURIComponent(
+                    campaign
+                  )}`}
+                  key={index}
+                  className="content-card"
+                  style={{ textDecoration: "none" }}
+                >
+                  <h3>{campaign}</h3>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div id="encounters" className="mt-4">
+            <h1>Encounters</h1>
+
+            <div className="card-container">
+              {encounters.map((entry) => {
+                const date = new Date(entry.creation_time);
+                const formattedDate = date.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                });
+
+                return (
+                  <div key={entry.encounter_id} className="content-card">
+                    <Link
                       className="title-link"
                       onClick={() => {
                         const thisEncounter = {
@@ -405,118 +416,138 @@ function ProfilePage() {
                           roster: entry.monsters,
                           id: entry.encounter_id,
                         };
-                        
+
                         setEncounter(thisEncounter);
-                        
                       }}
-                      to={"/encounter"}>
+                      to={"/encounter"}
+                    >
                       <h3>{entry.encounter_title}</h3>
-                  </Link>
+                    </Link>
+                    <p>
+                      {entry.monsters.length > 0
+                        ? entry.monsters
+                            .map((monster) => monster.name)
+                            .join(", ")
+                        : "No monsters in this encounter."}
+                    </p>
+
+                    <div id="encounter-button-container">
+                      {isCurrentUser ? (
+                        <span>
+                          <button
+                            onClick={() => {
+                              setEncounterToDelete(entry.encounter_id);
+                              setShowDeletePopup(true);
+                            }}
+                            className="delete-button"
+                          >
+                            &times;
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setEncounterToModify(entry.encounter_id);
+                              setShowCampaignPopup(true);
+                            }}
+                            className="delete-button pencil"
+                          >
+                            &#x1F589;
+                          </button>
+                        </span>
+                      ) : (
+                        <div className="button-placeholder"></div>
+                      )}
+                      <p className="encounter-date">{formattedDate}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Popup for delete confirmation */}
+            {showDeletePopup && (
+              <div className="confirmation-popup">
+                <div className="popup-content">
+                  <h2>Confirm Deletion</h2>
+                  <p>Are you sure you want to delete this encounter?</p>
+
+                  <div className="popup-buttons">
+                    <button
+                      onClick={handleDelete}
+                      className="confirm-delete-btn"
+                    >
+                      Confirm
+                    </button>
+                    <button
+                      onClick={() => setShowDeletePopup(false)}
+                      className="cancel-btn"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {showCampaignPopup && (
+              <div className="confirmation-popup">
+                <div className="popup-content">
+                  <h2>Enter a Campaign Title</h2>
                   <p>
-                    { entry.monsters.length > 0
-                      ? entry.monsters.map((monster) => monster.name).join(", ")
-                      : "No monsters in this encounter."}
+                    Encounters with matching titles will automatically be
+                    grouped together (case sensitive)
                   </p>
 
-                  <div id="encounter-button-container">
-                    {isCurrentUser ? (
-                      <span>
-                        <button onClick={() => {
-                          setEncounterToDelete(entry.encounter_id);
-                          setShowDeletePopup(true); }}
-                        className="delete-button">&times;</button>
+                  {/* Text input for campaign title */}
+                  <input
+                    type="text"
+                    maxLength={24}
+                    value={campaignTitle}
+                    onChange={(e) => setCampaignTitle(e.target.value)}
+                    className="campaign-title-input"
+                    placeholder="Enter campaign title"
+                  />
 
-                        <button onClick={() => {
-                          setEncounterToModify(entry.encounter_id);
-                          setShowCampaignPopup(true); }}
-                        className="delete-button pencil">&#x1F589;</button>
-                      </span>
+                  <div className="popup-buttons">
+                    {/* Confirm button */}
+                    <button
+                      onClick={() => {
+                        setShowCampaignPopup(false);
+                        modifyEncounterCampaign(
+                          encounterToModify!,
+                          campaignTitle
+                        ); // Pass the campaign title and encounter ID
+                      }}
+                      className="confirm-delete-btn"
+                      disabled={!campaignTitle.trim()} // Disable if no valid input
+                    >
+                      Confirm
+                    </button>
 
-                      
-                    ) : (
-                      <div className="button-placeholder"></div>
-                    )}
-                    <p className="encounter-date">{formattedDate}</p>
+                    {/* Cancel button */}
+                    <button
+                      onClick={() => setShowCampaignPopup(false)}
+                      className="cancel-btn"
+                    >
+                      Cancel
+                    </button>
                   </div>
-                  
                 </div>
-              );
-            })}
+              </div>
+            )}
           </div>
-
-          {/* Popup for delete confirmation */}
-          {showDeletePopup && (
-            <div className="confirmation-popup">
-              <div className="popup-content">
-                <h2>Confirm Deletion</h2>
-                <p>Are you sure you want to delete this encounter?</p>
-
-                <div className="popup-buttons">
-                  <button onClick={handleDelete} className="confirm-delete-btn">
-                    Confirm
-                  </button>
-                  <button onClick={() => setShowDeletePopup(false)} className="cancel-btn">
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {showCampaignPopup && (
-            <div className="confirmation-popup">
-              <div className="popup-content">
-                <h2>Enter a Campaign Title</h2>
-                <p>Encounters with matching titles will automatically be grouped together (case sensitive)</p>
-                
-                {/* Text input for campaign title */}
-                <input
-                  type="text"
-                  maxLength={24}
-                  value={campaignTitle}
-                  onChange={(e) => setCampaignTitle(e.target.value)}
-                  className="campaign-title-input"
-                  placeholder="Enter campaign title"
-                />
-
-                <div className="popup-buttons">
-                  {/* Confirm button */}
-                  <button
-                    onClick={() => {
-                      setShowCampaignPopup(false)
-                      modifyEncounterCampaign(encounterToModify!, campaignTitle); // Pass the campaign title and encounter ID
-                    }}
-                    className="confirm-delete-btn"
-                    disabled={!campaignTitle.trim()} // Disable if no valid input
-                  >
-                    Confirm
-                  </button>
-
-                  {/* Cancel button */}
-                  <button
-                    onClick={() => setShowCampaignPopup(false)}
-                    className="cancel-btn"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
         </div>
-      </div>
 
-      <div id="forum-post-container" className="col-10 col-md-5">
-        <h1>Forum Posts</h1>
-        <div className="card-container">
-          {posts.map((post, index) => {
-            const date = new Date(post.creation_time);
-            const formattedDate = date.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
+        <div id="forum-post-container" className="col-10 col-md-5">
+          <h1>Forum Posts</h1>
+          <div className="card-container">
+            {posts.map((post, index) => {
+              const date = new Date(post.creation_time);
+              const formattedDate = date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
 
               return (
                 <div key={index} className="content-card">
