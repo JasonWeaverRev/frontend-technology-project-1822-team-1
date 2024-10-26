@@ -169,7 +169,6 @@ const PostCreationPage: React.FC = () => {
               id="encounter-dropdown"
               value={selectedOption}
               onChange={(e) => setSelectedOption(e.target.value)}
-              required
             >
               <option value="" disabled>
                 Select an encounter
