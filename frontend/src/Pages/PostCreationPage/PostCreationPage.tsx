@@ -6,7 +6,6 @@ import axios from "axios";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"],
-  ["blockquote", "code-block"],
   ["link", "formula"],
   [{ header: 1 }, { header: 2 }],
   [{ list: "ordered" }, { list: "bullet" }],
@@ -35,6 +34,9 @@ const PostCreationPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [options, setOptions] = useState<EncounterOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedEncounter, setSelectedEncounter] = useState<string | null>(
+    null
+  ); //ignore
 
   const quillRef = useRef<ReactQuill | null>(null);
 
@@ -68,21 +70,24 @@ const PostCreationPage: React.FC = () => {
     };
   }, []);
 
+  const fetchOptions = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/encounters/${localStorage.getItem("username")}`
+      );
+      setOptions(response.data.encounters);
+      // Assuming response data is an array of options
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
+
   // Fetch options from the table
   useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/api/encounters/user"
-        );
-        setOptions(response.data); // Assuming response data is an array of options
-      } catch (error) {
-        console.error("Error fetching options:", error);
-      }
-    };
-
     fetchOptions();
   }, []);
+
+  useEffect(() => {}, [options]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -142,15 +147,17 @@ const PostCreationPage: React.FC = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <label htmlFor="dropdown">Choose an Encounter:</label>
+            <label id="choice-text" htmlFor="dropdown">
+              Choose an Encounter:
+            </label>
             <select
-              id="dropdown"
+              id="encounter-dropdown"
               value={selectedOption}
               onChange={(e) => setSelectedOption(e.target.value)}
               required
             >
               <option value="" disabled>
-                Select an option
+                Select an encounter
               </option>
               {options.map((encounter) => (
                 <option
