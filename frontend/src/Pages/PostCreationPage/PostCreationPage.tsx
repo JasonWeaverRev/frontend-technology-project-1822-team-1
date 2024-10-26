@@ -57,6 +57,8 @@ const PostCreationPage: React.FC = () => {
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
+      // Apply black color as the default for all text to override webview styles
+      editor.format("color", "#000000");
       editor.on("text-change", fixLinks);
     }
     return () => {
