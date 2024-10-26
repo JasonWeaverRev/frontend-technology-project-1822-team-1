@@ -21,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/forum-post" element={<PostPage />} />
-          <Route path="/campaign" element={<CampaignPage />} />
+          <Route path="/profile/:username/:campaign-title" element={<CampaignPage />} />
           <Route
             path="/encounter-creation"
             element={<EncounterCreationPage />}

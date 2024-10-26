@@ -40,6 +40,8 @@ function LandingPage() {
     setPosts((prevPosts) =>
       prevPosts.filter((post) => post.post_id !== postId)
     );
+
+    getPosts();
   };
 
   useEffect(() => {

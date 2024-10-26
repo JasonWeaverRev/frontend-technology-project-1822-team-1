@@ -28,6 +28,8 @@ function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  localStorage.setItem("profile_pic", "/profile-icon.png")
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -42,7 +44,7 @@ function LoginPage() {
       const response = await axios.post(
         "http://3.81.216.218:4000/api/accounts/login",
         {
-          identifier,
+          identifier: identifier.trim(),
           password,
         }
       );
@@ -83,6 +85,11 @@ function LoginPage() {
 
       localStorage.setItem("username", response.data.userProfile.username);
       localStorage.setItem("role", response.data.userProfile.role);
+      if (!response.data.userProfile.profile_pic) {
+        localStorage.setItem("profile_pic", "/profile-icon.png")
+      } else {
+        localStorage.setItem("profile_pic", response.data.userProfile.profile_pic);
+      }
     } catch (error) {
       console.error("Error fetching user profile: ", error);
     }
@@ -132,7 +139,9 @@ function LoginPage() {
                 </button>
                 <p className="prelink-text">
                   Don't have an account?{" "}
-                  <Link to="/register">Register here</Link>
+                  <Link className="register-here" to="/register">
+                    Register here
+                  </Link>
                 </p>
               </form>
             </div>

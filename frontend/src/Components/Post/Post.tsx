@@ -270,7 +270,6 @@ function Post({
               {username}
             </Link>
             <p className="ms-4">{formatDate()}</p>
-            {encounterId && <p className="ms-4">Encounter ID: {encounterId}</p>}
           </div>
         </div>
         <div className="col-1 d-flex flex-column align-items-center justify-content-center">
