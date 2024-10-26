@@ -12,27 +12,31 @@ import PostCreationPage from "./Pages/PostCreationPage/PostCreationPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import GlobalContext from "./Context/GlobalContext";
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   return (
     <GlobalContext>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/forum-post" element={<PostPage />} />
-          <Route path="/campaign" element={<CampaignPage />} />
-          <Route
-            path="/encounter-creation"
-            element={<EncounterCreationPage />}
-          />
-          <Route path="/encounter" element={<EncounterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/post-creation" element={<PostCreationPage />} />
-          <Route path="/profile/:username" element={<ProfilePage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/posts/:postId" element={<PostPage />} />
-        </Routes>
+      <div className="App d-flex flex-column min-vh-100">
+        <div className="flex-grow-1">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/forum-post" element={<PostPage />} />
+            <Route path="/campaign" element={<CampaignPage />} />
+            <Route
+              path="/encounter-creation"
+              element={<EncounterCreationPage />}
+            />
+            <Route path="/encounter" element={<EncounterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/post-creation" element={<PostCreationPage />} />
+            <Route path="/profile/:username" element={<ProfilePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/posts/:postId" element={<PostPage />} />
+          </Routes>
+        </div>
+        <Footer/>
       </div>
     </GlobalContext>
   );

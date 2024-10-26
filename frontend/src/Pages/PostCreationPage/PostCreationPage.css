@@ -1,14 +1,14 @@
 .PC-container-fluid {
   min-height: 100vh;
   background-color: #343a40;
-  
+
 }
 
 .title-container-fluid {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
-  align-items: flex-start; 
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 70%;
   margin-left: 10%;
 }
@@ -16,9 +16,9 @@
 .postTitle-container-fluid,
 .text-container-fluid {
   display: flex;
-  flex-direction: column; 
-  justify-content: flex-start; 
-  align-items: flex-start; 
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 70%;
   margin-left: 10%;
 }
@@ -41,44 +41,53 @@
 
 .ReactQuill {
   height: 300px;
-  width: 100%; 
-  margin-top: 40px; 
+  width: 100%;
+  margin-top: 40px;
   border-color: rgb(255, 255, 255);
-} 
+}
 
 /* Add this to your PostCreationPage.css */
 .ReactQuill .ql-container {
-  background-color: white; /* Set the background color to white */
+  background-color: white;
+  /* Set the background color to white */
   height: 300px;
 }
 
 .ReactQuill {
-  min-height: 400px; /* Adjust height as needed */
-  background-color: white; /* Ensure background is set */
+  min-height: 400px;
+  /* Adjust height as needed */
+  background-color: white;
+  /* Ensure background is set */
 }
 
 .ql-toolbar {
-  background-color: #f3f3f3; /* Toolbar color */
-  z-index: 1; /* Ensure it appears above content */
+  background-color: #f3f3f3;
+  /* Toolbar color */
+  z-index: 1;
+  /* Ensure it appears above content */
 }
 
 .text-error-message {
   color: red;
   margin-top: 1%;
   margin-left: 45%
-
 }
+
 .success-message {
   color: rgb(144, 149, 198);
   margin-top: 1%;
   margin-left: 45%;
 }
 
-.PC-btn.btn-primary { 
+.PC-btn.btn-primary {
 
   margin-top: 5%;
   margin-left: 45%;
-  
-  
+
 }
 
+.black-border {
+  border-style: solid;
+  border-width: 3px;
+  padding: 2px;
+}
