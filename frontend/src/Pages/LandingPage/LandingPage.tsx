@@ -20,7 +20,7 @@ function LandingPage() {
 
   const getPosts = async () => {
     await axios
-      .get(`http://3.81.216.218:4000/api/forums/landing?page=${page}`)
+      .get(`http://localhost:4000/api/forums/landing?page=${page}`)
       .then((response) => {
         if (Array.isArray(response.data)) {
           const newPosts = response.data[0];
@@ -43,6 +43,8 @@ function LandingPage() {
     setPosts((prevPosts) =>
       prevPosts.filter((post) => post.post_id !== postId)
     );
+
+    getPosts();
   };
 
   useEffect(() => {
