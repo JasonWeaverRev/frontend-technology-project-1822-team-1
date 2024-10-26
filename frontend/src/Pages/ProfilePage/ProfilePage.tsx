@@ -171,6 +171,7 @@ function ProfilePage() {
 
       // Update the profile picture state with the new URL after a successful upload
       if (response.data) {
+        localStorage.setItem("profile_pic", response.data.presignedUrl);
         setProfilePicture(response.data.presignedUrl); // Adjust according to your response structure
       }
 
@@ -525,6 +526,7 @@ function ProfilePage() {
           })}
         </div>
       </div>
+
     </div>
     </>
   );
