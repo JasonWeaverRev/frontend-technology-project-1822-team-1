@@ -72,7 +72,7 @@ function PostPage() {
   const getComments = async () => {
     await axios
       .get(
-        `http://localhost:4000/api/forums/comments/post?id=${postId}&page=${page}`
+        `http://3.81.216.218:4000/api/forums/comments/post?id=${postId}&page=${page}`
       )
       .then((response) => {
         setComments(response.data[0]);
@@ -130,7 +130,7 @@ function PostPage() {
   const handleUpvote = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/like`,
+        `http://3.81.216.218:4000/api/forums/like`,
         {
           post_id: postId,
         }
@@ -148,7 +148,7 @@ function PostPage() {
   const handleDownvote = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/dislike`,
+        `http://3.81.216.218:4000/api/forums/dislike`,
         {
           post_id: postId,
         }
@@ -165,7 +165,7 @@ function PostPage() {
    */
   const getLikes = async () => {
     await axios
-      .get(`http://localhost:4000/api/forums/posts/likes/${postId}`)
+      .get(`http://3.81.216.218:4000/api/forums/posts/likes/${postId}`)
       .then((response) => {
         setLikes(response.data);
       })
@@ -180,7 +180,7 @@ function PostPage() {
   const getLikedBy = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/forums/posts/${postId}`
+        `http://3.81.216.218:4000/api/forums/posts/${postId}`
       );
 
       setLikedByList(response.data.liked_by);
@@ -218,7 +218,7 @@ function PostPage() {
   const fetchReplies = async (parentId: string | undefined): Promise<any[]> => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/forums/comments/post?id=${parentId}&page=1`
+        `http://3.81.216.218:4000/api/forums/comments/post?id=${parentId}&page=1`
       );
 
       const replies = response.data[0];
@@ -254,7 +254,7 @@ function PostPage() {
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/api/forums/${responseId}`,
+        `http://3.81.216.218:4000/api/forums/${responseId}`,
         {
           body: commentText,
         }

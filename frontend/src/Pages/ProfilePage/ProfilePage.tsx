@@ -94,7 +94,7 @@ function ProfilePage() {
   const getProfile = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/accounts/profile/${username}`,
+        `http://3.81.216.218:4000/api/accounts/profile/${username}`,
         {}
       );
       setProfile(response.data.userProfile);
@@ -108,7 +108,7 @@ function ProfilePage() {
   const updateAboutMe = async () => {
     try {
       await axios.patch(
-        `http://localhost:4000/api/accounts/about-me`,
+        `http://3.81.216.218:4000/api/accounts/about-me`,
         {
           about_me: editAboutMe,
         },
@@ -143,7 +143,7 @@ function ProfilePage() {
   const getUserEncounters = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/encounters/${username}`,
+        `http://3.81.216.218:4000/api/encounters/${username}`,
         {
           // sends get request to the backend thru URL
         }
@@ -166,7 +166,7 @@ function ProfilePage() {
 
     try {
       const response = await axios.delete(
-        `http://localhost:4000/api/encounters/encounter`,
+        `http://3.81.216.218:4000/api/encounters/encounter`,
         {
           headers: {
             Authorization: `Bearer ${TOKEN}`, // Ensure the token is correct
@@ -199,7 +199,7 @@ function ProfilePage() {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/forums/${username}`
+        `http://3.81.216.218:4000/api/forums/${username}`
       );
       setPosts(response.data);
       console.log("user posts: ", response.data);
