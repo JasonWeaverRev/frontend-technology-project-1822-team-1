@@ -7,7 +7,6 @@ import { useEncounterPostContext } from "../../Context/EncounterPostContext";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"],
-  ["blockquote", "code-block"],
   ["link", "formula"],
   [{ header: 1 }, { header: 2 }],
   [{ list: "ordered" }, { list: "bullet" }],
@@ -77,7 +76,7 @@ const PostCreationPage: React.FC = () => {
         `http://3.81.216.218:4000/api/encounters/${localStorage.getItem("username")}`
       );
       setOptions(response.data.encounters);
-     // Assuming response data is an array of options
+      // Assuming response data is an array of options
     } catch (error) {
       console.error("Error fetching options:", error);
     }
@@ -88,9 +87,7 @@ const PostCreationPage: React.FC = () => {
     fetchOptions();
   }, []);
 
-  useEffect(() => {
-
-  }, [options]);
+  useEffect(() => {}, [options]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -110,6 +107,7 @@ const PostCreationPage: React.FC = () => {
         {
           title,
           body,
+          selectedEncounter: selectedOption,
         },
         {
           headers: {
@@ -155,15 +153,17 @@ const PostCreationPage: React.FC = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <label htmlFor="dropdown">Choose an Encounter:</label>
+            <label id="choice-text" htmlFor="dropdown">
+              Choose an Encounter:
+            </label>
             <select
-              id="dropdown"
+              id="encounter-dropdown"
               value={selectedOption}
               onChange={(e) => setSelectedOption(e.target.value)}
               required
             >
               <option value="" disabled>
-                Select an option
+                Select an encounter
               </option>
               {options.map((encounter) => (
                 <option
