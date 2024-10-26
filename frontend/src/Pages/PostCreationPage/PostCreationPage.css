@@ -32,6 +32,7 @@
 
 .title-input {
   width: 100%;
+  margin-bottom: 5%;
 }
 
 .textrow-row {
@@ -61,10 +62,6 @@
   z-index: 1; /* Ensure it appears above content */
 }
 
-.ql-editor {
-  color: #333 !important; /* Replace #333 with your desired color */
-}
-
 .text-error-message {
   color: red;
   margin-top: 1%;
@@ -79,7 +76,7 @@
 
 .PC-btn.btn-primary { 
 
-  margin-top: 1%;
+  margin-top: 5%;
   margin-left: 45%;
   
   
