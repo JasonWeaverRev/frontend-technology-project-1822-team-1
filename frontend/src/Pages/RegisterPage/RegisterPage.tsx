@@ -91,7 +91,10 @@ function RegisterPage() {
                 {isSubmitting ? "Registering..." : "Register"}
               </button>
               <p className="prelink-text">
-                Already have an account? <Link to="/login">Login here</Link>
+                Already have an account?{" "}
+                <Link className="register-here" to="/login">
+                  Login here
+                </Link>
               </p>
             </form>
           </div>
