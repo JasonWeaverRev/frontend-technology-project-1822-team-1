@@ -61,7 +61,7 @@ const PostCreationPage: React.FC = () => {
       // Apply default color whenever the content changes
       const applyDefaultColor = () => {
         const length = editor.getLength();
-        editor.formatText(0, length, "color", "#000000");
+        editor.formatText(0, length, "color", "#333333"); // Darkest grey
       };
 
       // Initially set default color on load
