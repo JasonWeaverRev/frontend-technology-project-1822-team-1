@@ -8,6 +8,7 @@ interface EncounterMonsterProps {
 
 const EncounterMonster: React.FC<EncounterMonsterProps> = ({ monster }) => {
   const [monsterHp, setMonsterHp] = useState<number>(monster.hp);
+
   return (
     <div className="single-monster">
       <div className="monster-hud d-flex flex-column">

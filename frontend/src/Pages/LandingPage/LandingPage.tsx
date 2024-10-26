@@ -5,9 +5,7 @@ import axios from "axios";
 import "./LandingPage.css";
 import { useEncounter } from "../../Context/EncounterContext";
 
-
 function LandingPage() {
- 
   const { setEncounter } = useEncounter();
 
   const [posts, setPosts] = useState<any[]>([]);
@@ -25,7 +23,6 @@ function LandingPage() {
         if (Array.isArray(response.data)) {
           const newPosts = response.data[0];
           setPosts(newPosts);
-
         } else {
           console.error("Response is not an array:", response.data);
         }

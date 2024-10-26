@@ -366,15 +366,16 @@ function PostPage() {
             {/* Post Text */}
             <h3 className="text-post-page-format text-start">{title}</h3>
             <div className="d-flex">
-              <Link to={`/profile/${username}`} className="text-decoration-none text-dark">
+              <Link
+                to={`/profile/${username}`}
+                className="text-decoration-none text-dark"
+              >
                 {username}
               </Link>
               <p className="text-post-page-format ms-3">{formatDate()}</p>
             </div>
             <div>
-              <p className="text-post-page-format mt-2">
-                {encounterId}
-              </p>
+              <p className="text-post-page-format mt-2">{encounterId}</p>
             </div>
             <div
               className="text-post-page-format mt-0 text-start"

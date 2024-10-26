@@ -29,7 +29,7 @@ function Post({
   likedby,
   dislikedby,
   onDelete,
-  encounterId
+  encounterId,
 }: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);
@@ -270,9 +270,7 @@ function Post({
               {username}
             </Link>
             <p className="ms-4">{formatDate()}</p>
-            {encounterId && (
-              <p className="ms-4">Encounter ID: {encounterId}</p>
-            )}
+            {encounterId && <p className="ms-4">Encounter ID: {encounterId}</p>}
           </div>
         </div>
         <div className="col-1 d-flex flex-column align-items-center justify-content-center">

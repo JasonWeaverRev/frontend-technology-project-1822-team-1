@@ -1,31 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import LinkButton from "../LinkButton/LinkButton";
 import "./EncounterForm.css";
 
 interface EncounterFormProps {
   setTitle: any;
   setSetting: any;
-  setEnvironment: any;
   setChallengeRating: any;
   getMonstersByChallengeRating: any;
   generateEncounter: any;
+  handleClear: any;
   error: string;
   title: string | undefined;
   setting: string | undefined;
-  environment: string | undefined;
 }
 
 const EncounterForm: React.FC<EncounterFormProps> = ({
   setTitle,
   setSetting,
-  setEnvironment,
   setChallengeRating,
   getMonstersByChallengeRating,
   generateEncounter,
+  handleClear,
   error,
   title,
-  environment,
   setting,
 }) => {
   return (
@@ -40,16 +37,8 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
           maxLength={36}
           onChange={(e) => setTitle(String(e.target.value))}
         />
-        <input
-          type="text"
-          placeholder="Environment Name"
-          className="info"
-          value={environment ? environment : ""}
-          maxLength={36}
-          onChange={(e) => setEnvironment(String(e.target.value))}
-        />
         <textarea
-          placeholder="Environment Notes"
+          placeholder="Setting Notes"
           className="setting info"
           value={setting ? setting : ""}
           maxLength={144}
@@ -108,9 +97,14 @@ const EncounterForm: React.FC<EncounterFormProps> = ({
         >
           Generate Mobs
         </button>
-        <LinkButton to={"/encounter"} click={generateEncounter}>
-          Publish Encounter
-        </LinkButton>
+        <div className="d-flex gap-2">
+          <button onClick={handleClear} className="clear-encounter-btn">
+            Clear Encounter
+          </button>
+          <LinkButton to={"/encounter"} click={generateEncounter}>
+            Publish Encounter
+          </LinkButton>
+        </div>
       </div>
     </div>
   );
