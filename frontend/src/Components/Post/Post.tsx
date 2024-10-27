@@ -29,7 +29,7 @@ function Post({
   likedby,
   dislikedby,
   onDelete,
-  encounterId
+  encounterId,
 }: PostItem) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isDisliked, setIsDisliked] = useState<boolean>(false);

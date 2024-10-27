@@ -1,0 +1,21 @@
+.footer-dd {
+    background-image: linear-gradient(45deg,
+            #1e5799 0%,
+            #a81212 0%,
+            #561c1c 55%,
+            #7a1010 85%);
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-top: 15px;
+}
+
+.footer-content-dd {
+    font-weight: bold;
+    font-size: small;
+}
+
+.footer-bottom-dd {
+    font-size: 0.5rem;
+    /* Shrink the text size as desired */
+    margin-top: 12px;
+}

@@ -88,7 +88,6 @@ function EncounterPage() {
       );
 
       const data = response.data;
-      console.log(data);
 
       if (response.status === 200) {
         setSuccess(true);
@@ -140,7 +139,6 @@ function EncounterPage() {
           ></textarea>
         </div>
         <div className="event-info d-flex flex-column col-2 text-start p-2 gap-2">
-          {encounter.environment && <div>{encounter.environment}:</div>}
           {encounter.setting && <div>{encounter.setting}</div>}
         </div>
       </div>

@@ -7,6 +7,12 @@ import { AuthProvider } from "./Context/authContext"; // Import your AuthProvide
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Includes Popper.js
 
+
+const fontLink = document.createElement("link");
+fontLink.href = "https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap";
+fontLink.rel = "stylesheet";
+document.head.appendChild(fontLink);
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

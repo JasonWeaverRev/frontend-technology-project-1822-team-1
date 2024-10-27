@@ -307,16 +307,14 @@ function PostPage() {
     setPage(page + 1);
   };
 
-
   const getPostEncounter = async () => {
-
     try {
       const response = await axios.get(
         `http://3.81.216.218:4000/api/encounters/encounter?encounter_id=${encounterId}`
       );
 
       setEncounterPost(response.data.encounter);
-      
+
       // setEncounterPost(response.data.encounters);
     } catch (error) {
       console.error("Error fetching user encounters: ", error);
@@ -330,16 +328,13 @@ function PostPage() {
 
   useEffect(() => {
     if (encounterPost) {
-
     }
-    
-  }, [encounterPost])
+  }, [encounterPost]);
 
   /**
    * DATE FORMATTING
    */
   const formatDate = () => {
-    
     let formattedDate = "[Cannot retrieve the date at this time]";
 
     if (time) {
@@ -400,20 +395,25 @@ function PostPage() {
             {/* Post Text */}
             <h3 className="text-post-page-format text-start">{title}</h3>
             <div className="d-flex">
-              <Link to={`/profile/${username}`} className="text-decoration-none text-dark">
+              <Link
+                to={`/profile/${username}`}
+                className="text-decoration-none text-dark"
+              >
                 {username}
               </Link>
               <p className="text-post-page-format ms-3">{formatDate()}</p>
             </div>
-            
+
             {/* Encounter Link */}
             <div className="row">
-              <div className="col-10 d-flex justify-content-center"> {/* Center align at the column level */}
+              <div className="col-10 d-flex justify-content-center">
+                {" "}
+                {/* Center align at the column level */}
                 {encounterPost && (
-                  <div
-                    className="encounter-link-container-format d-flex flex-column align-items-center p-3"
-                  >
-                    <span className="encounter-link-post-page-format">Encounter Link</span>
+                  <div className="encounter-link-container-format d-flex flex-column align-items-center p-3">
+                    <span className="encounter-link-post-page-format">
+                      Encounter Link
+                    </span>
                     <Link
                       className="encounter-link-post-page-format text-decoration-none mt-2"
                       onClick={() => {
@@ -441,7 +441,6 @@ function PostPage() {
               dangerouslySetInnerHTML={{ __html: content }}
             ></div>
           </div>
-
         </div>
 
         <div>

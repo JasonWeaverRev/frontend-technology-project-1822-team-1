@@ -398,9 +398,10 @@ function Comments({
             <p className="ms-3 fw-bold">{likes}</p>
             <p className="ms-3">{formatDate()}</p>
           </div>
-          <div 
+          <div
             className="text-start"
-            style={{ wordWrap: "break-word", overflowWrap: "break-word" }}>
+            style={{ wordWrap: "break-word", overflowWrap: "break-word" }}
+          >
             <p>{body}</p>
           </div>
           <div className="comment-footer text-start fw-bold mb-2">
@@ -500,7 +501,7 @@ function Comments({
               <textarea
                 placeholder="Write your reply here"
                 className="form-control"
-                style={{ width: '60%', height: '120px', marginRight: '10px' }}
+                style={{ width: "60%", height: "120px", marginRight: "10px" }}
                 value={commentText}
                 onChange={handleTextChange}
               ></textarea>
@@ -518,7 +519,7 @@ function Comments({
               <textarea
                 placeholder="Edit your comment here"
                 className="form-control"
-                style={{ width: '60%', height: '120px', marginRight: '10px' }}
+                style={{ width: "60%", height: "120px", marginRight: "10px" }}
                 value={editText}
                 onChange={handleEditTextChange}
               ></textarea>

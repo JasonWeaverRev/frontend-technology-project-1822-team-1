@@ -31,7 +31,7 @@ const EncounterPlayer: React.FC<EncounterPlayerProps> = ({
       <div className="d-flex flex-column gap-4 align-self-center">
         <img
           className="player-icon"
-          src={"dungeon-delver-logo.png"}
+          src={localStorage.getItem("profile_pic") || "dungeon-delver-logo.png"}
           alt="Player Icon"
         ></img>
         <textarea
