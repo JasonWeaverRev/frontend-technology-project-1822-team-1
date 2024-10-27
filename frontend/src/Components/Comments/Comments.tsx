@@ -436,7 +436,16 @@ function Comments({
             >
               reply
             </p>
-            {replyCount && ( 
+            {(replyCount === 1) && ( 
+              <p
+                className="ms-4"
+                style={{ cursor: "pointer", display: "inline" }}
+                onClick={handleShowReplyClick}
+              >
+                show {replyCount} reply
+              </p>
+            )} 
+            {(replyCount > 1) && ( 
               <p
                 className="ms-4"
                 style={{ cursor: "pointer", display: "inline" }}
