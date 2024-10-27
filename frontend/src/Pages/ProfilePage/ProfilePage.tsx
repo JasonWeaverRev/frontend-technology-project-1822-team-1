@@ -31,6 +31,7 @@ interface Post {
   creation_time: string;
   body: string;
   title: string;
+  encounterId: string;
 }
 
 interface Monster {
@@ -253,15 +254,12 @@ function ProfilePage() {
     }
   };
 
-  const modifyEncounterCampaign = async (
-    encounter_id: string,
-    campaign_title: string
-  ) => {
+  const modifyEncounterCampaign = async (encounter_id: string, campaign_title: string) => {
     try {
       const response = await axios.patch(
-        "http://3.81.216.218:4000/api/encounters/campaign",
+        'http://3.81.216.218:4000/api/encounters/campaign',
         {
-          action: "set",
+          action: 'set',
           campaign_title,
         },
         {
@@ -272,12 +270,13 @@ function ProfilePage() {
         }
       );
 
-      getUserEncounters();
-
+      getUserEncounters()
+  
       setEncounterToModify(null);
       setShowCampaignPopup(false);
+  
     } catch (error) {
-      console.error("Error modifying encounter campaign:", error);
+      console.error('Error modifying encounter campaign:', error);
     }
   };
   // #endregion
@@ -517,6 +516,7 @@ function ProfilePage() {
                           encounterToModify!,
                           campaignTitle
                         ); // Pass the campaign title and encounter ID
+                        setCampaignTitle('');
                       }}
                       className="confirm-delete-btn"
                       disabled={!campaignTitle.trim()} // Disable if no valid input
@@ -526,7 +526,10 @@ function ProfilePage() {
 
                     {/* Cancel button */}
                     <button
-                      onClick={() => setShowCampaignPopup(false)}
+                      onClick={() => {
+                        setShowCampaignPopup(false);
+                        setCampaignTitle('');
+                      }}
                       className="cancel-btn"
                     >
                       Cancel
@@ -549,12 +552,26 @@ function ProfilePage() {
                 day: "numeric",
               });
 
+            const plainTextBody = post.body.replace(/<\/?[^>]+(>|$)/g, "");
+
               return (
+                <Link
+                  to={`/posts/${post.post_id}`}
+                  key={index}
+                  state={{
+                    title: post.title,
+                    username: post.written_by,
+                    content: post.body,
+                    time: post.creation_time,
+                    encounterId: post.encounterId,
+                  }}
+                  style={{ textDecoration: "none", color: "inherit" }}>
                 <div key={index} className="content-card">
                   <h3>{post.title}</h3>
-                  <p>{post.body}</p>
+                  <p>{plainTextBody}</p>
                   <p>{formattedDate}</p>
                 </div>
+                </Link>
               );
             })}
           </div>
