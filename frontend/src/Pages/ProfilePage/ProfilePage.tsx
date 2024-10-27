@@ -372,7 +372,7 @@ function ProfilePage() {
           <div className="card-container">
             {campaigns.map((campaign, index) => (
               <Link
-                to={`/profile/${profile?.username}/${encodeURIComponent(campaign)}`}
+                to={`/profile/${encodeURIComponent(profile?.username as string)}/${encodeURIComponent(campaign)}`}
                 key={index}
                 className="content-card"
                 style={{ textDecoration: "none" }}
