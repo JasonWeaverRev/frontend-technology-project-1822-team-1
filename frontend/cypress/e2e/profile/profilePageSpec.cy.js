@@ -10,17 +10,13 @@ describe("/encounter-creation", () => {
     cy.get('[type="password"]').type("rickytestpw");
     cy.contains("Log In").click();
     cy.wait("@loginRequest").its("response.statusCode").should("eq", 200);
-    cy.contains("Create New Encounter").click();
+    cy.get('#navbarDropdown').click();
+    cy.get(':nth-child(1) > .dropdown-item').click();
   });
 
   it("should navigate to profile", () => {
     cy.get('#navbarDropdown').click();
     cy.get(':nth-child(1) > .dropdown-item').click();
-    // cy.intercept("GET", "/api/accounts/profile", {
-    //   statusCode: 200,
-    //   body: {
-
-    //   }
-    // })
+    cy.get('#username').should('contain', 'rickytest');
   });
 })
