@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./PostCreationPage.css";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 
@@ -20,7 +20,6 @@ const toolbarOptions = [
   ["clean"],
 ];
 
-// Define the type of options we expect from the API
 interface EncounterOption {
   encounter_id: string;
   encounter_title: string;
@@ -41,7 +40,18 @@ const PostCreationPage: React.FC = () => {
     setBody(value);
   };
 
-  const fixLinks = () => {
+  const fetchOptions = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/encounters/${localStorage.getItem("username")}`
+      );
+      setOptions(response.data.encounters);
+    } catch (error) {
+      console.error("Error fetching options:", error);
+    }
+  };
+
+  const fixLinks = useCallback(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
       const links = editor.root.querySelectorAll("a");
@@ -52,54 +62,34 @@ const PostCreationPage: React.FC = () => {
         }
       });
     }
-  };
+  }, []);
 
   useEffect(() => {
+    // Fetch options when the component mounts
+    fetchOptions();
+
+    // Setup Quill editor event listeners
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
 
-      // Apply default color whenever the content changes
+      // Apply default color
       const applyDefaultColor = () => {
         const length = editor.getLength();
-        editor.formatText(0, length, "color", "#333333"); // Darkest grey
+        editor.formatText(0, length, "color", "#333333");
       };
 
-      // Initially set default color on load
       applyDefaultColor();
 
-      // Reapply default color on text change
       editor.on("text-change", () => {
         fixLinks();
         applyDefaultColor();
       });
 
       return () => {
-        editor.off("text-change", applyDefaultColor);
-        editor.off("text-change", fixLinks);
+        editor.off("text-change");
       };
     }
-  }, []);
-
-  const fetchOptions = async () => {
-    try {
-      const response = await axios.get(
-        `http://3.81.216.218:4000/api/encounters/${localStorage.getItem(
-          "username"
-        )}`
-      );
-      setOptions(response.data.encounters);
-      // Assuming response data is an array of options
-    } catch (error) {
-      console.error("Error fetching options:", error);
-    }
-  };
-
-  // Fetch options from the table
-  useEffect(() => {
-    fetchOptions();
-  }, []);
-
-  useEffect(() => {}, [options]);
+  }, [fixLinks]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -108,15 +98,13 @@ const PostCreationPage: React.FC = () => {
       return;
     }
 
-    console.log(selectedOption);
-
     setErrorMessage("");
 
     try {
       setIsSubmitting(true);
       const token = localStorage.getItem("token");
 
-      const response = await axios.post(
+      await axios.post(
         "http://3.81.216.218:4000/api/forums",
         {
           title,
@@ -134,14 +122,14 @@ const PostCreationPage: React.FC = () => {
       setTitle("");
       setBody("");
       setSelectedOption("");
-      setIsSubmitting(false);
     } catch (error) {
-      setIsSubmitting(false);
       if (axios.isAxiosError(error) && error.response) {
         setErrorMessage(error.response.data.message || "An error occurred.");
       } else {
         setErrorMessage("An error occurred while creating the post.");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -203,7 +191,6 @@ const PostCreationPage: React.FC = () => {
             {successMessage && (
               <div className="success-message">{successMessage}</div>
             )}
-
             <button
               className="PC-btn btn-primary"
               type="submit"

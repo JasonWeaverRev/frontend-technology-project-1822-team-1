@@ -15,11 +15,23 @@ describe("/PostCreation", () => {
   });
 
   it("Submit form successfully", () => {
-    cy.pause();
-    cy.get("title-input").click().type("Test");
+    cy.get(".title-input").as("titleInput");
+    cy.get("@titleInput").should("be.visible").click().type("Test");
     cy.get("#encounter-dropdown").wait(500).select(1);
-    cy.get(".ReactQuill").click().type("test text area text");
+    cy.get(".ReactQuill").as("Quill");
+    cy.get("@Quill").should("be.visible").click().type("test text area text");
     cy.get(".PC-btn").click();
     cy.contains("Post successfully created!");
+  });
+
+  it("Submit form without title and receive error", () => {
+    cy.contains("Create New Post");
+    cy.wait(500);
+    cy.get(".ReactQuill").as("Quill");
+    cy.get("@Quill").should("be.visible").click().type("test text area text");
+    cy.get("#encounter-dropdown").wait(500).select(1);
+    cy.get(".PC-btn").click();
+    cy.contains("Title");
+    cy.pause();
   });
 });
