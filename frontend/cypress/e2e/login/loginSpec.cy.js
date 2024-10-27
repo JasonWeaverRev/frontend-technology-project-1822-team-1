@@ -1,22 +1,31 @@
 describe("/login", () => {
-  it("Visits the login page and logs in with incorrect password", () => {
+  beforeEach(() => {
     cy.visit(
       "http://1822-team-1-website-production.s3-website-us-east-1.amazonaws.com"
-    ); // Replace with your app’s URL
+    );
     cy.contains("Sign In").click();
-    cy.get('[type="text"]').type("gerdine");
-    cy.get('[type="Password"]').type("behrmann");
+  });
+
+  it("greets with Welcome to", () => {
+    cy.contains("h1", "Welcome to");
+  });
+
+  it("displays error for invalid login", () => {
+    cy.get('[placeholder="Username or Email"]').type("text");
+    cy.get('[placeholder="Password"]').type("password");
     cy.contains("Log In").click();
     cy.contains("Invalid username/email or password");
   });
-  it("Visits the login page and logs in with incorrect password", () => {
-    cy.visit(
-      "http://1822-team-1-website-production.s3-website-us-east-1.amazonaws.com"
-    ); // Replace with your app’s URL
-    cy.contains("Sign In").click();
-    cy.get('[type="text"]').type("gbehrmann@gmail.com");
-    cy.get('[type="Password"]').type("Test12345678");
+
+  it("logs in successfully with valid credentials", () => {
+    cy.get('[placeholder="Username or Email"]').type("Test12345678");
+    cy.get('[placeholder="Password"]').type("Test12345678");
     cy.contains("Log In").click();
-    cy.contains("Invalid username/email or password");
+    cy.contains("Create New Post");
+  });
+
+  it("", () => {
+    cy.contains("Register here").click();
+    cy.contains("Register for an account");
   });
 });
