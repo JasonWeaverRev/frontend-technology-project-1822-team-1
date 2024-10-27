@@ -31,6 +31,7 @@ interface Post {
   creation_time: string;
   body: string;
   title: string;
+  encounterId: string;
 }
 
 interface Monster {
@@ -160,7 +161,7 @@ function ProfilePage() {
 
   const uploadProfilePic = async (base64: string, mimeType: string) => {
     try {
-      const response = await axios.patch('http://localhost:4000/api/accounts/profile-pic', {
+      const response = await axios.patch('http://3.81.216.218:4000/api/accounts/profile-pic', {
         image: {
           mime: mimeType,
           data: base64,
@@ -248,7 +249,7 @@ function ProfilePage() {
   const modifyEncounterCampaign = async (encounter_id: string, campaign_title: string) => {
     try {
       const response = await axios.patch(
-        'http://localhost:4000/api/encounters/campaign',
+        'http://3.81.216.218:4000/api/encounters/campaign',
         {
           action: 'set',
           campaign_title,
@@ -518,12 +519,26 @@ function ProfilePage() {
               day: "numeric",
             });
 
+            const plainTextBody = post.body.replace(/<\/?[^>]+(>|$)/g, "");
+
               return (
+                <Link
+                  to={`/posts/${post.post_id}`}
+                  key={index}
+                  state={{
+                    title: post.title,
+                    username: post.written_by,
+                    content: post.body,
+                    time: post.creation_time,
+                    encounterId: post.encounterId,
+                  }}
+                  style={{ textDecoration: "none", color: "inherit" }}>
                 <div key={index} className="content-card">
                   <h3>{post.title}</h3>
-                  <p>{post.body}</p>
+                  <p>{plainTextBody}</p>
                   <p>{formattedDate}</p>
                 </div>
+                </Link>
               );
             })}
           </div>

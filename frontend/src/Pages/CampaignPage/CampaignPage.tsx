@@ -37,7 +37,7 @@ function CampaignPage() {
   const getEncounters = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/encounters/campaign/${username}/${campaignTitle}`,
+        `http://3.81.216.218:4000/api/encounters/campaign/${username}/${campaignTitle}`,
         {
           headers: { Authorization: `Bearer ${TOKEN}` },
         }
@@ -58,7 +58,7 @@ function CampaignPage() {
     console.log(campaign_title);
     try {
       const response = await axios.patch(
-        'http://localhost:4000/api/encounters/campaign',
+        'http://3.81.216.218:4000/api/encounters/campaign',
         {
           action: 'remove',
           campaign_title,
