@@ -516,6 +516,7 @@ function ProfilePage() {
                           encounterToModify!,
                           campaignTitle
                         ); // Pass the campaign title and encounter ID
+                        setCampaignTitle('');
                       }}
                       className="confirm-delete-btn"
                       disabled={!campaignTitle.trim()} // Disable if no valid input
@@ -525,7 +526,10 @@ function ProfilePage() {
 
                     {/* Cancel button */}
                     <button
-                      onClick={() => setShowCampaignPopup(false)}
+                      onClick={() => {
+                        setShowCampaignPopup(false);
+                        setCampaignTitle('');
+                      }}
                       className="cancel-btn"
                     >
                       Cancel
