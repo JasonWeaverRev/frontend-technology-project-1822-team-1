@@ -1,4 +1,4 @@
-describe("/encounter-creation", () => {
+describe("/encounter-creation logged in", () => {
   beforeEach(() => {
     cy.visit(
       "http://1822-team-1-website-production.s3-website-us-east-1.amazonaws.com"
@@ -13,14 +13,24 @@ describe("/encounter-creation", () => {
     cy.contains("Create New Encounter").click();
   });
 
-  it("should navigate to profile", () => {
+  it("Edit About Me", () => {
     cy.get('#navbarDropdown').click();
     cy.get(':nth-child(1) > .dropdown-item').click();
-    // cy.intercept("GET", "/api/accounts/profile", {
-    //   statusCode: 200,
-    //   body: {
+    cy.get('#edit-button').click();
+    cy.get('.form-control').clear().type("Test edit through Cypress");
+    cy.get('#save-button').click();
+    cy.get('#about_me').should("have.text", "Test edit through Cypress");
+  });
 
-    //   }
-    // })
+  it("Image Upload", () => {
+    cy.get('#navbarDropdown').click();
+    cy.get(':nth-child(1) > .dropdown-item').click();
+    cy.get('#upload-label').should("exist");
+  });
+
+  it("Delete Encounter", () => {
+    cy.get('#navbarDropdown').click();
+    cy.get(':nth-child(1) > .dropdown-item').click();
+    cy.get(':nth-child(1) > #encounter-button-container > span > :nth-child(1)').click();
   });
 })
