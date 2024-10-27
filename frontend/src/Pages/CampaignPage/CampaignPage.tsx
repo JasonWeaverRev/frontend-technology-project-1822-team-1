@@ -22,6 +22,7 @@ interface Monster {
 
 function CampaignPage() {
   const { username, "campaign-title": campaignTitle } = useParams();
+  console.log()
   const TOKEN = localStorage.getItem("token") || "";
   const loggedInUser = localStorage.getItem("username") || "";
   const isCurrentUser = loggedInUser === username;
@@ -33,23 +34,27 @@ function CampaignPage() {
   const { setEncounter } = useEncounter();
 
   // Fetch encounters function
-  const getEncounters = async () => {
+  const getUserEncounters = async () => {
     try {
       const response = await axios.get(
-        `http://3.81.216.218:4000/api/encounters/campaign/${username}/${campaignTitle}`,
+        `http://3.81.216.218:4000/api/encounters/${username}`,
         {
-          headers: { Authorization: `Bearer ${TOKEN}` },
+          // sends get request to the backend thru URL
         }
       );
-      setEncounters(response.data);
-      console.log(response.data);
+
+      const filteredEncounters = response.data.encounters.filter((encounter : Encounter) => 
+        encounter.campaign_title == campaignTitle // Adjust this condition as needed, e.g., check for a specific title
+      );
+
+      setEncounters(filteredEncounters); // encounters = response.data
     } catch (error) {
-      console.error("Error fetching encounters:", error);
+      console.error("Error fetching user encounters: ", error);
     }
   };
 
   useEffect(() => {
-    getEncounters();
+    getUserEncounters();
   }, []);
 
   const removeEncounterCampaign = async (
@@ -60,7 +65,7 @@ function CampaignPage() {
     console.log(campaign_title);
     try {
       const response = await axios.patch(
-        "http://3.81.216.218:4000/api/encounters/campaign",
+        'http://3.81.216.218:4000/api/encounters/campaign',
         {
           action: "remove",
           campaign_title,
@@ -73,8 +78,8 @@ function CampaignPage() {
         }
       );
 
-      getEncounters();
-
+      getUserEncounters()
+  
       setTitleToRemove(null);
       setShowRemovePopup(false);
     } catch (error) {
