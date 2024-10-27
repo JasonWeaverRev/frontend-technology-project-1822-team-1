@@ -32,7 +32,7 @@
 
 .title-input {
   width: 100%;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 }
 
 .textrow-row {
@@ -83,6 +83,11 @@
 
   margin-top: 5%;
   margin-left: 45%;
+
+}
+
+#encounter-dropdown {
+  margin-top: 1%;
 
 }
 
