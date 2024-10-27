@@ -37,6 +37,7 @@ function Comments({
   const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const [replies, setReplies] = useState<any>([]);
+  const [replyCount, setReplyCount] = useState<any>(undefined);
   const [alert, setAlert] = useState<any>(undefined);
   const [role, setRole] = useState<string | null>(null);
   const [currUsername, setCurrUsername] = useState<string | null>(null);
@@ -185,6 +186,30 @@ function Comments({
     const replies = await fetchReplies(commentId);
     setReplies(replies);
   };
+
+  const fetchReplyCount = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.81.216.218:4000/api/forums/comments/post?id=${commentId}&page=1`
+      );
+
+      const data = response.data[1];
+      console.log(data);
+      setReplyCount(data);
+
+      return Array.isArray(replies) ? replies : [];
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchReplyCount();
+  }, [])
+
+  useEffect(() => {
+    console.log(replyCount);
+  }, [replyCount])
 
   /**
    * Tracks text within the comment form
@@ -411,13 +436,24 @@ function Comments({
             >
               reply
             </p>
-            <p
-              className="ms-4"
-              style={{ cursor: "pointer", display: "inline" }}
-              onClick={handleShowReplyClick}
-            >
-              show replies
-            </p>
+            {(replyCount === 1) && ( 
+              <p
+                className="ms-4"
+                style={{ cursor: "pointer", display: "inline" }}
+                onClick={handleShowReplyClick}
+              >
+                show {replyCount} reply
+              </p>
+            )} 
+            {(replyCount > 1) && ( 
+              <p
+                className="ms-4"
+                style={{ cursor: "pointer", display: "inline" }}
+                onClick={handleShowReplyClick}
+              >
+                show {replyCount} replies
+              </p>
+            )} 
             {username === currUsername && (
               <p
                 className="ms-4"
