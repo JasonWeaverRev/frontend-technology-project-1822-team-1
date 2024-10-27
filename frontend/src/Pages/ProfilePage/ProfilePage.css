@@ -194,6 +194,7 @@
 #encounter-button-container {
   display: flex;
   justify-content: space-between;
+  padding-top: 1rem;
 }
 
 .delete-button {
@@ -373,6 +374,7 @@
     flex-direction: column;
   }
 
+  #edit-button,
   #upload-label {
     width: 100%;
     margin-left: 0;
