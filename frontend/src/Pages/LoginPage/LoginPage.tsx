@@ -28,7 +28,7 @@ function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  localStorage.setItem("profile_pic", "/profile-icon.png")
+  localStorage.setItem("profile_pic", "/profile-icon.png");
 
   const navigate = useNavigate();
 
@@ -86,9 +86,12 @@ function LoginPage() {
       localStorage.setItem("username", response.data.userProfile.username);
       localStorage.setItem("role", response.data.userProfile.role);
       if (!response.data.userProfile.profile_pic) {
-        localStorage.setItem("profile_pic", "/profile-icon.png")
+        localStorage.setItem("profile_pic", "/profile-icon.png");
       } else {
-        localStorage.setItem("profile_pic", response.data.userProfile.profile_pic);
+        localStorage.setItem(
+          "profile_pic",
+          response.data.userProfile.profile_pic
+        );
       }
     } catch (error) {
       console.error("Error fetching user profile: ", error);

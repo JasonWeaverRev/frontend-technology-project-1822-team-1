@@ -57,14 +57,27 @@ const PostCreationPage: React.FC = () => {
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
-      editor.on("text-change", fixLinks);
-    }
-    return () => {
-      if (quillRef.current) {
-        const editor = quillRef.current.getEditor();
+
+      // Apply default color whenever the content changes
+      const applyDefaultColor = () => {
+        const length = editor.getLength();
+        editor.formatText(0, length, "color", "#333333"); // Darkest grey
+      };
+
+      // Initially set default color on load
+      applyDefaultColor();
+
+      // Reapply default color on text change
+      editor.on("text-change", () => {
+        fixLinks();
+        applyDefaultColor();
+      });
+
+      return () => {
+        editor.off("text-change", applyDefaultColor);
         editor.off("text-change", fixLinks);
-      }
-    };
+      };
+    }
   }, []);
 
   const fetchOptions = async () => {
@@ -156,7 +169,6 @@ const PostCreationPage: React.FC = () => {
               id="encounter-dropdown"
               value={selectedOption}
               onChange={(e) => setSelectedOption(e.target.value)}
-              required
             >
               <option value="" disabled>
                 Select an encounter
