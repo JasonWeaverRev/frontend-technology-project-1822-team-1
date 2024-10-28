@@ -178,8 +178,13 @@ function ProfilePage() {
         }
       );
 
+      console.log(mimeType);
+      console.log(base64);
+      console.log(response.data);
+
       // Update the profile picture state with the new URL after a successful upload
       if (response.data) {
+        console.log("Presigned URL:", response.data.presignedUrl);
         localStorage.setItem("profile_pic", response.data.presignedUrl);
         setProfilePicture(response.data.presignedUrl); // Adjust according to your response structure
       }

@@ -42,6 +42,7 @@ function PostPage() {
   const [isClickable, setIsClickable] = useState<boolean>(true);
   const [alert, setAlert] = useState<any>(undefined);
   const [encounterPost, setEncounterPost] = useState<any>(undefined);
+  const [deleteTrigger, setDeleteTrigger] = useState(false);
 
   // #region request/response interceptors
   // Request Interceptor
@@ -95,12 +96,17 @@ function PostPage() {
       });
   };
 
+  const handleCommentDelete = () => {
+    setDeleteTrigger((isDeleted) => !isDeleted);
+  }
+
   /**
    * Comment loading
    */
   useEffect(() => {
     getComments();
-  }, [page]);
+    console.log("INSIDE PAGE USE EFFECT")
+  }, [page, deleteTrigger]);
 
   /**
    * HANDLERS
@@ -462,6 +468,7 @@ function PostPage() {
               commentId={comment.post_id}
               handleSubmitClick={handleSubmitClick}
               fetchReplies={fetchReplies}
+              onDelete={handleCommentDelete}
             />
           ))}
         </div>

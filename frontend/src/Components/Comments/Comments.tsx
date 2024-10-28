@@ -16,6 +16,7 @@ interface CommentItem {
   commentId: string;
   handleSubmitClick: (commentText: string, parentId?: string) => void;
   fetchReplies: (commentText: string, parentId?: string) => void;
+  onDelete: () => void;
 }
 
 function Comments({
@@ -25,6 +26,7 @@ function Comments({
   commentId,
   handleSubmitClick,
   fetchReplies,
+  onDelete
 }: CommentItem) {
   const [commentText, setCommentText] = useState<string>("");
   const [editText, setEditText] = useState<string>("");
@@ -49,6 +51,7 @@ function Comments({
     null
   );
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
 
   /**
    * Handles 'like' or 'dislike' button events
@@ -247,9 +250,12 @@ function Comments({
     }
 
     const submitAlert = await handleSubmitClick(commentText, commentId);
+    setShowReplyForm(false);
+    setReplyCount((prevCount: number) => (prevCount || 0) + 1);
     console.log(submitAlert);
     setAlert(submitAlert);
   };
+
 
   /**
    * Opens edit panel for a comment
@@ -314,18 +320,14 @@ function Comments({
   const handleDeleteClick = async () => {
     if (role === "user") {
       try {
-        console.log("Deleting Comment ID in Delete Click:", deletingCommentId);
-        console.log(
-          "Deleting Comment Time in Delete Click:",
-          deletingCommentTime
-        );
-
         const response = await axios.delete(
           `http://3.81.216.218:4000/api/forums/comments/${deletingCommentId}/${deletingCommentTime}`
         );
 
         if (response.status === 200) {
           console.log("Comment deleted");
+
+          onDelete();
         }
       } catch (err) {
         console.log(err);
@@ -338,6 +340,8 @@ function Comments({
 
         if (response.status === 200) {
           console.log("Comment deleted");
+
+          onDelete();
         }
       } catch (err) {
         console.log(err);
@@ -580,6 +584,7 @@ function Comments({
                   commentId={reply.post_id}
                   handleSubmitClick={handleSubmitClick}
                   fetchReplies={fetchReplies}
+                  onDelete={onDelete}
                 />
               ))}
             </div>
