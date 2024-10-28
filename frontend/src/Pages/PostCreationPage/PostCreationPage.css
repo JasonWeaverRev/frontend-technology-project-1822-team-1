@@ -22,6 +22,33 @@
   width: 70%;
   margin-left: 10%;
 }
+/* Container for the password input and toggle button */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Adjust the password input field to accommodate the toggle button */
+.password-input-container .form-control-login {
+  flex: 1;
+}
+
+/* Style the toggle button */
+.toggle-password-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #007bff;
+}
+
+/* Optional: Change color on hover */
+.toggle-password-btn:hover {
+  color: #0056b3;
+}
 
 .PC-header {
   color: #e4e4e4;

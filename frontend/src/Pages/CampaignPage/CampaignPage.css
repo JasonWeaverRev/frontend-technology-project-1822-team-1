@@ -47,6 +47,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin: 0;
 }
 
 .encounter-date {
@@ -56,10 +57,10 @@
 #remove-button-container {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
 }
 
-.delete-button {
-    line-height: 1;
+#remove-button-container {
+  padding-top: 1rem;
 }
