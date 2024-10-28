@@ -83,16 +83,22 @@ function PostPage() {
         `http://3.81.216.218:4000/api/forums/comments/post?id=${postId}&page=${page}`
       )
       .then((response) => {
-        setComments(response.data[0]);
-        setCommentNumber(response.data[1]);
+        
+        const fetchedComments = response.data[0];
+        const fetchedCommentCount = response.data[1];
+        
+        setComments(fetchedComments || []);
+        setCommentNumber(fetchedCommentCount || 0);
 
-        if (response.data[1] <= 8 + (page - 1) * 8) {
+        if (response.data[1] <= 8 * page) {
           setIsClickable(false);
         }
       })
       .catch((error) => {
         setIsClickable(false);
         console.log(error);
+        setComments([]); // Ensure comments is set to an empty array on error
+        setCommentNumber(0);
       });
   };
 
