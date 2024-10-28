@@ -86,6 +86,11 @@ function PostPage() {
         
         const fetchedComments = response.data[0];
         const fetchedCommentCount = response.data[1];
+
+        if (fetchedComments.length === 0 && page > 1) {
+          setPage((prevPage) => prevPage - 1);
+          return;
+        }
         
         setComments(fetchedComments || []);
         setCommentNumber(fetchedCommentCount || 0);
@@ -104,6 +109,12 @@ function PostPage() {
 
   const handleCommentDelete = () => {
     setDeleteTrigger((isDeleted) => !isDeleted);
+
+    if (comments.length === 1 && page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    } else {
+      getComments();
+    }
   }
 
   /**
@@ -288,6 +299,14 @@ function PostPage() {
         const tempPage = page;
         setPage(1);
         setPage(tempPage);
+
+        //Load more comments if comment exceeds comment page limit
+        setCommentNumber((prevCount) => prevCount + 1);
+        if ((commentNumber + 1) > 8 * page) {
+          setPage((prevPage) => prevPage + 1);
+        }
+
+
         await getComments();
 
         return postPageAlert;
@@ -315,8 +334,9 @@ function PostPage() {
   /**
    * Sets page tracker
    */
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
     setPage(page + 1);
+    await getComments();
   };
 
   const getPostEncounter = async () => {
