@@ -4,7 +4,7 @@
 }
 
 .post-page-padding {
-    padding: 15px
+    margin: 0 auto;
 }
 
 .post-body-bg {
@@ -17,7 +17,7 @@
             #e8d5a2 86%,
             #e8d5a2 99%);
     padding: 14px;
-    margin: 0px;
+
 }
 
 .comment-form {
@@ -26,7 +26,7 @@
             #f7efd1 59%,
             #e8d5a2 86%,
             #e8d5a2 99%);
-    margin: 3px;
+    margin-top: 1px;
 }
 
 .post-page-button-cont {
@@ -57,7 +57,7 @@
 
 .encounter-link-container-format {
     /* background-color: #fff; */
-    max-width: 400px;
+    max-width: 100%;
     text-align: center;
     margin: 0 auto;
 }
