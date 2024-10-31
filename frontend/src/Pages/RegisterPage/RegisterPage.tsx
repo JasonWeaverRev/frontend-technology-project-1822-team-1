@@ -7,6 +7,7 @@ function RegisterPage() {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false); // New state for password visibility
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -15,6 +16,7 @@ function RegisterPage() {
     event.preventDefault();
     if (!email || !username || !password) {
       setErrorMessage("All fields are required!");
+      return;
     } else {
       setErrorMessage("");
     }
@@ -37,6 +39,11 @@ function RegisterPage() {
         setErrorMessage("An error occurred while registering.");
       }
     }
+  };
+
+  // Toggle password visibility
+  const handleTogglePassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   return (
@@ -75,13 +82,22 @@ function RegisterPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="form-control-register mb-3"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="password-input-container">
+                  <input
+                    type={showPassword ? "text" : "password"} // Dynamic type
+                    placeholder="Password"
+                    className="form-control-register mb-3"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="toggle-password-btn"
+                    onClick={handleTogglePassword}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
               </div>
               <button
                 className="register-btn btn btn-primary btn-block-register"
