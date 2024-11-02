@@ -43,7 +43,7 @@ const PostCreationPage: React.FC = () => {
   const fetchOptions = async () => {
     try {
       const response = await axios.get(
-        `http://3.81.216.218:4000/api/encounters/${localStorage.getItem("username")}`
+        `http://54.89.114.193:4000/api/encounters/${localStorage.getItem("username")}`
       );
       setOptions(response.data.encounters);
     } catch (error) {

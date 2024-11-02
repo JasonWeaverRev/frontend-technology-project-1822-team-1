@@ -53,7 +53,7 @@ function LoginPage() {
   const storeLoggedInUser = async () => {
     try {
       const response = await axios.get(
-        "http://3.81.216.218:4000/api/accounts/profile",
+        "http://54.89.114.193:4000/api/accounts/profile",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
